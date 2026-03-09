@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Richard Hauer – Gitarrist &amp; Gitarrlärare</title>
+  <meta name="description" content="Richard Hauer är en frilansande gitarrist och gitarrlärare baserad i Göteborg. Han har spelat med några av Sveriges mest namnkunniga artister och undervisar på Rytmus.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: linear-gradient(to bottom, rgba(11,11,12,.95) 0%, transparent 100%);
+      transition: background .3s;
+    }
+    nav.scrolled {
+      background: rgba(11,11,12,.97);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+      font-weight: 600; color: var(--gold) !important;
+      border: 1px solid var(--gold-dim); padding: .4rem 1.1rem;
+      transition: background .2s, color .2s !important;
+    }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--bg) !important; }
+
+    /* ── HERO ───────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100vh; min-height: 600px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    /*
+      FOTO: Byt ut background-image mot din egen bild, t.ex.:
+      background-image: url('img/hero.jpg');
+      Placera din bild i en mapp "img/" bredvid index.html.
+    */
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://lh3.googleusercontent.com/sitesv/APaQ0SQWwn6RCIUztdoPSYIuv9BpTNjgLwGo72Tll9UaD0aiKv2WNlLI9Q2WTsgfTyZoM3mORFPw813G5xUFOKSwul76VRE_bqpIzRrKYG02FA1N0yHkiQybytRzjLrDaHBnYgPupQlv714SnWJ43ICOgjk4sAHbepyRs72WXZgbr1S9Yn8yDMOvu2ag=w1920');
+      background-size: cover;
+      background-position: center 30%;
+      background-color: #1a1f2e;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        170deg,
+        rgba(11,11,12,.1) 0%,
+        rgba(11,11,12,.4) 40%,
+        rgba(11,11,12,.85) 75%,
+        rgba(11,11,12,1) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      padding: 0 3rem 6rem;
+      max-width: 800px;
+    }
+    .hero-eyebrow {
+      font-size: .75rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: .75rem;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 700; line-height: .95;
+      letter-spacing: -.01em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-subtitle {
+      font-size: 1rem; color: var(--muted); letter-spacing: .08em;
+      text-transform: uppercase; font-weight: 400; margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--gold); color: var(--bg);
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      font-weight: 600; padding: .9rem 2.2rem; text-decoration: none;
+      transition: opacity .2s;
+    }
+    .hero-cta:hover { opacity: .85; }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; right: 3rem; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      color: var(--muted); font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    }
+    .hero-scroll span { writing-mode: vertical-rl; }
+    .hero-scroll::after {
+      content: ''; width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+
+    /* ── SECTIONS ───────────────────────────────────── */
+    section { padding: 7rem 3rem; max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; max-width: 60px; height: 1px;
+      background: var(--gold-dim);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 600; line-height: 1.15; margin-bottom: 1.5rem;
+    }
+    .section-body {
+      color: var(--muted); max-width: 640px; font-size: 1.05rem; line-height: 1.8;
+    }
+
+    /* ── OM MIG ─────────────────────────────────────── */
+    #om-mig .grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+      align-items: center; margin-top: 4rem;
+    }
+    .om-text p + p { margin-top: 1.1rem; }
+    .om-text p { color: var(--muted); line-height: 1.8; }
+    .om-facts {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    }
+    .fact {
+      border-top: 1px solid var(--border); padding-top: 1.25rem;
+    }
+    .fact-number {
+      font-family: var(--font-display);
+      font-size: 2.8rem; font-weight: 700; color: var(--gold);
+      line-height: 1;
+    }
+    .fact-label {
+      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-top: .4rem;
+    }
+
+    /* ── ARTISTER ───────────────────────────────────── */
+    #musiker { background: var(--surface); max-width: 100%; padding: 7rem 0; }
+    #musiker .inner { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+    .artist-marquee-wrapper {
+      overflow: hidden; margin-top: 3rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 0;
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .artist-marquee {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: marquee 40s linear infinite;
+    }
+    .artist-marquee:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .artist-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem; font-weight: 400; color: var(--muted);
+      padding: 0 2rem; transition: color .2s;
+      display: inline-block;
+    }
+    .artist-name:hover { color: var(--text); }
+    .artist-separator {
+      color: var(--gold-dim); padding: 0;
+      font-size: .8rem; align-self: center;
+      display: inline-block;
+    }
+
+    /* ── GRUPPER ────────────────────────────────────── */
+    #grupper .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .card {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 2rem; position: relative; overflow: hidden;
+      transition: border-color .3s, transform .2s;
+    }
+    .card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--gold);
+      transform: scaleY(0); transition: transform .3s;
+      transform-origin: top;
+    }
+    .card:hover::before { transform: scaleY(1); }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem; font-weight: 600; margin-bottom: .5rem;
+    }
+    .card-role {
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .card-desc { color: var(--muted); font-size: .95rem; line-height: 1.7; }
+    .card-link {
+      display: inline-block; margin-top: 1.25rem;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none; font-weight: 500;
+      transition: opacity .2s;
+    }
+    .card-link:hover { opacity: .7; }
+    .card-link::after { content: ' →'; }
+
+    /* ── LÄRARE ─────────────────────────────────────── */
+    #larare { background: var(--surface); max-width: 100%; }
+    #larare .inner { max-width: 1100px; margin: 0 auto; padding: 7rem 3rem; }
+    #larare .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: start; }
+    .teaching-list { margin-top: 2rem; }
+    .teaching-item {
+      display: flex; gap: 1.5rem;
+      padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+    }
+    .teaching-item:first-child { border-top: 1px solid var(--border); }
+    .teaching-year {
+      font-size: .78rem; color: var(--gold); letter-spacing: .08em;
+      font-weight: 500; min-width: 80px; padding-top: .15rem;
+    }
+    .teaching-info {}
+    .teaching-name { font-weight: 500; font-size: 1rem; }
+    .teaching-detail { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
+    .philosophy {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 2.5rem; margin-top: 3rem;
+    }
+    .philosophy blockquote {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 400; line-height: 1.5;
+      color: var(--text); font-style: italic;
+    }
+    .philosophy blockquote::before {
+      content: '"'; font-size: 3rem; color: var(--gold); line-height: 0;
+      vertical-align: -.5rem; display: block; margin-bottom: .5rem;
+    }
+
+    /* ── MUSIK / VIDEO ──────────────────────────────── */
+    .musik-sub {
+      color: var(--muted); font-size: .95rem; margin-top: 1rem; max-width: 540px;
+      margin-bottom: 3rem;
+    }
+    .musik-embed {
+      position: relative; padding-bottom: 56.25%;
+      background: var(--surface2); border: 1px solid var(--border);
+      overflow: hidden; max-width: 800px;
+    }
+    .musik-embed iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+    }
+    .musik-channels {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem;
+    }
+    .channel-btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      border: 1px solid var(--border); padding: .75rem 1.5rem;
+      color: var(--muted); text-decoration: none; font-size: .82rem;
+      letter-spacing: .1em; text-transform: uppercase; font-weight: 500;
+      transition: border-color .2s, color .2s;
+    }
+    .channel-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── KONTAKT ────────────────────────────────────── */
+    #kontakt { text-align: center; }
+    #kontakt .section-body { margin: 0 auto 3rem; }
+    .contact-row {
+      display: flex; justify-content: center; gap: 4rem;
+      flex-wrap: wrap; margin-bottom: 3rem;
+    }
+    .contact-item {}
+    .contact-type {
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .4rem;
+    }
+    .contact-value {
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 600;
+    }
+    .contact-value a { color: var(--text); text-decoration: none; transition: color .2s; }
+    .contact-value a:hover { color: var(--gold); }
+    .contact-cta {
+      display: inline-block;
+      background: transparent; color: var(--gold);
+      border: 1px solid var(--gold);
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      font-weight: 600; padding: 1rem 2.8rem; text-decoration: none;
+      transition: background .2s, color .2s;
+    }
+    .contact-cta:hover { background: var(--gold); color: var(--bg); }
+    .social-links {
+      display: flex; justify-content: center; gap: 2rem;
+      margin-top: 3rem;
+    }
+    .social-link {
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; font-weight: 500;
+      transition: color .2s;
+    }
+    .social-link:hover { color: var(--gold); }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2.5rem 3rem;
+      color: var(--muted); font-size: .8rem; letter-spacing: .05em;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── DIVIDER ────────────────────────────────────── */
+    .divider {
+      max-width: 1100px; margin: 0 auto;
+      height: 1px; background: var(--border);
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      #om-mig .grid { grid-template-columns: 1fr; gap: 3rem; }
+      #larare .grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-content { padding: 0 1.5rem 5rem; }
+      .hero-scroll { display: none; }
+      #musik .embed-grid { grid-template-columns: 1fr; }
+      #musiker .inner, #larare .inner { padding: 5rem 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .om-facts { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .contact-row { gap: 2rem; }
+      #grupper .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────── -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">Richard Hauer</a>
+    <ul class="nav-links">
+      <li><a href="#om-mig">Om mig</a></li>
+      <li><a href="#musiker">Musiker</a></li>
+      <li><a href="#grupper">Projekt</a></li>
+      <li><a href="#larare">Lärare</a></li>
+      <li><a href="#musik">Musik</a></li>
+      <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Gitarrist &amp; Lärare · Göteborg</p>
+      <h1 class="hero-title">Richard<br>Hauer</h1>
+      <p class="hero-subtitle">Klassiskt · Fusion · Blues · Jazz</p>
+      <a href="#kontakt" class="hero-cta">Kontakta mig</a>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── OM MIG ───────────────────────────────────── -->
+  <section id="om-mig">
+    <div class="section-label">Om mig</div>
+    <div class="grid">
+      <div class="om-text">
+        <h2 class="section-title">Gitarren är min<br>livsstil och passion</h2>
+        <p>Jag är en frilansande gitarrist och gitarrlärare med bas i Göteborg. Med utbildning från Musikhögskolan i Malmö (Lunds Universitet) och ett liv på scen – från Scandinavium till intima klubbar i källare – har jag spelat i de flesta sammanhang musik kan uppstå.</p>
+        <p>Utöver spelandet undervisar jag på Rytmus Musikergymnasium i Göteborg, där jag hjälper unga musiker att hitta sitt eget sound. Jag bygger och anpassar också egna instrument, och min musiksmak sträcker sig från 1600-talets klassiska melodier till modern jazz och fusion.</p>
+        <p>På fritiden är jag aktiv löpare och mountainbikecyklist. Naturen ger mig energi – precis som musiken.</p>
+      </div>
+      <div class="om-facts">
+        <div class="fact">
+          <div class="fact-number">25+</div>
+          <div class="fact-label">År på scen</div>
+        </div>
+        <div class="fact">
+          <div class="fact-number">50+</div>
+          <div class="fact-label">Artister</div>
+        </div>
+        <div class="fact">
+          <div class="fact-number">15+</div>
+          <div class="fact-label">År på Rytmus</div>
+        </div>
+        <div class="fact">
+          <div class="fact-number">∞</div>
+          <div class="fact-label">Passion för gitarr</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── ARTISTER ─────────────────────────────────── -->
+  <section id="musiker" style="padding:0">
+    <div class="inner">
+      <div class="section-label">Som musiker</div>
+      <h2 class="section-title">Ett urval av artister<br>jag spelat med</h2>
+      <p class="section-body">Under åren har jag haft förmånen att jobba med några av Sveriges mest namnkunniga artister – som studiomusiker, turnégitarrist och bandledare.</p>
+    </div>
+    <div class="artist-marquee-wrapper">
+      <div class="artist-marquee" id="marquee">
+        <!-- Innehållet dupliceras via JS för seamless loop -->
+      </div>
+    </div>
+    <div class="inner" style="padding-top: 3rem; padding-bottom: 7rem;">
+      <p class="section-body" style="font-size:.9rem;">
+        Scenstorlekarna sträcker sig från Scandinavium till små klubbar i en källare. Aktiv på 30–50 konserter per år. Samtliga uppdrag kan styrkas.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── GRUPPER / PROJEKT ─────────────────────────── -->
+  <section id="grupper">
+    <div class="section-label">Projekt &amp; Band</div>
+    <h2 class="section-title">Egna projekt</h2>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-title">Waltz for Debbie</div>
+        <div class="card-role">Gitarrist &amp; Arrangör</div>
+        <p class="card-desc">En intim konserthyllning till Monica Zetterlund – sång, jazz och berättande i duoformat med sångaren Anna Pauline.</p>
+        <a href="waltz-for-debbie.html" class="card-link">Läs mer</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Jamladies</div>
+        <div class="card-role">Gitarrist</div>
+        <p class="card-desc">Samarbete med Jamladies under de senaste åren – ett av mina mest aktiva och givande projekt just nu.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Duo 2Much</div>
+        <div class="card-role">Gitarrist &amp; Arrangör</div>
+        <p class="card-desc">Duoprojekt där jag jobbar som gitarrist och arrangör. Stilmässigt brett och musikaliskt nyfiket.</p>
+        <a href="https://www.youtube.com/channel/UCI4vsNqUiF-UmwhAcgx3Nsg" target="_blank" rel="noopener" class="card-link">YouTube</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Ballader i Bohuslän</div>
+        <div class="card-role">Konsertturné · Upphovsman</div>
+        <p class="card-desc">Nya tolkningar och arrangemang av Taubes visor. Utbildsprojekt med slutsålda föreställningar.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Confusion Quartet</div>
+        <div class="card-role">Gitarrist &amp; Låtskrivare</div>
+        <p class="card-desc">Eget kvartettprojekt med originalmusik. En blandning av jazz, fusion och egna kompositioner.</p>
+        <a href="https://open.spotify.com/album/1Kx9y0num4SZi4ruBIjev4" target="_blank" rel="noopener" class="card-link">Spotify</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Göteborgsoperan</div>
+        <div class="card-role">Gitarrist · Hair</div>
+        <p class="card-desc">Spelades på Göteborgsoperan september 2016 – mars 2017 i musikalen Hair.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Princess Cruises</div>
+        <div class="card-role">Gitarrist · Karibien</div>
+        <p class="card-desc">Turnerade som gitarrist i Karibien med Princess Cruises – ett av de mer exotiska uppdragen i karriären.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── LÄRARE ───────────────────────────────────── -->
+  <section id="larare" style="padding:0">
+    <div class="inner">
+      <div class="grid">
+        <div>
+          <div class="section-label">Som lärare</div>
+          <h2 class="section-title">Undervisning med<br>individen i fokus</h2>
+          <div class="teaching-list">
+            <div class="teaching-item">
+              <div class="teaching-year">2010 – nu</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Rytmus Musikergymnasium, Göteborg</div>
+                <div class="teaching-detail">Gitarr, ensemble &amp; IT-ansvarig</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">2012 – nu</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Rytmus Göteborg</div>
+                <div class="teaching-detail">IT-ansvarig</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">1998 – 1999</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Sundsgårdens Folkhögskola</div>
+                <div class="teaching-detail">Musiklinjen, Helsingborg</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">2008 – 2010</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Rytmus Musikergymnasium, Malmö</div>
+                <div class="teaching-detail">Gitarr &amp; ensemble</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">2005 – 2008</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Dunkers Kulturhus, Kulturskolan</div>
+                <div class="teaching-detail">Helsingborg</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">Utbildning</div>
+          <div class="teaching-list">
+            <div class="teaching-item">
+              <div class="teaching-year">1999–2003</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Musikhögskolan i Malmö</div>
+                <div class="teaching-detail">I/E-Jazz · Lunds Universitet</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">1998–1999</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Sundsgårdens Folkhögskola</div>
+                <div class="teaching-detail">Musiklinjen, Helsingborg</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">1997–1998</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Folkuniversitetet, Göteborg</div>
+                <div class="teaching-detail">Jazzimprovisationslinje</div>
+              </div>
+            </div>
+            <div class="teaching-item">
+              <div class="teaching-year">1994–1997</div>
+              <div class="teaching-info">
+                <div class="teaching-name">Hvitfeldtska gymnasiet</div>
+                <div class="teaching-detail">Estetiska programmet · Musik · Göteborg</div>
+              </div>
+            </div>
+          </div>
+          <div class="philosophy">
+            <blockquote>
+              Min målsättning är alltid att hjälpa studenten att utveckla sitt eget musicerande – att möta dem där de är och anpassa undervisningen individuellt.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MUSIK ────────────────────────────────────── -->
+  <section id="musik">
+    <div class="section-label">Musik</div>
+    <h2 class="section-title">Lyssna &amp; titta</h2>
+    <p class="musik-sub">Egna inspelningar, hyllningar till mina gitarrhjältar och meditativa musikstycken. En mix av klassiskt, fusion, blues och jazz.</p>
+    <div class="musik-embed">
+      <iframe
+        src="https://www.youtube.com/embed?listType=user_uploads&list=plisken1978"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        title="Richard Hauer – YouTube"></iframe>
+    </div>
+    <div class="musik-channels">
+      <a href="https://www.youtube.com/user/plisken1978/videos" target="_blank" rel="noopener" class="channel-btn">
+        ▶ YouTube
+      </a>
+      <a href="https://www.instagram.com/richardhauer" target="_blank" rel="noopener" class="channel-btn">
+        ◈ Instagram
+      </a>
+      <a href="https://open.spotify.com/artist/7ELNKSYdDHRXRrdA8ZWSvk" target="_blank" rel="noopener" class="channel-btn">
+        ♫ Spotify
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── KONTAKT ──────────────────────────────────── -->
+  <section id="kontakt">
+    <div class="section-label">Kontakt</div>
+    <h2 class="section-title">Låt oss spela tillsammans</h2>
+    <p class="section-body">Intresserad av att boka mig för ett uppdrag, vill du ha gitarrundervisning eller har du en annan fråga? Hör av dig!</p>
+    <div class="contact-row">
+      <div class="contact-item">
+        <div class="contact-type">Telefon</div>
+        <div class="contact-value"><a href="tel:+46708781116">0708-78 11 16</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-type">E-post</div>
+        <div class="contact-value"><a href="mailto:richardhauer@me.com">richardhauer@me.com</a></div>
+      </div>
+    </div>
+    <a href="mailto:richardhauer@me.com" class="contact-cta">Skicka ett mejl</a>
+    <div class="social-links">
+      <a href="https://www.instagram.com/richardhauer" target="_blank" rel="noopener" class="social-link">Instagram</a>
+      <a href="https://www.youtube.com/user/plisken1978/videos" target="_blank" rel="noopener" class="social-link">YouTube</a>
+      <a href="https://open.spotify.com/artist/7ELNKSYdDHRXRrdA8ZWSvk" target="_blank" rel="noopener" class="social-link">Spotify</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ───────────────────────────────────── -->
+  <footer>
+    <p>© 2026 Richard Hauer · <a href="mailto:richardhauer@me.com">richardhauer@me.com</a></p>
+  </footer>
+
+  <script>
+    // ── Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── Artist marquee
+    const artists = [
+      "Molly Sandén", "Erik Grönwall", "Magnus Carlsson", "Nanne Grönwall",
+      "Caroline af Ugglas", "Sven-Bertil Taube", "Ebbot Lundberg",
+      "Uno Svenningsson", "Nassim Al-Fakir", "LaGaylia Frazier",
+      "Shirley Clamp", "Elisabeth Andreassen", "David Lindgren",
+      "Thomas Di Leva", "Christer Sjögren", "Marit Bergman",
+      "Johan Boding", "Peter Johansson", "Magnus Bäcklund",
+      "Jessica Andersson", "Sonja Aldén", "Anna Sahlene",
+      "Wictoria", "Hanna Ferm", "Lasse Kronér",
+      "Anna-Lotta Larsson", "Jan Johansen", "Jennifer Brown"
+    ];
+
+    const marquee = document.getElementById('marquee');
+    const buildItems = () => artists.map(a =>
+      `<span class="artist-name">${a}</span><span class="artist-separator">·</span>`
+    ).join('');
+
+    // Duplicate for seamless loop
+    marquee.innerHTML = buildItems() + buildItems();
+  </script>
+
+</body>
+</html>
