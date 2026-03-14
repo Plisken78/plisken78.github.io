@@ -674,12 +674,39 @@
     <h2 class="section-title">Lyssna &amp; titta</h2>
     <p class="musik-sub">Egna inspelningar, hyllningar till mina gitarrhjältar och meditativa musikstycken. En mix av klassiskt, fusion, blues och jazz.</p>
     <div class="musik-embed">
-      <iframe
-        src="https://www.youtube.com/embed?listType=user_uploads&list=plisken1978"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        title="Richard Hauer – YouTube"></iframe>
+      <div id="yt-player"></div>
     </div>
+    <script>
+      // Ladda YouTube IFrame API
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+
+      var ytPlayer;
+      function onYouTubeIframeAPIReady() {
+        ytPlayer = new YT.Player('yt-player', {
+          width: '100%',
+          height: '100%',
+          playerVars: {
+            listType: 'playlist',
+            list: 'PLh4RdwHoewczhVDAPx0pOXGq_R8Kw2crD',
+            rel: 0,
+            modestbranding: 1
+          },
+          events: {
+            onReady: function(e) {
+              // Slumpa ett klipp från spellistan
+              var playlist = e.target.getPlaylist();
+              if (playlist && playlist.length > 0) {
+                var randomIndex = Math.floor(Math.random() * playlist.length);
+                e.target.playVideoAt(randomIndex);
+                e.target.stopVideo(); // Starta inte automatiskt
+              }
+            }
+          }
+        });
+      }
+    </script>
     <div class="musik-channels">
       <a href="https://www.youtube.com/user/plisken1978/videos" target="_blank" rel="noopener" class="channel-btn">
         ▶ YouTube
