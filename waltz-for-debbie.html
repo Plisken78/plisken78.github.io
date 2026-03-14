@@ -29,6 +29,13 @@
     .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
     .nav-back::before { content: '←'; }
     .nav-back:hover { color: var(--gold); }
+    .nav-book {
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--bg); background: var(--gold);
+      padding: .55rem 1.4rem; text-decoration: none; font-weight: 600;
+      transition: opacity .2s;
+    }
+    .nav-book:hover { opacity: .85; }
     .hero { position: relative; height: 90vh; min-height: 560px; display: flex; align-items: flex-end; overflow: hidden; }
     .hero-bg { position: absolute; inset: 0; background-image: url('img/waltz/first.jpeg'); background-color: #151820; background-size: cover; background-position: center 30%; }
     .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(170deg, rgba(11,11,12,.2) 0%, rgba(11,11,12,.5) 50%, rgba(11,11,12,.95) 100%); }
@@ -123,6 +130,7 @@
   <nav>
     <a href="index.html" class="nav-logo">Richard Hauer</a>
     <a href="index.html#grupper" class="nav-back">All projects</a>
+    <a href="#booking" class="nav-book">Book the concert</a>
   </nav>
 
   <div class="hero">
