@@ -193,10 +193,37 @@
       <div class="section-label">Watch &amp; listen</div>
       <h2 class="section-title">Anna Pauline &amp; Richard Hauer</h2>
       <div class="video-embed">
-        <iframe src="https://www.youtube.com/embed/91Jxt2y5kDc"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen title="Anna Pauline & Richard Hauer"></iframe>
+        <div id="yt-player-waltz"></div>
       </div>
+      <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+
+        var ytPlayerWaltz;
+        function onYouTubeIframeAPIReady() {
+          ytPlayerWaltz = new YT.Player('yt-player-waltz', {
+            width: '100%',
+            height: '100%',
+            playerVars: {
+              listType: 'playlist',
+              list: 'PLh4RdwHoewcxWmH5S1gLBYgwPfioDVWEp',
+              rel: 0,
+              modestbranding: 1
+            },
+            events: {
+              onReady: function(e) {
+                var playlist = e.target.getPlaylist();
+                if (playlist && playlist.length > 0) {
+                  var randomIndex = Math.floor(Math.random() * playlist.length);
+                  e.target.playVideoAt(randomIndex);
+                  e.target.stopVideo();
+                }
+              }
+            }
+          });
+        }
+      </script>
     </div>
   </div>
 
