@@ -85,7 +85,7 @@
     */
     .hero-bg {
       position: absolute; inset: 0;
-      background-image: url('https://lh3.googleusercontent.com/sitesv/APaQ0SQWwn6RCIUztdoPSYIuv9BpTNjgLwGo72Tll9UaD0aiKv2WNlLI9Q2WTsgfTyZoM3mORFPw813G5xUFOKSwul76VRE_bqpIzRrKYG02FA1N0yHkiQybytRzjLrDaHBnYgPupQlv714SnWJ43ICOgjk4sAHbepyRs72WXZgbr1S9Yn8yDMOvu2ag=w1920');
+      background-image: url('img/grafik-sidan/hjaltebild.jpeg');
       background-size: cover;
       background-position: center 30%;
       background-color: #1a1f2e;
@@ -164,7 +164,7 @@
     /* ── OM MIG ─────────────────────────────────────── */
     #om-mig .grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
-      align-items: center; margin-top: 4rem;
+      align-items: start; margin-top: 4rem;
     }
     .om-text p + p { margin-top: 1.1rem; }
     .om-text p { color: var(--muted); line-height: 1.8; }
@@ -183,6 +183,41 @@
       font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
       color: var(--muted); margin-top: .4rem;
     }
+    /* ── OM MIG FOTO ──────────────────────────────── */
+    .om-right { display: flex; flex-direction: column; gap: 2rem; }
+    .om-photo {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+      object-position: center top;
+    }
+
+    /* ── BILDGALLERI ──────────────────────────────── */
+    #bildgalleri { background: var(--bg); max-width: 100%; padding: 7rem 0; }
+    #bildgalleri .inner { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+    .gallery-strip-wrapper {
+      overflow: hidden; margin-top: 3rem;
+      mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    }
+    .gallery-strip {
+      display: flex; gap: .5rem; white-space: nowrap;
+      animation: galleryScroll 80s linear infinite;
+    }
+    .gallery-strip:hover { animation-play-state: paused; }
+    @keyframes galleryScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .gallery-img {
+      height: 340px; width: auto; object-fit: cover;
+      flex-shrink: 0; display: inline-block;
+      cursor: pointer;
+    }
+    .gallery-caption {
+      max-width: 1100px; margin: 1.5rem auto 0; padding: 0 3rem;
+      font-size: .78rem; color: var(--muted); letter-spacing: .08em;
+    }
+
+
 
     /* ── ARTISTER ───────────────────────────────────── */
     #musiker { background: var(--surface); max-width: 100%; padding: 7rem 0; }
@@ -373,6 +408,8 @@
       .hero-scroll { display: none; }
       #musik .embed-grid { grid-template-columns: 1fr; }
       #musiker .inner, #larare .inner { padding: 5rem 1.5rem; }
+      .gallery-img { height: 240px; }
+      .om-photo { aspect-ratio: 16/9; }
     }
     @media (max-width: 600px) {
       .om-facts { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
@@ -389,6 +426,7 @@
     <ul class="nav-links">
       <li><a href="#om-mig">Om mig</a></li>
       <li><a href="#musiker">Musiker</a></li>
+      <li><a href="#bildgalleri">Bilder</a></li>
       <li><a href="#grupper">Projekt</a></li>
       <li><a href="#larare">Lärare</a></li>
       <li><a href="#musik">Musik</a></li>
@@ -420,22 +458,27 @@
         <p>Utöver spelandet undervisar jag på Rytmus Musikergymnasium i Göteborg, där jag hjälper unga musiker att hitta sitt eget sound. Jag bygger och anpassar också egna instrument, och min musiksmak sträcker sig från 1600-talets klassiska melodier till modern jazz och fusion.</p>
         <p>På fritiden är jag aktiv löpare och mountainbikecyklist. Naturen ger mig energi – precis som musiken.</p>
       </div>
-      <div class="om-facts">
-        <div class="fact">
-          <div class="fact-number">25+</div>
-          <div class="fact-label">År på scen</div>
-        </div>
-        <div class="fact">
-          <div class="fact-number">50+</div>
-          <div class="fact-label">Artister</div>
-        </div>
-        <div class="fact">
-          <div class="fact-number">15+</div>
-          <div class="fact-label">År på Rytmus</div>
-        </div>
-        <div class="fact">
-          <div class="fact-number">∞</div>
-          <div class="fact-label">Passion för gitarr</div>
+      <div class="om-right">
+        <img src="img/grafik-sidan/narvik-farhult.jpeg"
+             alt="Richard Hauer spelar gitarr"
+             class="om-photo">
+        <div class="om-facts">
+          <div class="fact">
+            <div class="fact-number">25+</div>
+            <div class="fact-label">År på scen</div>
+          </div>
+          <div class="fact">
+            <div class="fact-number">50+</div>
+            <div class="fact-label">Artister</div>
+          </div>
+          <div class="fact">
+            <div class="fact-number">15+</div>
+            <div class="fact-label">År på Rytmus</div>
+          </div>
+          <div class="fact">
+            <div class="fact-number">∞</div>
+            <div class="fact-label">Passion för gitarr</div>
+          </div>
         </div>
       </div>
     </div>
@@ -461,6 +504,26 @@
       </p>
     </div>
   </section>
+
+
+  <!-- ── BILDGALLERI ─────────────────────────── -->
+  <section id="bildgalleri" style="padding:0">
+    <div class="inner" style="padding: 7rem 3rem 0;">
+      <div class="section-label">Bilder</div>
+      <h2 class="section-title">På scen och i studion</h2>
+      <p class="section-body">Bilder från konserter, turnéer och studioinspelningar genom åren.</p>
+    </div>
+    <div class="gallery-strip-wrapper">
+      <div class="gallery-strip" id="gallery-strip">
+        <!-- Laddas via JS från GitHub -->
+      </div>
+    </div>
+    <p class="gallery-caption" style="padding-bottom: 7rem;">
+      Galleri uppdateras löpande – nya bilder dyker upp automatiskt.
+    </p>
+  </section>
+
+  <div class="divider"></div>
 
   <!-- ── GRUPPER / PROJEKT ─────────────────────────── -->
   <section id="grupper">
@@ -687,6 +750,88 @@
 
     // Duplicate for seamless loop
     marquee.innerHTML = buildItems() + buildItems();
+
+    // ── Photo gallery (loads from GitHub API on live site, local fallback)
+    (async function loadGallery() {
+      const strip = document.getElementById('gallery-strip');
+      if (!strip) return;
+
+      const FALLBACK = [
+        "APA-black-coffe-release.jpeg",
+        "APA-fotosession.jpg",
+        "CLC.jpeg",
+        "GC-dansare.jpg",
+        "Hanna-B.jpeg",
+        "Narvik-archtop.JPG",
+        "anna-trio.jpeg",
+        "apa-duo.JPG",
+        "clc-trysil.jpeg",
+        "gc-in-ear.jpg",
+        "gronwall-2-gc.jpg",
+        "gronwall-4-gc.JPG",
+        "gronwall-gc-5.jpg",
+        "jamladies-1-gc.jpeg",
+        "jamladies-3-gc.JPG",
+        "jamladies-backlund.jpeg",
+        "jamladies-backstage.jpeg",
+        "jamladies-dl.jpeg",
+        "jamladies-eriksberg.jpg",
+        "jamladies-fjadrar.JPG",
+        "jamladies-gc-2.JPG",
+        "jamladies-gc-3.jpeg",
+        "jamladies-gc-7.JPG",
+        "jamladies-hoganloft.jpeg",
+        "jamladies-malmo-arena.JPG",
+        "jamladies-på-o.jpg",
+        "jamladies-skidoverall.jpg",
+        "jamladies-traningstroja.jpeg",
+        "jardvall-tribute-to-bruce-recording.jpg",
+        "jardvall-trio.jpg",
+        "jazztrio.jpeg",
+        "johanna-hjort.jpeg",
+        "narvik-lp.jpeg",
+        "narvik-poggenpohl.jpeg",
+        "peter-j-gc1.jpeg",
+        "peter-johansson-gc.JPG",
+        "pinne-for-landet.jpg",
+        "raffa.jpeg",
+        "rh-pilotdrakt.JPG",
+        "theresa-med-band.jpg",
+        "timeless-eggers-2.JPG"
+      ];
+
+      let images = [];
+
+      try {
+        const resp = await fetch(
+          'https://api.github.com/repos/Plisken78/plisken78.github.io/contents/img/bildspel',
+          { headers: { 'Accept': 'application/vnd.github.v3+json' } }
+        );
+        if (resp.ok) {
+          const files = await resp.json();
+          images = files
+            .filter(f => /\.(jpe?g|png|JPE?G|PNG)$/.test(f.name))
+            .map(f => f.download_url);
+        }
+      } catch(e) { /* fallback below */ }
+
+      if (images.length === 0) {
+        images = FALLBACK.map(n => 'img/bildspel/' + encodeURIComponent(n));
+      }
+
+      // Shuffle for variety
+      for (let i = images.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [images[i], images[j]] = [images[j], images[i]];
+      }
+
+      const buildItems = imgs => imgs.map(src =>
+        `<img class="gallery-img" src="${src}" alt="Richard Hauer" loading="lazy">`
+      ).join('');
+
+      strip.innerHTML = buildItems(images) + buildItems(images);
+    })();
+
   </script>
 
 </body>

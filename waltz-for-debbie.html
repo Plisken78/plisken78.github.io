@@ -66,15 +66,10 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      /*
-        FOTO: Lägg din bild här, t.ex.:
-        background-image: url('img/waltz-for-debbie.jpg');
-        Bilden på Anna Pauline & Richard finns på din gamla Google Sites-sida.
-      */
+      background-image: url('img/waltz/first.jpeg');
       background-color: #151820;
-      background-image: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d0f14 100%);
       background-size: cover;
-      background-position: center;
+      background-position: center 30%;
     }
     .hero-bg::after {
       content: '';
@@ -192,8 +187,15 @@
     }
     .artist-card {
       background: var(--surface2); border: 1px solid var(--border);
-      padding: 2.5rem;
+      padding: 0;
+      overflow: hidden;
     }
+    .artist-card-photo {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; object-position: top center;
+      display: block;
+    }
+    .artist-card-body { padding: 2.5rem; }
     .artist-card-name {
       font-family: var(--font-display);
       font-size: 1.8rem; font-weight: 600; margin-bottom: .3rem;
@@ -203,6 +205,20 @@
       color: var(--gold); margin-bottom: 1.25rem;
     }
     .artist-card-bio { color: var(--muted); font-size: .95rem; line-height: 1.75; }
+
+    /* ── FOTO-BAND ────────────────────────────────── */
+    .photo-band {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; max-width: 100%; overflow: hidden;
+      margin: 0;
+    }
+    .photo-band img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; display: block;
+      filter: grayscale(20%);
+      transition: filter .3s, transform .3s;
+    }
+    .photo-band img:hover { filter: grayscale(0%); transform: scale(1.02); }
 
     /* ── ALBUM ───────────────────────────────────── */
     .album-section { background: var(--surface); max-width: 100%; padding: 0; }
@@ -350,18 +366,31 @@
     <h2 class="section-title">Anna Pauline &amp; Richard Hauer</h2>
     <div class="artists-grid">
       <div class="artist-card">
-        <div class="artist-card-name">Anna Pauline</div>
-        <div class="artist-card-role">Sång</div>
-        <p class="artist-card-bio">Anna Pauline växte upp i en musikerfamilj med en dansk mamma djupt rotad i dansk vissång och en far som var välkänd jazztrumpetare. Hon klev upp på scen vid fyra års ålder och har sedan dess medverkat i en lång rad revyer och musikproduktioner.</p>
-        <p class="artist-card-bio" style="margin-top:.75rem;">Genom karriären har hon samarbetat med artister som Peps Persson, Viktoria Tolstoy, Nils Landgren, Siw Malmqvist och Gunhild Carling. Hennes mångkulturella bakgrund har format henne till en mångsidig och uttrycksfull jazzsångare, ofta hyllad för sin starka närvaro och djupa förståelse för jazztradition.</p>
+        <img src="img/waltz/anna.jpeg" alt="Anna Pauline" class="artist-card-photo">
+        <div class="artist-card-body">
+          <div class="artist-card-name">Anna Pauline</div>
+          <div class="artist-card-role">Sång</div>
+          <p class="artist-card-bio">Anna Pauline växte upp i en musikerfamilj med en dansk mamma djupt rotad i dansk vissång och en far som var välkänd jazztrumpetare. Hon klev upp på scen vid fyra års ålder och har sedan dess medverkat i en lång rad revyer och musikproduktioner.</p>
+          <p class="artist-card-bio" style="margin-top:.75rem;">Genom karriären har hon samarbetat med artister som Peps Persson, Viktoria Tolstoy, Nils Landgren, Siw Malmqvist och Gunhild Carling. Hennes mångkulturella bakgrund har format henne till en mångsidig och uttrycksfull jazzsångare, ofta hyllad för sin starka närvaro och djupa förståelse för jazztradition.</p>
+        </div>
       </div>
       <div class="artist-card">
-        <div class="artist-card-name">Richard Hauer</div>
-        <div class="artist-card-role">Gitarr</div>
-        <p class="artist-card-bio">Richard Hauer är en frilansande gitarrist baserad i Göteborg med utbildning från Musikhögskolan i Malmö. Han har spelat med ett femtiotal av Sveriges mest namnkunniga artister – från konsertsalen på Göteborgsoperan till intima jazzklubbar.</p>
-        <p class="artist-card-bio" style="margin-top:.75rem;">Som arrangör och gitarrist i Waltz for Debbie bär han med sig en bred musikalisk palett – från klassiskt till fusion och jazz – och ett djupt engagemang i de melodier och berättelser som Monica Zetterlund lämnade efter sig.</p>
+        <img src="img/waltz/richard.jpeg" alt="Richard Hauer" class="artist-card-photo">
+        <div class="artist-card-body">
+          <div class="artist-card-name">Richard Hauer</div>
+          <div class="artist-card-role">Gitarr</div>
+          <p class="artist-card-bio">Richard Hauer är en frilansande gitarrist baserad i Göteborg med utbildning från Musikhögskolan i Malmö. Han har spelat med ett femtiotal av Sveriges mest namnkunniga artister – från konsertsalen på Göteborgsoperan till intima jazzklubbar.</p>
+          <p class="artist-card-bio" style="margin-top:.75rem;">Som arrangör och gitarrist i Waltz for Debbie bär han med sig en bred musikalisk palett – från klassiskt till fusion och jazz – och ett djupt engagemang i de melodier och berättelser som Monica Zetterlund lämnade efter sig.</p>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- ── FOTO-BAND ────────────────────────────────── -->
+  <div class="photo-band">
+    <img src="img/waltz/second.jpeg" alt="Waltz for Debbie konsert">
+    <img src="img/waltz/third.jpeg"  alt="Waltz for Debbie konsert">
+    <img src="img/waltz/first.jpeg"  alt="Waltz for Debbie konsert">
   </div>
 
   <div class="divider"></div>
