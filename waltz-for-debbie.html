@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:        #0b0b0c;
       --surface:   #141416;
@@ -23,316 +22,156 @@
       --font-display: 'Cormorant Garamond', Georgia, serif;
       --font-body:    'Inter', system-ui, sans-serif;
     }
-
     html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── NAV ─────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 3rem;
-      background: rgba(11,11,12,.97);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: var(--font-display);
-      font-size: 1.3rem; font-weight: 600;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: var(--text); text-decoration: none;
-    }
-    .nav-back {
-      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none; font-weight: 500;
-      transition: color .2s; display: flex; align-items: center; gap: .5rem;
-    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
     .nav-back::before { content: '←'; }
     .nav-back:hover { color: var(--gold); }
-
-    /* ── HERO ────────────────────────────────────── */
-    .hero {
-      position: relative;
-      height: 90vh; min-height: 560px;
-      display: flex; align-items: flex-end;
-      overflow: hidden;
-      margin-top: 0;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('img/waltz/first.jpeg');
-      background-color: #151820;
-      background-size: cover;
-      background-position: center 30%;
-    }
-    .hero-bg::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        170deg,
-        rgba(11,11,12,.2) 0%,
-        rgba(11,11,12,.5) 50%,
-        rgba(11,11,12,.95) 100%
-      );
-    }
-    .hero-content {
-      position: relative; z-index: 1;
-      padding: 0 3rem 5rem;
-      max-width: 760px;
-    }
-    .hero-eyebrow {
-      font-size: .75rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; margin-bottom: .75rem;
-      display: flex; align-items: center; gap: .75rem;
-    }
-    .hero-eyebrow a {
-      color: var(--muted); text-decoration: none; transition: color .2s;
-      font-size: .7rem;
-    }
+    .hero { position: relative; height: 90vh; min-height: 560px; display: flex; align-items: flex-end; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('img/waltz/first.jpeg'); background-color: #151820; background-size: cover; background-position: center 30%; }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(170deg, rgba(11,11,12,.2) 0%, rgba(11,11,12,.5) 50%, rgba(11,11,12,.95) 100%); }
+    .hero-content { position: relative; z-index: 1; padding: 0 3rem 5rem; max-width: 760px; }
+    .hero-eyebrow { font-size: .75rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
+    .hero-eyebrow a { color: var(--muted); text-decoration: none; transition: color .2s; font-size: .7rem; }
     .hero-eyebrow a:hover { color: var(--gold); }
     .hero-eyebrow span { color: var(--gold-dim); }
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 700; line-height: .95;
-      letter-spacing: -.01em;
-      margin-bottom: .75rem;
-    }
-    .hero-subtitle {
-      font-family: var(--font-display);
-      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-      font-weight: 400; font-style: italic;
-      color: var(--muted); margin-bottom: 2.5rem;
-    }
+    .hero-title { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem); font-weight: 700; line-height: .95; letter-spacing: -.01em; margin-bottom: .75rem; }
+    .hero-subtitle { font-family: var(--font-display); font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 400; font-style: italic; color: var(--muted); margin-bottom: 2.5rem; }
     .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary {
-      display: inline-block;
-      background: var(--gold); color: var(--bg);
-      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
-      font-weight: 600; padding: .9rem 2.2rem; text-decoration: none;
-      transition: opacity .2s;
-    }
+    .btn-primary { display: inline-block; background: var(--gold); color: var(--bg); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: .9rem 2.2rem; text-decoration: none; transition: opacity .2s; }
     .btn-primary:hover { opacity: .85; }
-    .btn-secondary {
-      display: inline-block;
-      background: transparent; color: var(--muted);
-      border: 1px solid var(--border);
-      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
-      font-weight: 500; padding: .9rem 2.2rem; text-decoration: none;
-      transition: border-color .2s, color .2s;
-    }
+    .btn-secondary { display: inline-block; background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500; padding: .9rem 2.2rem; text-decoration: none; transition: border-color .2s, color .2s; }
     .btn-secondary:hover { border-color: var(--gold-dim); color: var(--text); }
-
-    /* ── LAYOUT ──────────────────────────────────── */
     .section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .section-label::after {
-      content: ''; flex: 1; max-width: 60px; height: 1px;
-      background: var(--gold-dim);
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 600; line-height: 1.15; margin-bottom: 1.5rem;
-    }
-
-    /* ── INTRO ───────────────────────────────────── */
-    .intro-grid {
-      display: grid; grid-template-columns: 1.1fr 1fr;
-      gap: 5rem; align-items: start;
-    }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.5rem; }
+    .intro-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: start; }
     .intro-text p { color: var(--muted); line-height: 1.85; margin-bottom: 1rem; }
     .intro-text p:last-child { margin-bottom: 0; }
     .intro-meta { display: flex; flex-direction: column; gap: 1.5rem; }
-    .meta-item {
-      border-top: 1px solid var(--border); padding-top: 1.25rem;
-    }
-    .meta-label {
-      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: .4rem;
-    }
+    .meta-item { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .meta-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .4rem; }
     .meta-value { font-size: 1rem; color: var(--text); line-height: 1.5; }
-
-    /* ── VIDEO ───────────────────────────────────── */
     .video-section { background: var(--surface); max-width: 100%; padding: 0; }
     .video-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
-    .video-embed {
-      position: relative; padding-bottom: 56.25%;
-      background: var(--surface2); border: 1px solid var(--border);
-      overflow: hidden; margin-top: 3rem; max-width: 860px;
-    }
-    .video-embed iframe {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
-    }
-
-    /* ── ABOUT ───────────────────────────────────── */
+    .video-embed { position: relative; padding-bottom: 56.25%; background: var(--surface2); border: 1px solid var(--border); overflow: hidden; margin-top: 3rem; max-width: 860px; }
+    .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     .about-section { background: var(--bg); }
-    .about-text { max-width: 720px; }
-    .about-text p { color: var(--muted); line-height: 1.85; margin-bottom: 1rem; }
-
-    /* ── ARTISTS ─────────────────────────────────── */
-    .artists-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 2rem; margin-top: 3rem;
-    }
-    .artist-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      padding: 0;
-      overflow: hidden;
-    }
-    .artist-card-photo {
-      width: 100%; aspect-ratio: 4/3;
-      object-fit: cover; object-position: top center;
-      display: block;
-    }
+    .artists-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+    .artist-card { background: var(--surface2); border: 1px solid var(--border); padding: 0; overflow: hidden; }
+    .artist-card-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: top center; display: block; }
     .artist-card-body { padding: 2.5rem; }
-    .artist-card-name {
-      font-family: var(--font-display);
-      font-size: 1.8rem; font-weight: 600; margin-bottom: .3rem;
-    }
-    .artist-card-role {
-      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.25rem;
-    }
+    .artist-card-name { font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; margin-bottom: .3rem; }
+    .artist-card-role { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
     .artist-card-bio { color: var(--muted); font-size: .95rem; line-height: 1.75; }
-
-    /* ── FOTO-BAND ────────────────────────────────── */
-    .photo-band {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0; max-width: 100%; overflow: hidden;
-      margin: 0;
-    }
-    .photo-band img {
-      width: 100%; aspect-ratio: 4/3;
-      object-fit: cover; display: block;
-      filter: grayscale(20%);
-      transition: filter .3s, transform .3s;
-    }
+    .photo-band { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 100%; overflow: hidden; }
+    .photo-band img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: grayscale(20%); transition: filter .3s, transform .3s; }
     .photo-band img:hover { filter: grayscale(0%); transform: scale(1.02); }
-
-    /* ── ALBUM ───────────────────────────────────── */
-    .album-section { background: var(--surface); max-width: 100%; padding: 0; }
-    .album-inner {
-      max-width: 1100px; margin: 0 auto; padding: 6rem 3rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 3rem; flex-wrap: wrap;
-    }
-    .album-text {}
-    .album-title {
-      font-family: var(--font-display);
-      font-size: 2rem; font-weight: 600; margin-bottom: .75rem;
-    }
+    .practical-section { background: var(--surface); max-width: 100%; padding: 0; }
+    .practical-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+    .practical-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; }
+    .practical-block h3 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin-bottom: 1.25rem; color: var(--text); }
+    .practical-block p { color: var(--muted); font-size: .95rem; line-height: 1.8; }
+    .practical-block ul { list-style: none; padding: 0; margin-top: .75rem; }
+    .practical-block ul li { color: var(--muted); font-size: .95rem; padding: .35rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .75rem; }
+    .practical-block ul li::before { content: '·'; color: var(--gold); font-size: 1.2rem; flex-shrink: 0; }
+    .duration-list { margin-top: .75rem; }
+    .duration-item { display: flex; align-items: baseline; gap: .75rem; padding: .6rem 0; border-bottom: 1px solid var(--border); }
+    .duration-label { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); flex-shrink: 0; min-width: 110px; }
+    .duration-value { color: var(--muted); font-size: .95rem; }
+    .album-section { background: var(--bg); max-width: 100%; padding: 0; }
+    .album-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+    .album-title { font-family: var(--font-display); font-size: 2rem; font-weight: 600; margin-bottom: .75rem; }
     .album-desc { color: var(--muted); max-width: 480px; }
     .album-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
-
-    /* ── BOOK ────────────────────────────────────── */
-    .book-section {
-      text-align: center; padding: 7rem 3rem;
-      max-width: 700px; margin: 0 auto;
-    }
-    .book-section .section-label { justify-content: center; }
-    .book-section .section-label::after { display: none; }
-    .book-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 600; margin-bottom: 1rem;
-    }
-    .book-text { color: var(--muted); margin-bottom: 2.5rem; }
-
-    /* ── FOOTER ──────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      text-align: center; padding: 2.5rem 3rem;
-      color: var(--muted); font-size: .8rem; letter-spacing: .05em;
-    }
+    .booking-section { background: var(--surface); max-width: 100%; padding: 0; }
+    .booking-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .booking-text h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; margin-bottom: 1rem; }
+    .booking-text p { color: var(--muted); line-height: 1.85; margin-bottom: .5rem; }
+    .booking-contact { border: 1px solid var(--border); padding: 2.5rem; background: var(--surface2); }
+    .booking-contact-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .contact-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; margin-bottom: .25rem; }
+    .contact-role { color: var(--gold); font-size: .85rem; margin-bottom: 1.5rem; }
+    .contact-detail { display: flex; align-items: center; gap: .75rem; padding: .6rem 0; border-bottom: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
+    .contact-detail:last-child { border-bottom: none; }
+    .contact-detail a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .contact-detail a:hover { color: var(--gold); }
+    .contact-icon { color: var(--gold-dim); font-size: .8rem; min-width: 14px; }
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; letter-spacing: .05em; }
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--gold); }
-
     .divider { max-width: 1100px; margin: 0 auto; height: 1px; background: var(--border); }
-
-    /* ── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 860px) {
       nav { padding: 1rem 1.5rem; }
       .hero-content { padding: 0 1.5rem 4rem; }
       .section { padding: 4rem 1.5rem; }
       .intro-grid { grid-template-columns: 1fr; gap: 3rem; }
       .artists-grid { grid-template-columns: 1fr; }
+      .practical-grid { grid-template-columns: 1fr; gap: 3rem; }
       .video-inner { padding: 4rem 1.5rem; }
       .album-inner { padding: 4rem 1.5rem; flex-direction: column; }
-      .book-section { padding: 5rem 1.5rem; }
+      .booking-inner { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+      .practical-inner { padding: 4rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── NAV ───────────────────────────────────── -->
   <nav>
     <a href="index.html" class="nav-logo">Richard Hauer</a>
-    <a href="index.html#grupper" class="nav-back">Alla projekt</a>
+    <a href="index.html#grupper" class="nav-back">All projects</a>
   </nav>
 
-  <!-- ── HERO ──────────────────────────────────── -->
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
       <div class="hero-eyebrow">
         <a href="index.html">Richard Hauer</a>
         <span>/</span>
-        Projekt
+        Projects
       </div>
       <h1 class="hero-title">Waltz for<br>Debbie</h1>
       <p class="hero-subtitle">A tribute to Monica Z</p>
       <div class="hero-actions">
-        <a href="mailto:richardhauer@me.com" class="btn-primary">Boka konserten</a>
-        <a href="https://album.link/d/723073281" target="_blank" rel="noopener" class="btn-secondary">Lyssna på albumet</a>
+        <a href="#booking" class="btn-primary">Book the concert</a>
+        <a href="https://album.link/d/723073281" target="_blank" rel="noopener" class="btn-secondary">Listen to the album</a>
       </div>
     </div>
   </div>
 
-  <!-- ── INTRO ─────────────────────────────────── -->
   <div class="section">
     <div class="intro-grid">
       <div class="intro-text">
-        <div class="section-label">Om konserten</div>
-        <h2 class="section-title">En hyllning till en legend</h2>
-        <p>Waltz for Debbie är en intim konserthyllning till den legendariska svenska sångerskan Monica Zetterlund – en av Skandinaviens mest inflytelserika jazz- och vokalartister.</p>
-        <p>Programmet rör sig fritt mellan hennes tidiga revy-låtar, svensk lyrik-tradition och hennes internationellt hyllade jazzinspelningar – inklusive det ikoniska samarbetet med den amerikanske jazzklaviaturen Bill Evans som gav upphov till klassikern "Waltz for Debbie".</p>
-        <p>Konserten kombinerar musik och berättande och erbjuder välkända favoriter och okända pärlor, presenterade i ett intimt duoformat.</p>
+        <div class="section-label">About the concert</div>
+        <h2 class="section-title">A tribute to a legend</h2>
+        <p>Waltz for Debbie is an intimate concert tribute to the legendary Swedish singer Monica Zetterlund – one of Scandinavia's most influential jazz and vocal artists.</p>
+        <p>The programme moves freely between her early cabaret songs, the Swedish lyric tradition, and her internationally acclaimed jazz recordings – including the iconic collaboration with American jazz pianist Bill Evans that gave rise to the classic "Waltz for Debbie".</p>
+        <p>The concert combines music and storytelling, offering well-known favourites and hidden gems, presented in an intimate duo format.</p>
       </div>
       <div class="intro-meta">
         <div class="meta-item">
           <div class="meta-label">Format</div>
-          <div class="meta-value">Intimt duoformat</div>
+          <div class="meta-value">Intimate duo</div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Musik</div>
-          <div class="meta-value">Jazz · Revy · Svensk lyrik</div>
+          <div class="meta-label">Music</div>
+          <div class="meta-value">Jazz · Cabaret · Swedish lyric tradition</div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Sångare</div>
+          <div class="meta-label">Vocals</div>
           <div class="meta-value">Anna Pauline</div>
         </div>
         <div class="meta-item">
-          <div class="meta-label">Gitarr</div>
+          <div class="meta-label">Guitar</div>
           <div class="meta-value">Richard Hauer</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Album</div>
           <div class="meta-value">
-            <a href="https://album.link/d/723073281" target="_blank" rel="noopener"
-               style="color:var(--gold);text-decoration:none;">
-              Lyssna → album.link
-            </a>
+            <a href="https://album.link/d/723073281" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">Listen &rarr; album.link</a>
           </div>
         </div>
       </div>
@@ -341,89 +180,148 @@
 
   <div class="divider"></div>
 
-  <!-- ── VIDEO ─────────────────────────────────── -->
   <div class="video-section">
     <div class="video-inner">
-      <div class="section-label">Se &amp; hör</div>
+      <div class="section-label">Watch &amp; listen</div>
       <h2 class="section-title">Anna Pauline &amp; Richard Hauer</h2>
       <div class="video-embed">
-        <!--
-          Byt ut VIDEO_ID mot ditt showreel-ID från YouTube.
-          Exempel: src="https://www.youtube.com/embed/ABC123xyz"
-        -->
-        <iframe
-          src="https://www.youtube.com/embed/91Jxt2y5kDc"
+        <iframe src="https://www.youtube.com/embed/91Jxt2y5kDc"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          title="Anna Pauline & Richard Hauer"></iframe>
+          allowfullscreen title="Anna Pauline & Richard Hauer"></iframe>
       </div>
     </div>
   </div>
 
-  <!-- ── ARTISTER ──────────────────────────────── -->
   <div class="section about-section">
-    <div class="section-label">Musikerna</div>
+    <div class="section-label">The musicians</div>
     <h2 class="section-title">Anna Pauline &amp; Richard Hauer</h2>
     <div class="artists-grid">
       <div class="artist-card">
         <img src="img/waltz/anna.jpeg" alt="Anna Pauline" class="artist-card-photo">
         <div class="artist-card-body">
           <div class="artist-card-name">Anna Pauline</div>
-          <div class="artist-card-role">Sång</div>
-          <p class="artist-card-bio">Anna Pauline växte upp i en musikerfamilj med en dansk mamma djupt rotad i dansk vissång och en far som var välkänd jazztrumpetare. Hon klev upp på scen vid fyra års ålder och har sedan dess medverkat i en lång rad revyer och musikproduktioner.</p>
-          <p class="artist-card-bio" style="margin-top:.75rem;">Genom karriären har hon samarbetat med artister som Peps Persson, Viktoria Tolstoy, Nils Landgren, Siw Malmqvist och Gunhild Carling. Hennes mångkulturella bakgrund har format henne till en mångsidig och uttrycksfull jazzsångare, ofta hyllad för sin starka närvaro och djupa förståelse för jazztradition.</p>
+          <div class="artist-card-role">Vocals</div>
+          <p class="artist-card-bio">Anna Pauline grew up in a musical family with a Danish mother deeply rooted in Danish folk song and a father who was a well-known jazz trumpeter. She stepped on stage at the age of four and has since appeared in a wide range of cabaret and music productions.</p>
+          <p class="artist-card-bio" style="margin-top:.75rem;">Throughout her career she has collaborated with artists such as Peps Persson, Viktoria Tolstoy, Nils Landgren, Siw Malmqvist and Gunhild Carling. Her multicultural background has shaped her into a versatile and expressive jazz singer, frequently praised for her strong stage presence and deep understanding of the jazz tradition.</p>
         </div>
       </div>
       <div class="artist-card">
         <img src="img/waltz/richard.jpeg" alt="Richard Hauer" class="artist-card-photo">
         <div class="artist-card-body">
           <div class="artist-card-name">Richard Hauer</div>
-          <div class="artist-card-role">Gitarr</div>
-          <p class="artist-card-bio">Richard Hauer är en frilansande gitarrist baserad i Göteborg med utbildning från Musikhögskolan i Malmö. Han har spelat med ett femtiotal av Sveriges mest namnkunniga artister – från konsertsalen på Göteborgsoperan till intima jazzklubbar.</p>
-          <p class="artist-card-bio" style="margin-top:.75rem;">Som arrangör och gitarrist i Waltz for Debbie bär han med sig en bred musikalisk palett – från klassiskt till fusion och jazz – och ett djupt engagemang i de melodier och berättelser som Monica Zetterlund lämnade efter sig.</p>
+          <div class="artist-card-role">Guitar</div>
+          <p class="artist-card-bio">Richard Hauer is a freelance guitarist based in Gothenburg, educated at the Music Academy in Malmö. He has performed with some fifty of Sweden's most prominent artists – from the concert hall at the Gothenburg Opera to intimate jazz clubs.</p>
+          <p class="artist-card-bio" style="margin-top:.75rem;">As arranger and guitarist in Waltz for Debbie he brings a broad musical palette – from classical to fusion and jazz – and a deep commitment to the melodies and stories that Monica Zetterlund left behind.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── FOTO-BAND ────────────────────────────────── -->
   <div class="photo-band">
-    <img src="img/waltz/second.jpeg" alt="Waltz for Debbie konsert">
-    <img src="img/waltz/third.jpeg"  alt="Waltz for Debbie konsert">
-    <img src="img/waltz/first.jpeg"  alt="Waltz for Debbie konsert">
+    <img src="img/waltz/second.jpeg" alt="Waltz for Debbie concert">
+    <img src="img/waltz/third.jpeg"  alt="Waltz for Debbie concert">
+    <img src="img/waltz/first.jpeg"  alt="Waltz for Debbie concert">
   </div>
 
   <div class="divider"></div>
 
-  <!-- ── ALBUM ─────────────────────────────────── -->
-  <div class="album-section">
-    <div class="album-inner">
-      <div class="album-text">
-        <div class="section-label">Senaste albumet</div>
-        <h2 class="album-title">Lyssna på vår musik</h2>
-        <p class="album-desc">Albumet ger en djupare inblick i vårt musikaliska uttryck och den nära interaktionen i duon. Tillgängligt på alla streamingplattformar.</p>
-        <div class="album-actions">
-          <a href="https://album.link/d/723073281" target="_blank" rel="noopener" class="btn-primary">
-            Lyssna nu
-          </a>
+  <div class="practical-section">
+    <div class="practical-inner">
+      <div class="section-label">Practical information</div>
+      <h2 class="section-title">Concert format &amp; technical requirements</h2>
+      <div class="practical-grid">
+        <div class="practical-block">
+          <h3>Concert format &amp; duration</h3>
+          <p>The concert programme can be adapted to different venues and occasions.</p>
+          <div class="duration-list">
+            <div class="duration-item">
+              <span class="duration-label">Duration</span>
+              <span class="duration-value">30–90 minutes</span>
+            </div>
+            <div class="duration-item">
+              <span class="duration-label">Optional</span>
+              <span class="duration-value">Two sets of 45 minutes</span>
+            </div>
+            <div class="duration-item">
+              <span class="duration-label">Audience</span>
+              <span class="duration-value">Seated, intimate listening environments</span>
+            </div>
+          </div>
+          <p style="margin-top:1.5rem;">A flexible format suitable for:</p>
+          <ul>
+            <li>Jazz clubs</li>
+            <li>Cultural venues</li>
+            <li>Concert halls</li>
+            <li>Seated listening audiences</li>
+          </ul>
+        </div>
+        <div class="practical-block">
+          <h3>Technical requirements</h3>
+          <p>For audiences of approximately 50–100 people in smaller venues, the duo can provide all necessary sound equipment.</p>
+          <div class="duration-list" style="margin-top:1.25rem;">
+            <div class="duration-item">
+              <span class="duration-label">Sound</span>
+              <span class="duration-value">Provided by the duo (up to ~100 persons)</span>
+            </div>
+            <div class="duration-item">
+              <span class="duration-label">Electricity</span>
+              <span class="duration-value">Standard power outlet required</span>
+            </div>
+            <div class="duration-item">
+              <span class="duration-label">Stage</span>
+              <span class="duration-value">Flexible – no special setup needed</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── BOKA ──────────────────────────────────── -->
-  <div class="book-section">
-    <div class="section-label">Boka</div>
-    <h2 class="book-title">Boka Waltz for Debbie</h2>
-    <p class="book-text">Konserten passar lika väl för jazzfestivaler, kulturhus, privata evenemang och intima scener. Hör av dig för att diskutera möjligheterna!</p>
-    <a href="mailto:richardhauer@me.com?subject=Bokning - Waltz for Debbie" class="btn-primary">
-      Kontakta Richard
-    </a>
+  <div class="divider"></div>
+
+  <div class="album-section">
+    <div class="album-inner">
+      <div>
+        <div class="section-label">Latest album</div>
+        <h2 class="album-title">Listen to our music</h2>
+        <p class="album-desc">The album offers a deeper glimpse into our musical expression and the close interplay of the duo. Available on all streaming platforms.</p>
+        <div class="album-actions">
+          <a href="https://album.link/d/723073281" target="_blank" rel="noopener" class="btn-primary">Listen now</a>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- ── FOOTER ─────────────────────────────────── -->
+  <div class="booking-section" id="booking">
+    <div class="booking-inner">
+      <div class="booking-text">
+        <div class="section-label">Booking</div>
+        <h2>Book Waltz for Debbie</h2>
+        <p>The concert is equally suited for jazz festivals, cultural venues, private events and intimate stages.</p>
+        <p style="margin-top:1rem;">For bookings and enquiries, please contact our booking manager at Spectacle Music.</p>
+      </div>
+      <div class="booking-contact">
+        <div class="booking-contact-label">Booking contact</div>
+        <div class="contact-name">Jeppe Buchreitz</div>
+        <div class="contact-role">Booking Manager &middot; Spectacle Music</div>
+        <div class="contact-detail">
+          <span class="contact-icon">&#127760;</span>
+          <a href="http://spectacle.dk" target="_blank" rel="noopener">spectacle.dk</a>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">&#128222;</span>
+          <a href="tel:+4527505641">+45 27 50 56 41</a>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">&#9993;</span>
+          <a href="mailto:jeppe@udgiv.dk">jeppe@udgiv.dk</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <p>© 2026 Richard Hauer · <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> · <a href="index.html">richardhauer.com</a></p>
+    <p>&copy; 2026 Richard Hauer &middot; <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> &middot; <a href="index.html">richardhauer.com</a></p>
   </footer>
 
 </body>
