@@ -253,10 +253,28 @@
     }
 
     /* ── GRUPPER ────────────────────────────────────── */
-    #grupper .cards {
+    /* ── PROJEKT-GRID ─────────────────────────────── */
+    #grupper .cards-featured {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem; margin-top: 3rem;
+    }
+    #grupper .cards-featured .card:first-child {
+      grid-column: span 2;
+    }
+    #grupper .cards-archive {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-top: 1rem;
+    }
+    .archive-divider {
+      margin-top: 3rem; margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .archive-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
     }
     .card {
       background: var(--surface2); border: 1px solid var(--border);
@@ -271,15 +289,27 @@
       transform-origin: top;
     }
     .card:hover::before { transform: scaleY(1); }
+    .card-badge {
+      display: inline-block; font-size: .63rem; letter-spacing: .18em;
+      text-transform: uppercase; font-weight: 600;
+      padding: .22rem .7rem; margin-bottom: 1rem;
+      background: var(--gold); color: var(--bg);
+    }
+    .card-badge.badge-tour { background: #5b9cf6; color: #fff; }
+    .card-badge.badge-event { background: #7c5cbf; color: #fff; }
     .card-title {
       font-family: var(--font-display);
       font-size: 1.5rem; font-weight: 600; margin-bottom: .5rem;
     }
+    .card-small .card-title { font-size: 1.15rem; }
     .card-role {
       font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
       color: var(--gold); margin-bottom: 1rem;
     }
     .card-desc { color: var(--muted); font-size: .95rem; line-height: 1.7; }
+    .card-small .card-desc { font-size: .87rem; }
+    .card-small { opacity: .65; padding: 1.5rem; }
+    .card-small:hover { opacity: 1; }
     .card-link {
       display: inline-block; margin-top: 1.25rem;
       font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
@@ -414,7 +444,9 @@
     @media (max-width: 600px) {
       .om-facts { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
       .contact-row { gap: 2rem; }
-      #grupper .cards { grid-template-columns: 1fr; }
+      #grupper .cards-featured { grid-template-columns: 1fr; }
+      #grupper .cards-featured .card:first-child { grid-column: span 1; }
+      #grupper .cards-archive { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -528,10 +560,21 @@
   <!-- ── GRUPPER / PROJEKT ─────────────────────────── -->
   <section id="grupper">
     <div class="section-label">Projekt &amp; Band</div>
-    <h2 class="section-title">Egna projekt</h2>
-    <div class="cards">
+    <h2 class="section-title">Projekt</h2>
+
+    <!-- ── AKTIVA PROJEKT ── -->
+    <div class="cards-featured">
 
       <div class="card">
+        <div class="card-badge">Aktiv</div>
+        <div class="card-title">Jamladies</div>
+        <div class="card-role">Gitarrist</div>
+        <p class="card-desc">Ett av mina mest aktiva och givande projekt just nu. Jamladies är ett av Sveriges mest uppskattade damband med hundratals konserter och stora scener.</p>
+        <a href="https://www.jamladies.se" target="_blank" rel="noopener" class="card-link">Hemsida</a>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Aktiv</div>
         <div class="card-title">Waltz for Debbie</div>
         <div class="card-role">Gitarrist &amp; Arrangör</div>
         <p class="card-desc">En intim konserthyllning till Monica Zetterlund – sång, jazz och berättande i duoformat med sångaren Anna Pauline.</p>
@@ -539,41 +582,66 @@
       </div>
 
       <div class="card">
-        <div class="card-title">Jamladies</div>
-        <div class="card-role">Gitarrist</div>
-        <p class="card-desc">Samarbete med Jamladies under de senaste åren – ett av mina mest aktiva och givande projekt just nu.</p>
+        <div class="card-badge">Aktiv</div>
+        <div class="card-title">Timeless Tunes</div>
+        <div class="card-role">Gitarrist &amp; Arrangör · Duo</div>
+        <p class="card-desc">Intimt duoprojekt med sångerskan Theresa Skjolden. Tidlösa melodier i ett nyskapande format som passar alla sorters scener.</p>
+        <a href="https://www.instagram.com/tidlosatoner/" target="_blank" rel="noopener" class="card-link">Instagram</a>
       </div>
 
       <div class="card">
+        <div class="card-badge badge-tour">På turné</div>
+        <div class="card-title">Alexandra Jardvall &amp; The SWE Street Band</div>
+        <div class="card-role">Kapellmästare</div>
+        <p class="card-desc">Turnerar just nu med musik inspirerad av Bruce Springsteen – med Alexandra Jardvall som frontfigur och Richard som kapellmästare och gitarrist.</p>
+        <a href="jardvall.html" class="card-link">Läs mer</a>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-event">Hösten 2026</div>
+        <div class="card-title">Macken 40 år</div>
+        <div class="card-role">Kapellmästare · Kajskjul 8, Göteborg</div>
+        <p class="card-desc">En hyllningsföreställning till den älskade TV-serien Macken som firar 40 år. Richard är kapellmästare för produktionen på Kajskjul 8 i Göteborg.</p>
+        <a href="https://kajskjul8.se/show/en-hyllning-till-macken/" target="_blank" rel="noopener" class="card-link">Biljetter</a>
+      </div>
+
+    </div>
+
+    <!-- ── TIDIGARE &amp; VILANDE PROJEKT ── -->
+    <div class="archive-divider">Tidigare projekt</div>
+    <div class="cards-archive">
+
+      <div class="card card-small">
         <div class="card-title">Duo 2Much</div>
         <div class="card-role">Gitarrist &amp; Arrangör</div>
-        <p class="card-desc">Duoprojekt där jag jobbar som gitarrist och arrangör. Stilmässigt brett och musikaliskt nyfiket.</p>
-        <a href="https://www.youtube.com/channel/UCI4vsNqUiF-UmwhAcgx3Nsg" target="_blank" rel="noopener" class="card-link">YouTube</a>
+        <p class="card-desc">Duoprojekt med bred musikalisk palett.</p>
+        <a href="duo2much.html" class="card-link">Läs mer</a>
       </div>
 
-      <div class="card">
+      <div class="card card-small">
         <div class="card-title">Ballader i Bohuslän</div>
         <div class="card-role">Konsertturné · Upphovsman</div>
-        <p class="card-desc">Nya tolkningar och arrangemang av Taubes visor. Utbildsprojekt med slutsålda föreställningar.</p>
+        <p class="card-desc">Nya tolkningar av Taubes visor. Slutsålda föreställningar.</p>
+        <a href="ballader.html" class="card-link">Läs mer</a>
       </div>
 
-      <div class="card">
+      <div class="card card-small">
         <div class="card-title">Confusion Quartet</div>
         <div class="card-role">Gitarrist &amp; Låtskrivare</div>
-        <p class="card-desc">Eget kvartettprojekt med originalmusik. En blandning av jazz, fusion och egna kompositioner.</p>
+        <p class="card-desc">Eget jazzfusionkvartettprojekt med originalmusik.</p>
         <a href="https://open.spotify.com/album/1Kx9y0num4SZi4ruBIjev4" target="_blank" rel="noopener" class="card-link">Spotify</a>
       </div>
 
-      <div class="card">
+      <div class="card card-small">
         <div class="card-title">Göteborgsoperan</div>
-        <div class="card-role">Gitarrist · Hair</div>
-        <p class="card-desc">Spelades på Göteborgsoperan september 2016 – mars 2017 i musikalen Hair.</p>
+        <div class="card-role">Gitarrist · Hair 2016–17</div>
+        <p class="card-desc">Gitarrist i musikalen Hair på Göteborgsoperan.</p>
       </div>
 
-      <div class="card">
+      <div class="card card-small">
         <div class="card-title">Princess Cruises</div>
         <div class="card-role">Gitarrist · Karibien</div>
-        <p class="card-desc">Turnerade som gitarrist i Karibien med Princess Cruises – ett av de mer exotiska uppdragen i karriären.</p>
+        <p class="card-desc">Turnerade som gitarrist i Karibien.</p>
       </div>
 
     </div>
