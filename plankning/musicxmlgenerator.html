@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MusicXML Generator</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #272736; }
+    input, select { font-family: inherit; }
+    button:hover { opacity: 0.85; }
+    .part-row:hover .part-actions { opacity: 1 !important; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const TIME_SIGNATURES = ["2/4", "3/4", "4/4", "5/4", "6/4", "6/8", "7/8", "12/8"];
+
+    const PART_TYPES = [
+      { id: "intro",     color: "#6366f1" },
+      { id: "verse",     color: "#0ea5e9" },
+      { id: "prechorus", color: "#f59e0b" },
+      { id: "chorus",    color: "#ef4444" },
+      { id: "bridge",    color: "#10b981" },
+      { id: "hook",      color: "#8b5cf6" },
+      { id: "solo",      color: "#f97316" },
+      { id: "outro",     color: "#64748b" },
+      { id: "custom",    color: "#ec4899" },
+    ];
+
+    const TRANSLATIONS = {
+      sv: {
+        subtitle:         "Song Form Builder",
+        tagline:          "Bygg låtens form → exportera → öppna i ditt notskrivningsprogram",
+        sectionGlobal:    "Global taktart",
+        sectionAdd:       "Lägg till del",
+        sectionStructure: "Låtstruktur",
+        barsTotal:        "takter totalt",
+        labelStdSig:      "Standard taktart",
+        labelType:        "Typ",
+        labelName:        "Namn",
+        labelNumber:      "Nummer (valfritt)",
+        labelBarCount:    "Antal takter",
+        labelPartSig:     "Taktart för del",
+        addBtn:           "+ Lägg till",
+        useGlobal:        "— Använd global —",
+        noParts:          "Inga delar än — lägg till en del till vänster.",
+        barsUnit:         "takter",
+        customBarNote:    "anpassad takt",
+        customBarsHeader: "Anpassade taktarter per takt",
+        barLabel:         "Takt",
+        standard:         "Standard",
+        previewXml:       "Förhandsgranska XML",
+        download:         "↓ Ladda ner .musicxml",
+        xmlTitle:         "XML-förhandsgranskning",
+        credit:           "Skapad av Richard Hauer & Claude",
+        namePlaceholder:  "T.ex. Interlude",
+        numPlaceholder:   "T.ex. 1, 2, A…",
+        customDefault:    "Del",
+        parts: {
+          intro: "Intro", verse: "Vers", prechorus: "Pre-refräng",
+          chorus: "Refräng", bridge: "Stick", hook: "Brygga",
+          solo: "Solo", outro: "Outro", custom: "Anpassad",
+        },
+      },
+      en: {
+        subtitle:         "Song Form Builder",
+        tagline:          "Build your song structure → export → open in your notation software",
+        sectionGlobal:    "Global time signature",
+        sectionAdd:       "Add section",
+        sectionStructure: "Song structure",
+        barsTotal:        "bars total",
+        labelStdSig:      "Default time signature",
+        labelType:        "Type",
+        labelName:        "Name",
+        labelNumber:      "Number (optional)",
+        labelBarCount:    "Number of bars",
+        labelPartSig:     "Time signature for section",
+        addBtn:           "+ Add",
+        useGlobal:        "— Use global —",
+        noParts:          "No sections yet — add one on the left.",
+        barsUnit:         "bars",
+        customBarNote:    "custom bar",
+        customBarsHeader: "Custom time signatures per bar",
+        barLabel:         "Bar",
+        standard:         "Default",
+        previewXml:       "Preview XML",
+        download:         "↓ Download .musicxml",
+        xmlTitle:         "XML preview",
+        credit:           "Created by Richard Hauer & Claude",
+        namePlaceholder:  "E.g. Interlude",
+        numPlaceholder:   "E.g. 1, 2, A…",
+        customDefault:    "Section",
+        parts: {
+          intro: "Intro", verse: "Verse", prechorus: "Pre-chorus",
+          chorus: "Chorus", bridge: "Bridge", hook: "Middle 8",
+          solo: "Solo", outro: "Outro", custom: "Custom",
+        },
+      },
+      de: {
+        subtitle:         "Song Form Builder",
+        tagline:          "Liedstruktur aufbauen → exportieren → im Notationsprogramm öffnen",
+        sectionGlobal:    "Globale Taktart",
+        sectionAdd:       "Teil hinzufügen",
+        sectionStructure: "Liedstruktur",
+        barsTotal:        "Takte gesamt",
+        labelStdSig:      "Standard-Taktart",
+        labelType:        "Typ",
+        labelName:        "Name",
+        labelNumber:      "Nummer (optional)",
+        labelBarCount:    "Anzahl Takte",
+        labelPartSig:     "Taktart für Teil",
+        addBtn:           "+ Hinzufügen",
+        useGlobal:        "— Global verwenden —",
+        noParts:          "Noch keine Teile — links einen hinzufügen.",
+        barsUnit:         "Takte",
+        customBarNote:    "angepasster Takt",
+        customBarsHeader: "Individuelle Taktarten pro Takt",
+        barLabel:         "Takt",
+        standard:         "Standard",
+        previewXml:       "XML-Vorschau",
+        download:         "↓ .musicxml herunterladen",
+        xmlTitle:         "XML-Vorschau",
+        credit:           "Erstellt von Richard Hauer & Claude",
+        namePlaceholder:  "Z.B. Interlude",
+        numPlaceholder:   "Z.B. 1, 2, A…",
+        customDefault:    "Teil",
+        parts: {
+          intro: "Intro", verse: "Strophe", prechorus: "Pre-Refrain",
+          chorus: "Refrain", bridge: "Bridge", hook: "Mittelteil",
+          solo: "Solo", outro: "Outro", custom: "Angepasst",
+        },
+      },
+    };
+
+    function generateMusicXML(parts, globalTimeSig) {
+      let measureNumber = 1;
+      const allMeasures = [];
+
+      for (const part of parts) {
+        const [beats, beatType] = (part.timeSig || globalTimeSig).split("/").map(Number);
+        for (let i = 0; i < part.bars; i++) {
+          const barTimeSig = part.customBars?.[i] || null;
+          const [bBeats, bBeatType] = barTimeSig
+            ? barTimeSig.split("/").map(Number)
+            : [beats, beatType];
+          const isFirstInPart = i === 0;
+          const prevSig = measureNumber > 1 ? allMeasures[measureNumber - 2]?.sig : null;
+          const currentSig = barTimeSig || part.timeSig || globalTimeSig;
+          const showSig = isFirstInPart || !!barTimeSig || (prevSig && prevSig !== currentSig);
+          allMeasures.push({
+            number: measureNumber++,
+            beats: bBeats,
+            beatType: bBeatType,
+            sig: currentSig,
+            showSig,
+            partLabel: isFirstInPart ? part.label : null,
+            partNumber: isFirstInPart ? part.customLabel || "" : null,
+          });
+        }
+      }
+
+      const divisions = 4;
+      const measuresXML = allMeasures.map((m) => {
+        const showAttributes = m.showSig || m.number === 1;
+        const attributes = showAttributes
+          ? `\n      <attributes>
+        <divisions>${divisions}</divisions>
+        <time>
+          <beats>${m.beats}</beats>
+          <beat-type>${m.beatType}</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>`
+          : "";
+
+        const rehearsalMark = m.partLabel
+          ? `\n      <direction placement="above">
+        <direction-type>
+          <rehearsal>${m.partLabel}${m.partNumber ? " " + m.partNumber : ""}</rehearsal>
+        </direction-type>
+      </direction>`
+          : "";
+
+        const totalDuration = m.beats * divisions;
+        const note = `\n      <note>
+        <rest measure="yes"/>
+        <duration>${totalDuration}</duration>
+      </note>`;
+
+        return `\n    <measure number="${m.number}">${rehearsalMark}${attributes}${note}\n    </measure>`;
+      }).join("");
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC
+  "-//Recordare//DTD MusicXML 3.1 Partwise//EN"
+  "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1">
+  <identification>
+    <encoding>
+      <software>Song Form Builder</software>
+      <encoding-date>${new Date().toISOString().split("T")[0]}</encoding-date>
+    </encoding>
+  </identification>
+  <part-list>
+    <score-part id="P1">
+      <part-name>Music</part-name>
+    </score-part>
+  </part-list>
+  <part id="P1">${measuresXML}
+  </part>
+</score-partwise>`;
+    }
+
+    let idCounter = 0;
+    const uid = () => ++idCounter;
+
+    // ── Small components ──────────────────────────────────────────────────────
+
+    function Section({ title, children }) {
+      return (
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 10, letterSpacing: 4, color: "#666", textTransform: "uppercase", marginBottom: 14, borderBottom: "1px solid #353548", paddingBottom: 8 }}>
+            {title}
+          </div>
+          {children}
+        </div>
+      );
+    }
+
+    function Row({ children }) {
+      return <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>{children}</div>;
+    }
+
+    function Label({ children }) {
+      return <div style={{ fontSize: 12, color: "#888", width: 140, flexShrink: 0 }}>{children}</div>;
+    }
+
+    function Sel({ children, style, ...props }) {
+      return (
+        <select {...props} style={{ background: "#1e1e2e", border: "1px solid #3a3a50", borderRadius: 4, color: "#e8e6e0", padding: "6px 10px", fontSize: 13, cursor: "pointer", ...style }}>
+          {children}
+        </select>
+      );
+    }
+
+    function Inp({ style, ...props }) {
+      return (
+        <input {...props} style={{ background: "#1e1e2e", border: "1px solid #3a3a50", borderRadius: 4, color: "#e8e6e0", padding: "6px 10px", fontSize: 13, width: 160, ...style }} />
+      );
+    }
+
+    function SmallBtn({ children, onClick, disabled, color = "#666" }) {
+      return (
+        <button onClick={onClick} disabled={disabled} style={{ background: "transparent", border: `1px solid ${disabled ? "#222" : color}`, color: disabled ? "#333" : color, borderRadius: 4, width: 28, height: 28, cursor: disabled ? "default" : "pointer", fontSize: 12, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {children}
+        </button>
+      );
+    }
+
+    // ── Main app ──────────────────────────────────────────────────────────────
+
+    function App() {
+      const [lang, setLang] = useState("sv");
+      const t = TRANSLATIONS[lang];
+
+      const [globalTimeSig, setGlobalTimeSig] = useState("4/4");
+      const [parts, setParts] = useState([]);
+      const [selectedTypeId, setSelectedTypeId] = useState("verse");
+      const [customTypeName, setCustomTypeName] = useState("");
+      const [bars, setBars] = useState(8);
+      const [partTimeSig, setPartTimeSig] = useState("");
+      const [partNumber, setPartNumber] = useState("");
+      const [expandedPart, setExpandedPart] = useState(null);
+      const [xmlPreview, setXmlPreview] = useState(null);
+
+      const addPart = () => {
+        const typeObj = PART_TYPES.find((p) => p.id === selectedTypeId);
+        const label = selectedTypeId === "custom" ? customTypeName || t.customDefault : t.parts[selectedTypeId];
+        setParts((prev) => [
+          ...prev,
+          { id: uid(), label, bars: Math.max(1, bars), timeSig: partTimeSig || null, customBars: {}, color: typeObj?.color || "#ec4899", customLabel: partNumber },
+        ]);
+        setPartNumber("");
+      };
+
+      const removePart = (id) => setParts((prev) => prev.filter((p) => p.id !== id));
+
+      const movePart = (id, dir) => {
+        setParts((prev) => {
+          const idx = prev.findIndex((p) => p.id === id);
+          if ((dir === -1 && idx === 0) || (dir === 1 && idx === prev.length - 1)) return prev;
+          const next = [...prev];
+          [next[idx], next[idx + dir]] = [next[idx + dir], next[idx]];
+          return next;
+        });
+      };
+
+      const setCustomBar = (partId, barIndex, sig) => {
+        setParts((prev) =>
+          prev.map((p) =>
+            p.id === partId ? { ...p, customBars: { ...p.customBars, [barIndex]: sig || undefined } } : p
+          )
+        );
+      };
+
+      const totalBars = parts.reduce((sum, p) => sum + p.bars, 0);
+
+      const handleDownload = () => {
+        const xml = generateMusicXML(parts, globalTimeSig);
+        const blob = new Blob([xml], { type: "application/xml" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "song-form.musicxml";
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      return (
+        <div style={{ minHeight: "100vh", background: "#272736", color: "#f0eee8", fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif", fontSize: 15, padding: "32px 24px" }}>
+
+          {/* Header */}
+          <div style={{ marginBottom: 40, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 6, color: "#888", textTransform: "uppercase", marginBottom: 8 }}>{t.subtitle}</div>
+              <h1 style={{ fontSize: 36, fontWeight: 700, margin: 0, color: "#fff", letterSpacing: -1 }}>
+                MusicXML <span style={{ color: "#6366f1" }}>Generator</span>
+              </h1>
+              <div style={{ fontSize: 13, color: "#aaa", marginTop: 6 }}>{t.tagline}</div>
+            </div>
+
+            {/* Language switcher */}
+            <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
+              {["sv", "en", "de"].map((l) => (
+                <button key={l} onClick={() => setLang(l)} style={{
+                  background: lang === l ? "#6366f1" : "transparent",
+                  border: `1px solid ${lang === l ? "#6366f1" : "#3a3a50"}`,
+                  color: lang === l ? "#fff" : "#888",
+                  borderRadius: 4, padding: "5px 10px", cursor: "pointer",
+                  fontSize: 12, fontFamily: "inherit", fontWeight: lang === l ? 600 : 400,
+                  textTransform: "uppercase", letterSpacing: 1,
+                }}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, maxWidth: 1100 }}>
+
+            {/* LEFT: Controls */}
+            <div>
+              <Section title={t.sectionGlobal}>
+                <Row>
+                  <Label>{t.labelStdSig}</Label>
+                  <Sel value={globalTimeSig} onChange={(e) => setGlobalTimeSig(e.target.value)}>
+                    {TIME_SIGNATURES.map((s) => <option key={s}>{s}</option>)}
+                  </Sel>
+                </Row>
+              </Section>
+
+              <Section title={t.sectionAdd}>
+                <Row>
+                  <Label>{t.labelType}</Label>
+                  <Sel value={selectedTypeId} onChange={(e) => setSelectedTypeId(e.target.value)}>
+                    {PART_TYPES.map((p) => <option key={p.id} value={p.id}>{t.parts[p.id]}</option>)}
+                  </Sel>
+                </Row>
+                {selectedTypeId === "custom" && (
+                  <Row>
+                    <Label>{t.labelName}</Label>
+                    <Inp value={customTypeName} onChange={(e) => setCustomTypeName(e.target.value)} placeholder={t.namePlaceholder} />
+                  </Row>
+                )}
+                <Row>
+                  <Label>{t.labelNumber}</Label>
+                  <Inp value={partNumber} onChange={(e) => setPartNumber(e.target.value)} placeholder={t.numPlaceholder} style={{ width: 80 }} />
+                </Row>
+                <Row>
+                  <Label>{t.labelBarCount}</Label>
+                  <Inp type="number" min={1} max={256} value={bars} onChange={(e) => setBars(Number(e.target.value))} style={{ width: 80 }} />
+                </Row>
+                <Row>
+                  <Label>{t.labelPartSig}</Label>
+                  <Sel value={partTimeSig} onChange={(e) => setPartTimeSig(e.target.value)}>
+                    <option value="">{t.useGlobal}</option>
+                    {TIME_SIGNATURES.map((s) => <option key={s}>{s}</option>)}
+                  </Sel>
+                </Row>
+                <button onClick={addPart} style={{ marginTop: 12, background: "#6366f1", color: "#fff", border: "none", borderRadius: 6, padding: "10px 20px", cursor: "pointer", fontSize: 14, fontFamily: "inherit", letterSpacing: 1 }}>
+                  {t.addBtn}
+                </button>
+              </Section>
+            </div>
+
+            {/* RIGHT: Song structure */}
+            <div>
+              <Section title={`${t.sectionStructure}  •  ${totalBars} ${t.barsTotal}`}>
+                {parts.length === 0 && (
+                  <div style={{ color: "#666", fontSize: 13, padding: "20px 0" }}>{t.noParts}</div>
+                )}
+                {parts.map((part, idx) => (
+                  <div key={part.id}>
+                    <div className="part-row" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: "1px solid #353548", position: "relative" }}>
+                      <div style={{ width: 10, height: 40, borderRadius: 3, background: part.color, flexShrink: 0 }} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>
+                          {part.label}{part.customLabel ? ` ${part.customLabel}` : ""}
+                        </div>
+                        <div style={{ fontSize: 12, color: "#777" }}>
+                          {part.bars} {t.barsUnit} · {part.timeSig || globalTimeSig}
+                          {Object.keys(part.customBars).filter(k => part.customBars[k]).length > 0 && (
+                            <span style={{ color: "#f59e0b", marginLeft: 6 }}>
+                              · {Object.keys(part.customBars).filter(k => part.customBars[k]).length} {t.customBarNote}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="part-actions" style={{ display: "flex", gap: 4, opacity: 0, transition: "opacity 0.15s" }}>
+                        <SmallBtn onClick={() => movePart(part.id, -1)} disabled={idx === 0}>↑</SmallBtn>
+                        <SmallBtn onClick={() => movePart(part.id, 1)} disabled={idx === parts.length - 1}>↓</SmallBtn>
+                        <SmallBtn onClick={() => setExpandedPart(expandedPart === part.id ? null : part.id)} color="#f59e0b">⚙</SmallBtn>
+                        <SmallBtn onClick={() => removePart(part.id)} color="#ef4444">✕</SmallBtn>
+                      </div>
+                    </div>
+
+                    {expandedPart === part.id && (
+                      <div style={{ background: "#1e1e2e", border: "1px solid #3a3a50", borderRadius: 6, padding: 16, marginBottom: 8 }}>
+                        <div style={{ fontSize: 11, letterSpacing: 3, color: "#777", marginBottom: 12, textTransform: "uppercase" }}>
+                          {t.customBarsHeader}
+                        </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))", gap: 8 }}>
+                          {Array.from({ length: part.bars }, (_, i) => (
+                            <div key={i}>
+                              <div style={{ fontSize: 11, color: "#888", marginBottom: 3 }}>{t.barLabel} {i + 1}</div>
+                              <Sel value={part.customBars?.[i] || ""} onChange={(e) => setCustomBar(part.id, i, e.target.value)} style={{ width: "100%", fontSize: 12, padding: "4px 6px" }}>
+                                <option value="">{t.standard}</option>
+                                {TIME_SIGNATURES.map((s) => <option key={s}>{s}</option>)}
+                              </Sel>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </Section>
+
+              {parts.length > 0 && (
+                <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+                  <button onClick={() => setXmlPreview(generateMusicXML(parts, globalTimeSig))} style={{ background: "#1e1e2e", color: "#6366f1", border: "1px solid #6366f1", borderRadius: 6, padding: "10px 18px", cursor: "pointer", fontSize: 13, fontFamily: "inherit" }}>
+                    {t.previewXml}
+                  </button>
+                  <button onClick={handleDownload} style={{ background: "#6366f1", color: "#fff", border: "none", borderRadius: 6, padding: "10px 18px", cursor: "pointer", fontSize: 13, fontFamily: "inherit", fontWeight: 600 }}>
+                    {t.download}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div style={{ marginTop: 48, maxWidth: 1100, borderTop: "1px solid #353548", paddingTop: 16, fontSize: 12, color: "#555", display: "flex", justifyContent: "flex-end" }}>
+            {t.credit}
+          </div>
+
+          {/* XML Preview */}
+          {xmlPreview && (
+            <div style={{ marginTop: 40, maxWidth: 1100 }}>
+              <div style={{ fontSize: 11, letterSpacing: 4, color: "#777", textTransform: "uppercase", marginBottom: 12 }}>{t.xmlTitle}</div>
+              <pre style={{ background: "#1a1a28", border: "1px solid #353548", borderRadius: 8, padding: 20, fontSize: 11, color: "#6366f1", overflowX: "auto", maxHeight: 400, lineHeight: 1.6, fontFamily: "'Courier New', monospace" }}>
+                {xmlPreview}
+              </pre>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ackordfinnaren / Chord Finder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#1c1c24;color:#e8e6e0;min-height:100vh}
+.btn{background:#2a2a36!important;color:#e8e6e0!important;border-color:#444!important}
+.btn.active{background:#3B3B8F!important;color:#fff!important;border-color:#3B3B8F!important}
+.btn-chord{background:#2a2a36!important;color:#e8e6e0!important;border-color:#444!important}
+.btn-chord.active{background:#3B3B8F!important;color:#fff!important;border-color:#3B3B8F!important}
+.tabs,.group-tabs{border-bottom-color:#333!important}
+.tab{color:#888!important}
+.tab.active{color:#e8e6e0!important;border-bottom-color:#3B3B8F!important}
+.legend-item{background:#2a2a36!important;border-color:#3a3a48!important}
+.legend-iv{color:#e8e6e0!important}
+.legend-desc{color:#888!important}
+.section-label{color:#666!important}
+button{font-family:inherit;cursor:pointer}
+.app{max-width:860px;margin:0 auto;padding:16px}
+.header{margin-bottom:12px}
+.header h1{font-size:18px;font-weight:500}
+.header p{font-size:13px;color:#666;margin-top:2px}
+.section-label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.root-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.btn{padding:4px 8px;font-size:12px;font-weight:500;border-radius:6px;border:.5px solid #ccc;background:#fff;color:#1a1a1a;min-width:36px}
+.btn.active{background:#3B3B8F;color:#fff;border-color:#3B3B8F}
+.btn-chord{padding:4px 10px;font-size:12px;font-weight:500;border-radius:6px;border:.5px solid #ccc;background:#fff;color:#1a1a1a}
+.btn-chord.active{background:#3B3B8F;color:#fff;border-color:#3B3B8F}
+.chord-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.tabs{display:flex;border-bottom:1px solid #ddd;margin-bottom:10px}
+.tab{padding:7px 14px;font-size:12px;font-weight:400;background:transparent;border:none;color:#888;border-bottom:2px solid transparent}
+.tab.active{font-weight:500;color:#1a1a1a;border-bottom:2px solid #3B3B8F}
+.group-tabs{display:flex;border-bottom:1px solid #ddd;margin-bottom:8px}
+.chord-summary{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.chord-name{font-size:14px;font-weight:500}
+.iv-pill{font-size:11px;padding:2px 9px;border-radius:99px;font-weight:500;border-width:1.5px;border-style:solid}
+.legend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:8px 0}
+.legend-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:#fff;border:.5px solid #ddd}
+.legend-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border-width:1.5px;border-style:solid}
+.legend-iv{font-size:12px;font-weight:500}
+.legend-desc{font-size:10px;color:#888;line-height:1.3}
+.scroll-wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState} = React;
+
+const ALL_NOTES = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const STRING_OPEN = [4,9,2,7,11,4];
+const STRING_NAMES = ["E","A","D","G","B","e"];
+
+const CHORD_GROUPS = {
+  "Triads": [
+    {key:"maj",label:"X",intervals:["1","3","5"]},
+    {key:"min",label:"Xm",intervals:["1","b3","5"]},
+    {key:"mb5",label:"Xmb5",intervals:["1","b3","b5"]},
+    {key:"sus4",label:"Xsus4",intervals:["1","4","5"]},
+    {key:"sus9",label:"Xsus9",intervals:["1","2","5"]},
+    {key:"aug",label:"Xaug",intervals:["1","3","#5"]},
+    {key:"x4",label:"X4",intervals:["1","4","5"]},
+  ],
+  "4-Chords": [
+    {key:"maj7",label:"Xmaj7",intervals:["1","3","5","maj7"]},
+    {key:"dom7",label:"X7",intervals:["1","3","5","b7"]},
+    {key:"min7",label:"Xm7",intervals:["1","b3","5","b7"]},
+    {key:"min7b5",label:"Xm7b5",intervals:["1","b3","b5","b7"]},
+    {key:"minmaj7",label:"XmMaj7",intervals:["1","b3","5","maj7"]},
+    {key:"maj7s5",label:"Xmaj7#5",intervals:["1","3","#5","maj7"]},
+    {key:"maj6",label:"X6",intervals:["1","3","5","6"]},
+    {key:"min6",label:"Xm6",intervals:["1","b3","5","6"]},
+    {key:"dom7sus4",label:"X7sus4",intervals:["1","4","5","b7"]},
+    {key:"dim7",label:"Xdim",intervals:["1","b3","b5","6"]},
+    {key:"add9",label:"Xadd9",intervals:["1","3","5","9"]},
+    {key:"madd9",label:"Xmadd9",intervals:["1","b3","5","9"]},
+  ],
+  "5-Chords": [
+    {key:"maj9",label:"Xmaj9",intervals:["1","3","5","maj7","9"]},
+    {key:"dom9",label:"X9",intervals:["1","3","5","b7","9"]},
+    {key:"min9",label:"Xm9",intervals:["1","b3","5","b7","9"]},
+    {key:"min9b5",label:"Xm9b5",intervals:["1","b3","b5","b7","9"]},
+    {key:"minmaj9",label:"XmMaj9",intervals:["1","b3","5","maj7","9"]},
+    {key:"maj9s5",label:"Xmaj9#5",intervals:["1","3","#5","maj7","9"]},
+    {key:"dom9b5",label:"X9b5",intervals:["1","3","b5","b7","9"]},
+    {key:"dom9s5",label:"X9#5",intervals:["1","3","#5","b7","9"]},
+    {key:"dom7s5b9",label:"X7#5b9",intervals:["1","3","#5","b7","b9"]},
+    {key:"dom7b9",label:"X7b9",intervals:["1","3","5","b7","b9"]},
+    {key:"dom7s5s9",label:"X7#5#9",intervals:["1","3","#5","b7","#9"]},
+  ],
+};
+
+const IV_COLORS = {
+  "1":    {bg:"#ffffff",border:"#333",text:"#111"},
+  "b9":   {bg:"#c0392b",border:"#7b241c",text:"#fff"},
+  "9":    {bg:"#c0392b",border:"#7b241c",text:"#fff"},
+  "b3":   {bg:"#c0392b",border:"#7b241c",text:"#fff"},
+  "#9":   {bg:"#c0392b",border:"#7b241c",text:"#fff"},
+  "3":    {bg:"#b8860b",border:"#7a5c00",text:"#fff"},
+  "4":    {bg:"#d4ac0d",border:"#9a7d0a",text:"#111"},
+  "11":   {bg:"#d4ac0d",border:"#9a7d0a",text:"#111"},
+  "b5":   {bg:"#2471a3",border:"#1a5276",text:"#fff"},
+  "#11":  {bg:"#2471a3",border:"#1a5276",text:"#fff"},
+  "5":    {bg:"#2471a3",border:"#1a5276",text:"#fff"},
+  "#5":   {bg:"#1e8449",border:"#145a32",text:"#fff"},
+  "b13":  {bg:"#1e8449",border:"#145a32",text:"#fff"},
+  "6":    {bg:"#1e8449",border:"#145a32",text:"#fff"},
+  "13":   {bg:"#1e8449",border:"#145a32",text:"#fff"},
+  "b7":   {bg:"#6c3483",border:"#4a235a",text:"#fff"},
+  "7":    {bg:"#c0392b",border:"#7b241c",text:"#fff"},
+  "maj7": {bg:"#1e8449",border:"#145a32",text:"#fff"},
+};
+
+const SEMI_TO_IV = {0:"1",1:"b9",2:"9",3:"b3",4:"3",5:"4",6:"b5",7:"5",8:"#5",9:"6",10:"b7",11:"maj7"};
+const ALIASES = {"#9":"b3","b3":"#9","#5":"b13","b13":"#5","6":"13","13":"6","4":"11","11":"4","b5":"#11","#11":"b5"};
+
+function getNoteAtFret(si,f){return(STRING_OPEN[si]+f)%12;}
+function getIV(noteIdx,rootIdx){return SEMI_TO_IV[(noteIdx-rootIdx+12)%12];}
+function matchIV(iv,activeSet){
+  if(activeSet.has(iv))return iv;
+  const alt=ALIASES[iv];
+  if(alt&&activeSet.has(alt))return alt;
+  return null;
+}
+
+const FRET_MARKERS=[3,5,7,9,12,15,17,19,21,24];
+const DOUBLE_MARKERS=[12,24];
+const NUM_FRETS=24,FRET_H=28,STRING_W=44,LEFT_PAD=28,TOP_PAD=18,NUT_H=10;
+
+function Neck({rootIdx, activeSet, showAll}){
+  const svgH=TOP_PAD+NUT_H+NUM_FRETS*FRET_H+24;
+  const svgW=LEFT_PAD+6*STRING_W+14;
+  const sx=si=>LEFT_PAD+si*STRING_W+STRING_W/2;
+  const fy=f=>TOP_PAD+NUT_H+f*FRET_H;
+
+  const renderDot=(si,f,iv)=>{
+    const c=IV_COLORS[iv]||{bg:"#888",text:"#fff",border:"#555"};
+    const cx=sx(si), cy=f===0?TOP_PAD+NUT_H/2:fy(f-1)+FRET_H/2;
+    return(
+      <g key={`${si}-${f}`}>
+        <circle cx={cx} cy={cy} r={12} fill={c.bg} stroke={c.border} strokeWidth={1.5}/>
+        <text x={cx} y={cy+4} textAnchor="middle" fontSize={9} fontWeight="500" fill={c.text}>{iv}</text>
+      </g>
+    );
+  };
+
+  return(
+    <svg width={svgW} height={svgH} style={{display:"block"}}>
+      <rect x={LEFT_PAD-4} y={TOP_PAD} width={6*STRING_W+8} height={NUT_H} rx={2} fill="#222"/>
+      {Array.from({length:NUM_FRETS+1},(_,f)=>(
+        <line key={f} x1={LEFT_PAD-4} x2={LEFT_PAD+6*STRING_W+4} y1={fy(f)} y2={fy(f)} stroke={f===0?"none":"#bbb"} strokeWidth={0.7}/>
+      ))}
+      {Array.from({length:NUM_FRETS},(_,f)=>(
+        <text key={f} x={LEFT_PAD-8} y={fy(f)+FRET_H/2+4} textAnchor="end" fontSize={9} fill="#aaa">{f+1}</text>
+      ))}
+      {FRET_MARKERS.filter(f=>f<=NUM_FRETS).map(f=>{
+        const y=fy(f-1)+FRET_H/2;
+        if(DOUBLE_MARKERS.includes(f))return[1,4].map(si=>(
+          <circle key={`${f}-${si}`} cx={LEFT_PAD+si*STRING_W+STRING_W*1.5} cy={y} r={4} fill="#ccc" opacity={0.45}/>
+        ));
+        return<circle key={f} cx={svgW/2} cy={y} r={4} fill="#ccc" opacity={0.45}/>;
+      })}
+      {[0,1,2,3,4,5].map(si=>(
+        <line key={si} x1={sx(si)} x2={sx(si)} y1={TOP_PAD+NUT_H} y2={fy(NUM_FRETS)} stroke="#999" strokeWidth={si<2?1.2:si<4?1.6:2} opacity={0.6}/>
+      ))}
+      {[0,1,2,3,4,5].map(si=>{
+        const iv0=getIV(getNoteAtFret(si,0),rootIdx);
+        const iv=showAll?iv0:matchIV(iv0,activeSet);
+        return iv?renderDot(si,0,iv):null;
+      })}
+      {Array.from({length:NUM_FRETS},(_,fi)=>{
+        const f=fi+1;
+        return[0,1,2,3,4,5].map(si=>{
+          const iv0=getIV(getNoteAtFret(si,f),rootIdx);
+          const iv=showAll?iv0:matchIV(iv0,activeSet);
+          return iv?renderDot(si,f,iv):null;
+        });
+      })}
+      {[0,1,2,3,4,5].map(si=>(
+        <text key={si} x={sx(si)} y={svgH-4} textAnchor="middle" fontSize={11} fontWeight="500" fill="#777">{STRING_NAMES[si]}</text>
+      ))}
+    </svg>
+  );
+}
+
+function App(){
+  const [rootIdx,setRootIdx]=useState(9);
+  const [groupKey,setGroupKey]=useState("Triads");
+  const [chordKey,setChordKey]=useState("maj");
+  const [tab,setTab]=useState("neck");
+
+  const allChords=CHORD_GROUPS[groupKey];
+  const chord=allChords.find(c=>c.key===chordKey)||allChords[0];
+  const activeSet=new Set(chord.intervals);
+  const root=ALL_NOTES[rootIdx];
+
+  const LEGEND=[
+    {iv:"1",desc:"Grundton (root)"},
+    {iv:"b9",desc:"Liten none / liten sekund"},
+    {iv:"9",desc:"Stor none / stor sekund"},
+    {iv:"b3",desc:"Liten ters (#9)"},
+    {iv:"3",desc:"Stor ters"},
+    {iv:"4",desc:"Kvart (11)"},
+    {iv:"b5",desc:"Förminskad kvint (#11)"},
+    {iv:"5",desc:"Ren kvint"},
+    {iv:"#5",desc:"Förhöjd kvint (b13)"},
+    {iv:"6",desc:"Stor sext (13)"},
+    {iv:"b7",desc:"Liten septima"},
+    {iv:"maj7",desc:"Stor septima"},
+  ];
+
+  return(
+    <div className="app">
+      <div className="header">
+        <h1>🎸 Ackordfinnaren <span style={{fontWeight:400,fontSize:"15px",color:"#888"}}>/</span> <span style={{fontWeight:400}}>Chord Finder</span></h1>
+        <p>Intervall på hela halsen &nbsp;·&nbsp; by Richard Hauer &amp; Claude</p>
+      </div>
+
+      <div className="section-label">Rotton</div>
+      <div className="root-row">
+        {ALL_NOTES.map((n,i)=>(
+          <button key={n} className={`btn${rootIdx===i?" active":""}`} onClick={()=>setRootIdx(i)}>{n}</button>
+        ))}
+      </div>
+
+      <div className="group-tabs">
+        {Object.keys(CHORD_GROUPS).map(g=>(
+          <button key={g} className={`tab${groupKey===g?" active":""}`}
+            onClick={()=>{setGroupKey(g);setChordKey(CHORD_GROUPS[g][0].key);}}>
+            {g}
+          </button>
+        ))}
+      </div>
+
+      <div className="chord-row">
+        {allChords.map(c=>(
+          <button key={c.key} className={`btn-chord${chordKey===c.key?" active":""}`}
+            onClick={()=>setChordKey(c.key)}>
+            {c.label.replace("X",root)}
+          </button>
+        ))}
+      </div>
+
+      <div className="chord-summary">
+        <span className="chord-name">{chord.label.replace("X",root)}</span>
+        <span style={{color:"#aaa"}}>–</span>
+        {chord.intervals.map(iv=>{
+          const c=IV_COLORS[iv]||{bg:"#888",text:"#fff",border:"#555"};
+          return(
+            <span key={iv} className="iv-pill" style={{background:c.bg,color:c.text,borderColor:c.border}}>{iv}</span>
+          );
+        })}
+      </div>
+
+      <div className="tabs">
+        {[["neck","Hals"],["all","Alla intervall"],["legend","Intervallförklaring"]].map(([k,l])=>(
+          <button key={k} className={`tab${tab===k?" active":""}`} onClick={()=>setTab(k)}>{l}</button>
+        ))}
+      </div>
+
+      {tab==="neck"&&(
+        <div className="scroll-wrap"><Neck rootIdx={rootIdx} activeSet={activeSet} showAll={false}/></div>
+      )}
+      {tab==="all"&&(
+        <div>
+          <p style={{fontSize:"12px",color:"#666",marginBottom:"8px"}}>Alla 12 intervall från roттonen <strong>{root}</strong> – oberoende av valt ackord.</p>
+          <div className="scroll-wrap"><Neck rootIdx={rootIdx} activeSet={activeSet} showAll={true}/></div>
+        </div>
+      )}
+      {tab==="legend"&&(
+        <div className="legend-grid">
+          {LEGEND.map(({iv,desc})=>{
+            const c=IV_COLORS[iv]||{bg:"#888",text:"#fff",border:"#555"};
+            return(
+              <div key={iv} className="legend-item">
+                <div className="legend-dot" style={{background:c.bg,borderColor:c.border,color:c.text}}>{iv}</div>
+                <div><div className="legend-iv">{iv}</div><div className="legend-desc">{desc}</div></div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

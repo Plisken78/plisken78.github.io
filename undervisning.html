@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undervisning – Richard Hauer</title>
+  <meta name="description" content="Interaktiva undervisningsverktyg för gitarr och musikteori av Richard Hauer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(11,11,12,.97);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
+    .nav-back::before { content: '←'; }
+    .nav-back:hover { color: var(--gold); }
+
+    .hero {
+      padding: 12rem 3rem 5rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700; line-height: 1.05; margin-bottom: 1rem;
+    }
+    .hero-desc { color: var(--muted); max-width: 580px; font-size: 1.05rem; line-height: 1.85; }
+
+    /* ── LEKTIONER ── */
+    .lessons {
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 3rem 8rem;
+    }
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .lesson-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 2.5rem; text-decoration: none; color: var(--text);
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .2s;
+    }
+    .lesson-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+    .lesson-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--gold);
+      transform: scaleY(0); transition: transform .3s;
+      transform-origin: top;
+    }
+    .lesson-card:hover::before { transform: scaleY(1); }
+    .lesson-icon {
+      font-size: 2.2rem; margin-bottom: 1.25rem;
+      line-height: 1;
+    }
+    .lesson-number {
+      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .6rem;
+    }
+    .lesson-title {
+      font-family: var(--font-display);
+      font-size: 1.7rem; font-weight: 600; margin-bottom: .75rem;
+    }
+    .lesson-desc { color: var(--muted); font-size: .92rem; line-height: 1.7; flex: 1; }
+    .lesson-cta {
+      margin-top: 1.5rem;
+      font-size: .73rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500;
+    }
+    .lesson-cta::after { content: ' →'; }
+
+    .coming-soon {
+      opacity: .45; cursor: default;
+    }
+    .coming-soon:hover { transform: none; border-color: var(--border); }
+    .coming-soon:hover::before { transform: scaleY(0); }
+    .coming-label {
+      display: inline-block; font-size: .63rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--muted);
+      border: 1px solid var(--border); padding: .2rem .6rem;
+      margin-top: 1.5rem;
+    }
+
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.5rem; }
+      .hero { padding: 10rem 1.5rem 3rem; }
+      .lessons { padding: 1rem 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Richard Hauer</a>
+    <a href="index.html#larare" class="nav-back">Tillbaka</a>
+  </nav>
+
+  <div class="hero">
+    <div class="section-label">Lärare</div>
+    <h1 class="hero-title">Interaktiva<br>undervisningsverktyg</h1>
+    <p class="hero-desc">Verktyg och genomgångar som hjälper dig att förstå musikteori, ackord och gitarrspel. Klicka på en lektion för att börja.</p>
+  </div>
+
+  <div class="lessons">
+    <div class="section-label">Lektioner</div>
+    <div class="lessons-grid">
+
+      <a href="undervisning/kvintcirkeln/index.html" class="lesson-card">
+        <div class="lesson-icon">🎼</div>
+        <div class="lesson-number">Lektion 1</div>
+        <div class="lesson-title">Kvintcirkeln</div>
+        <p class="lesson-desc">En interaktiv genomgång av kvintcirkeln — grundstenen i musikteori. Lär dig tonarter, förtecken och harmoniska relationer genom att klicka och utforska.</p>
+        <div class="lesson-cta">Öppna lektion</div>
+      </a>
+
+      <a href="undervisning/ackordfinnaren/fretboard.html" class="lesson-card">
+        <div class="lesson-icon">🎸</div>
+        <div class="lesson-number">Lektion 2</div>
+        <div class="lesson-title">Ackordfinnaren</div>
+        <p class="lesson-desc">Hitta och visualisera ackord på gitarrhalsen. Välj grundton och ackordtyp och se direkt var fingrarna ska ligga — ett praktiskt verktyg för alla nivåer.</p>
+        <div class="lesson-cta">Öppna lektion</div>
+      </a>
+
+      <div class="lesson-card coming-soon">
+        <div class="lesson-icon">🎵</div>
+        <div class="lesson-number">Lektion 3</div>
+        <div class="lesson-title">Skalor &amp; modes</div>
+        <p class="lesson-desc">En genomgång av de vanligaste skalorna och moderna — från pentatonisk till dorisk och mixolydisk — visualiserade på gitarrhalsen.</p>
+        <div class="coming-label">Kommer snart</div>
+      </div>
+
+      <div class="lesson-card coming-soon">
+        <div class="lesson-icon">👂</div>
+        <div class="lesson-number">Lektion 4</div>
+        <div class="lesson-title">Gehörsträning</div>
+        <p class="lesson-desc">Träna ditt öra på intervall, ackord och rytmik. Gehöret är ett av de viktigaste verktygen för en musiker.</p>
+        <div class="coming-label">Kommer snart</div>
+      </div>
+
+    </div>
+
+    <!-- ── VERKTYG ── -->
+    <div class="section-label" style="margin-top:4rem;">Verktyg</div>
+    <div class="lessons-grid">
+
+      <a href="../plankning/musicxmlgenerator.html" class="lesson-card">
+        <div class="lesson-icon">📄</div>
+        <div class="lesson-number">Verktyg</div>
+        <div class="lesson-title">MusicXML Generator</div>
+        <p class="lesson-desc">Skapa noterade musikfiler i MusicXML-format — ett standardformat som kan importeras i notationsprogram som MuseScore, Sibelius och Finale. Praktiskt för att ta fram övningsmaterial och arrangemang.</p>
+        <div class="lesson-cta">Öppna verktyget</div>
+      </a>
+
+      <div class="lesson-card coming-soon">
+        <div class="lesson-icon">🎙️</div>
+        <div class="lesson-number">Verktyg</div>
+        <div class="lesson-title">Plankningshjälp</div>
+        <p class="lesson-desc">Verktyg för att underlätta plankning — lyssna, sakta ner och analysera musik för att lära dig låtar och solon på gehör.</p>
+        <div class="coming-label">Kommer snart</div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Richard Hauer · <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> · <a href="index.html">richardhauer.com</a></p>
+  </footer>
+
+</body>
+</html>
