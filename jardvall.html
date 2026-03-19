@@ -3,52 +3,374 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alexandra Jardvall \& The SWE Street Band · Richard Hauer</title>
+  <title>Alexandra Jardvall & The SWE Street Band · Richard Hauer</title>
+  <meta name="description" content="Alexandra Jardvall & The SWE Street Band – GREETINGS FROM SWEDEN. En 90-minuters hyllning till Bruce Springsteen med Alexandra Jardvall och Richard Hauer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0b0b0c; --surface: #141416; --surface2: #1c1c1f; --gold: #c9a55a; --gold-dim: #8a6e38; --text: #f0ede8; --muted: #888580; --border: rgba(201,165,90,.15); --font-display: 'Cormorant Garamond', Georgia, serif; --font-body: 'Inter', system-ui, sans-serif; }
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
     .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
-    .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+    .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
     .nav-back::before { content: '←'; }
     .nav-back:hover { color: var(--gold); }
-    .hero { padding: 14rem 3rem 7rem; max-width: 1100px; margin: 0 auto; }
-    .hero-eyebrow { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
-    .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 1; margin-bottom: .75rem; }
-    .hero-role { font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
-    .hero-desc { color: var(--muted); max-width: 600px; font-size: 1.1rem; line-height: 1.85; margin-bottom: 2.5rem; }
-    .placeholder-note { background: var(--surface2); border: 1px solid var(--border); padding: 2rem 2.5rem; max-width: 600px; }
-    .placeholder-note p { color: var(--muted); font-size: .9rem; }
-    .btn { display: inline-block; background: var(--gold); color: var(--bg); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: .9rem 2.2rem; text-decoration: none; transition: opacity .2s; }
-    .btn:hover { opacity: .85; }
-    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; margin-top: 6rem; }
+    .nav-tickets {
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--bg); background: var(--gold);
+      padding: .55rem 1.4rem; text-decoration: none; font-weight: 600;
+      transition: opacity .2s;
+    }
+    .nav-tickets:hover { opacity: .85; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 90vh; min-height: 560px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('img/jardvall/stone-pony.jpeg');
+      background-color: #0d0b08;
+      background-size: cover;
+      background-position: center 30%;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(170deg, rgba(11,11,12,.25) 0%, rgba(11,11,12,.55) 50%, rgba(11,11,12,.97) 100%);
+    }
+    .hero-content { position: relative; z-index: 1; padding: 0 3rem 5rem; max-width: 820px; }
+    .hero-eyebrow { font-size: .75rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
+    .hero-eyebrow a { color: var(--muted); text-decoration: none; transition: color .2s; font-size: .7rem; }
+    .hero-eyebrow a:hover { color: var(--gold); }
+    .hero-eyebrow span { color: var(--gold-dim); }
+    .hero-title { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem); font-weight: 700; line-height: .95; letter-spacing: -.01em; margin-bottom: .6rem; }
+    .hero-subtitle { font-family: var(--font-display); font-size: clamp(1.1rem, 2.5vw, 1.7rem); font-weight: 400; font-style: italic; color: var(--gold); margin-bottom: .5rem; letter-spacing: .04em; }
+    .hero-tagline { font-family: var(--font-display); font-size: clamp(1rem, 2vw, 1.4rem); font-weight: 400; font-style: italic; color: var(--muted); margin-bottom: 2.5rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { display: inline-block; background: var(--gold); color: var(--bg); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: .9rem 2.2rem; text-decoration: none; transition: opacity .2s; }
+    .btn-primary:hover { opacity: .85; }
+    .btn-secondary { display: inline-block; background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500; padding: .9rem 2.2rem; text-decoration: none; transition: border-color .2s, color .2s; }
+    .btn-secondary:hover { border-color: var(--gold-dim); color: var(--text); }
+
+    /* ── Generic section ── */
+    .section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.5rem; }
+
+    /* ── Intro ── */
+    .intro-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 5rem; align-items: start; }
+    .intro-text p { color: var(--muted); line-height: 1.85; margin-bottom: 1.1rem; }
+    .intro-text p:last-child { margin-bottom: 0; }
+    .intro-meta { display: flex; flex-direction: column; gap: 1.5rem; }
+    .meta-item { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .meta-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .4rem; }
+    .meta-value { font-size: 1rem; color: var(--text); line-height: 1.5; }
+    .meta-value a { color: var(--gold); text-decoration: none; }
+    .meta-value a:hover { opacity: .8; }
+
+    /* ── Quote band ── */
+    .quote-band { background: var(--surface); padding: 4.5rem 3rem; text-align: center; }
+    .quote-inner { max-width: 760px; margin: 0 auto; }
+    .quote-text { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 400; font-style: italic; line-height: 1.4; color: var(--text); margin-bottom: 1rem; }
+    .quote-attr { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+
+    /* ── Shows ── */
+    .shows-section { background: var(--surface); max-width: 100%; padding: 0; }
+    .shows-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+    .shows-grid { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
+    .show-card {
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .show-card:first-child { border-top: 1px solid var(--border); }
+    .show-date-block { text-align: left; }
+    .show-day { font-family: var(--font-display); font-size: 3rem; font-weight: 700; line-height: 1; color: var(--gold); }
+    .show-month { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: .2rem; }
+    .show-info h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; margin-bottom: .3rem; }
+    .show-info .show-location { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .show-info p { color: var(--muted); font-size: .9rem; line-height: 1.65; }
+    .show-info p + p { margin-top: .3rem; }
+    .show-info a { color: var(--gold-dim); text-decoration: none; font-size: .85rem; }
+    .show-info a:hover { color: var(--gold); }
+    .show-links { display: flex; flex-direction: column; gap: .75rem; align-items: flex-end; }
+    .ticket-btn {
+      display: inline-block; background: var(--gold); color: var(--bg);
+      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600;
+      padding: .7rem 1.6rem; text-decoration: none; transition: opacity .2s; white-space: nowrap;
+    }
+    .ticket-btn:hover { opacity: .85; }
+    .ticket-btn-outline {
+      display: inline-block; background: transparent; color: var(--muted); border: 1px solid var(--border);
+      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 500;
+      padding: .7rem 1.6rem; text-decoration: none; transition: border-color .2s, color .2s; white-space: nowrap;
+    }
+    .ticket-btn-outline:hover { border-color: var(--gold-dim); color: var(--text); }
+
+    /* ── Artist photo band ── */
+    .artist-photo-band { max-width: 100%; overflow: hidden; }
+    .artist-photo-band img { width: 100%; max-height: 520px; object-fit: cover; object-position: center 25%; display: block; filter: grayscale(15%); }
+
+    /* ── Bio ── */
+    .bio-section { background: var(--bg); max-width: 100%; padding: 0; }
+    .bio-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+    .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3rem; align-items: start; }
+    .bio-block h3 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 600; margin-bottom: .3rem; }
+    .bio-block .bio-role { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+    .bio-block p { color: var(--muted); font-size: .95rem; line-height: 1.8; margin-bottom: .85rem; }
+    .bio-block p:last-child { margin-bottom: 0; }
+
+    /* ── Booking / Contact ── */
+    .contact-section { background: var(--surface); max-width: 100%; padding: 0; }
+    .contact-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-text h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; margin-bottom: 1rem; }
+    .contact-text p { color: var(--muted); line-height: 1.85; margin-bottom: .5rem; }
+    .contact-card { background: var(--surface2); border: 1px solid var(--border); padding: 2.5rem; }
+    .contact-card-label { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .contact-card-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; margin-bottom: .25rem; }
+    .contact-card-org { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .contact-card-details { display: flex; flex-direction: column; gap: .75rem; }
+    .contact-detail { display: flex; align-items: center; gap: 1rem; }
+    .contact-detail-icon { font-size: .9rem; color: var(--gold); flex-shrink: 0; width: 1.2rem; text-align: center; }
+    .contact-detail-text { font-size: .9rem; color: var(--muted); }
+    .contact-detail-text a { color: var(--text); text-decoration: none; transition: color .2s; }
+    .contact-detail-text a:hover { color: var(--gold); }
+    .presenter-tag { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: .75rem; letter-spacing: .1em; color: var(--muted); line-height: 1.6; }
+    .presenter-tag strong { color: var(--text); font-weight: 500; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; margin-top: 0; }
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--gold); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-tickets { display: none; }
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .section { padding: 4rem 1.5rem; }
+      .intro-grid, .bio-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .shows-inner { padding: 4rem 1.5rem; }
+      .show-card { grid-template-columns: 1fr; gap: 1rem; padding: 2rem 0; }
+      .show-links { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+      .quote-band { padding: 3rem 1.5rem; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Nav -->
   <nav>
     <a href="index.html" class="nav-logo">Richard Hauer</a>
     <a href="index.html#grupper" class="nav-back">Alla projekt</a>
+    <a href="#biljetter" class="nav-tickets">Köp biljetter</a>
   </nav>
+
+  <!-- Hero -->
   <div class="hero">
-    <div class="hero-eyebrow">Richard Hauer · Projekt</div>
-    <h1 class="hero-title">Alexandra Jardvall \& The SWE Street Band</h1>
-    <div class="hero-role">Kapellmästare · Turnéband</div>
-    <p class="hero-desc">På turné med musik inspirerad av Bruce Springsteen – Alexandra Jardvall som frontfigur, Richard Hauer som kapellmästare och gitarrist.</p>
-    <div class="placeholder-note">
-      <p>Mer information om detta projekt kommer snart. Hör av dig vid frågor!</p>
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <a href="index.html">Richard Hauer</a>
+        <span>/</span>
+        Projekt
+      </div>
+      <h1 class="hero-title">Alexandra Jardvall<br>&amp; The SWE Street Band</h1>
+      <div class="hero-subtitle">Greetings from Sweden</div>
+      <div class="hero-tagline">A 2026 Bruce Springsteen Celebration</div>
+      <div class="hero-actions">
+        <a href="#biljetter" class="btn-primary">Köp biljetter</a>
+        <a href="#om-showen" class="btn-secondary">Om showen</a>
+      </div>
     </div>
-    <br><br>
-    <a href="mailto:richardhauer@me.com" class="btn">Kontakta Richard</a>
   </div>
+
+  <!-- Intro / About show -->
+  <div id="om-showen" class="section">
+    <div class="intro-grid">
+      <div class="intro-text">
+        <div class="section-label">Om showen</div>
+        <h2 class="section-title">En 90-minuters hyllning till The Boss</h2>
+        <p>Hon har varit ett fan i fyrtio år och nu delar hon kärleken till sin musikaliska hjälte via hyllningskonserten <em>GREETINGS FROM SWEDEN</em>. Tillsammans med den svenska musikern och artisten Alexandra Jardvall får vi uppleva Bruce Springsteen – den ständigt turnerande världsstjärnan – utifrån hennes perspektiv.</p>
+        <p>Hon har förtjänstfullt fått titeln "en av världens bästa kvinnliga Bruce-tolkare" och nu har Alexandra Jardvall satt ihop ett band av mästerliga musiker som hon kallar för The SWE Street Band. Tillsammans har de valt ut ett antal av hennes absoluta favoritlåtar och åker på turné med den konsertshowen som sålde ut Flygeln i Norrköping i fjol.</p>
+        <p>Publiken kan förvänta sig en kväll med kända och mindre välkända låtar signerade Bruce Springsteen. Alexandras tolkningar, hennes personliga och känslofyllda upplevelser, humoristiska och dråpliga historier som frambringar både skratt och tårar.</p>
+        <p>Det blir en hjärtlig 90-minuters hyllning till den legendariske rockartisten, där inte ens den mest hårdnackade Springsteen-skeptikern kan stå emot.</p>
+      </div>
+      <div class="intro-meta">
+        <div class="meta-item">
+          <div class="meta-label">Format</div>
+          <div class="meta-value">90 minuters hyllningskonsert</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Repertoar</div>
+          <div class="meta-value">Bruce Springsteen – kända och okända pärlor</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Kapellmästare &amp; gitarr</div>
+          <div class="meta-value">Richard Hauer</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Presenteras av</div>
+          <div class="meta-value">Alexandra Music &amp; Livescen Scandinavia AB</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Kontakt</div>
+          <div class="meta-value"><a href="mailto:info@livescen.com">info@livescen.com</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quote band -->
+  <div class="quote-band">
+    <div class="quote-inner">
+      <div class="quote-text">"Inte ens den mest hårdnackade Springsteen-skeptikern kan stå emot."</div>
+      <div class="quote-attr">Greetings from Sweden · 2026</div>
+    </div>
+  </div>
+
+  <!-- Upcoming shows -->
+  <div id="biljetter" class="shows-section">
+    <div class="shows-inner">
+      <div class="section-label">Kommande shower</div>
+      <h2 class="section-title">Boka din biljett</h2>
+      <div class="shows-grid">
+
+        <!-- 20 mars: Klockargården -->
+        <div class="show-card">
+          <div class="show-date-block">
+            <div class="show-day">20.3</div>
+            <div class="show-month">Mars 2026</div>
+          </div>
+          <div class="show-info">
+            <h3>Klockargården</h3>
+            <div class="show-location">Leksand</div>
+            <p><strong style="color:var(--text); font-weight:500;">Boendepaket:</strong> Välkomstfika · Fördrink · Trerättersmiddag med show · Övernattning · Frukostbuffé</p>
+            <p>Bokning: <a href="https://www.boka.klockargarden.com" target="_blank" rel="noopener">boka.klockargarden.com</a> eller ring <a href="tel:024750260">0247-502 60</a></p>
+          </div>
+          <div class="show-links">
+            <a href="https://nortic.se/ticket/event/76537" target="_blank" rel="noopener" class="ticket-btn">Konsertbiljett</a>
+            <a href="https://www.boka.klockargarden.com" target="_blank" rel="noopener" class="ticket-btn-outline">Boendepaket</a>
+          </div>
+        </div>
+
+        <!-- 21 mars: Clarion Musikhotellet -->
+        <div class="show-card">
+          <div class="show-date-block">
+            <div class="show-day">21.3</div>
+            <div class="show-month">Mars 2026</div>
+          </div>
+          <div class="show-info">
+            <h3>Clarion Musikhotellet</h3>
+            <div class="show-location">Örebro</div>
+            <p><strong style="color:var(--text); font-weight:500;">Boendepaket eller konsertpaket</strong> med möjlighet till middag direkt på hotellet.</p>
+            <p>Bordsbokning med middag: <a href="tel:01967067007">019-670 67 07</a></p>
+          </div>
+          <div class="show-links">
+            <a href="https://secure.tickster.com/sv/pauup9utrjd0hnj/products" target="_blank" rel="noopener" class="ticket-btn">Biljetter</a>
+          </div>
+        </div>
+
+        <!-- 10 april: Kooperativet -->
+        <div class="show-card">
+          <div class="show-date-block">
+            <div class="show-day">10.4</div>
+            <div class="show-month">April 2026</div>
+          </div>
+          <div class="show-info">
+            <h3>Kooperativet</h3>
+            <div class="show-location">Göteborg</div>
+            <p>Konsert med eller utan mat. Som extra gäst medverkar Springsteen-fotografen <strong style="color:var(--text); font-weight:500;">Jan M. Lundahl</strong> med utställning och fotobok på plats – ett unikt tillfälle att förvärva ett fint minne.</p>
+          </div>
+          <div class="show-links">
+            <a href="https://secure.tickster.com/sv/pultknud61013xt/products" target="_blank" rel="noopener" class="ticket-btn">Biljetter</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Artist photo -->
+  <div class="artist-photo-band">
+    <img src="img/jardvall/stone-pony.jpeg" alt="Alexandra Jardvall framför The Stone Pony, Asbury Park, New Jersey">
+  </div>
+
+  <!-- Bio section -->
+  <div class="bio-section">
+    <div class="bio-inner">
+      <div class="section-label">Artisterna</div>
+      <h2 class="section-title">Bakom showen</h2>
+      <div class="bio-grid">
+        <div class="bio-block">
+          <h3>Alexandra Jardvall</h3>
+          <div class="bio-role">Sångare · Frontfigur</div>
+          <p>Alexandra Jardvall är precis hemkommen från sin femte resa till den musikaliska huvudstaden Asbury Park, där hon lyckats skapa sig ett namn. Barndomsdrömmen om att få uppträda där infriades 2022 då hon gjorde en bejublad konsert till förmån för den amerikanska Endometriosfonden – The Endo Warrior Benefit Show.</p>
+          <p>Hon har deltagit i American Music Honors samt tolkat Bruce Springsteens musik i den amerikanska dokumentären <em>Tramps Like Us</em>. Som Springsteen-tolkare har publiken i Holland, Finland, Norge, Danmark och Italien fått uppleva hennes musikalitet.</p>
+          <p>Tillsammans med gitarrist Richard Hauer skapade hon <em>In The Spirit of Springsteen: The Live Sessions, Vol. 1</em> – finns att lyssna på hos Spotify.</p>
+        </div>
+        <div class="bio-block">
+          <h3>Richard Hauer</h3>
+          <div class="bio-role">Kapellmästare · Gitarrist</div>
+          <p>Richard Hauer är en Göteborgsbasserad gitarrist och musiker med ett brett register – från jazz och klassiskt till rock och fusion. Som kapellmästare för The SWE Street Band ansvarar han för arrangörskap, instudering och musikalisk ledning under turnéerna med Alexandra Jardvall.</p>
+          <p>Med över tjugo års erfarenhet från scen – Göteborgsoperan, Princess Cruises och ett flertal egna projekt – är Richard en av Västra Götalands mest mångsidiga gitarrister.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div id="kontakt" class="contact-section">
+    <div class="contact-inner">
+      <div class="contact-text">
+        <div class="section-label">Kontakt &amp; bokning</div>
+        <h2>Frågor om showen?</h2>
+        <p>För frågor om showen, pressförfrågningar eller bokning av Alexandra Jardvall &amp; The SWE Street Band – kontakta Livescen Scandinavia.</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-label">Bokning &amp; kontakt</div>
+        <div class="contact-card-name">Livescen Scandinavia</div>
+        <div class="contact-card-org">Alexandra Music &amp; Livescen Scandinavia AB</div>
+        <div class="contact-card-details">
+          <div class="contact-detail">
+            <div class="contact-detail-icon">✉</div>
+            <div class="contact-detail-text"><a href="mailto:info@livescen.com">info@livescen.com</a></div>
+          </div>
+        </div>
+        <div class="presenter-tag">
+          Presenteras av <strong>Alexandra Music</strong> &amp; <strong>Livescen Scandinavia AB</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2026 Richard Hauer · <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> · <a href="index.html">richardhauer.com</a></p>
   </footer>
+
 </body>
 </html>
