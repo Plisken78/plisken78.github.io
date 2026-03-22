@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skaljämföraren</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1c1c28;
+  --border: rgba(255,255,255,0.08);
+  --text: #f0f0f8;
+  --muted: rgba(240,240,248,0.45);
+  --faint: rgba(240,240,248,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; padding: 2rem 1.5rem 4rem; }
+
+h1 { font-size: clamp(1.8rem,4vw,3rem); font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg,#fff 30%,rgba(255,255,255,0.4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.2rem; }
+.subtitle { font-size: 0.8rem; color: var(--muted); font-weight: 300; margin-bottom: 2rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.main { display: flex; flex-direction: column; gap: 1rem; max-width: 1200px; margin: 0 auto; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+.mode-pills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+@media (max-width: 640px) { .mode-pills-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; }
+.card-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.65rem; font-weight: 500; }
+
+select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); padding: 0.55rem 2rem 0.55rem 0.8rem; font-family: 'Outfit', sans-serif; font-size: 0.9rem; cursor: pointer; outline: none; margin-bottom: 0.4rem; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='rgba(255,255,255,0.35)' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+select:focus { border-color: rgba(255,255,255,0.2); }
+
+.parent-key { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; min-height: 1.3em; margin-top: 0.3rem; }
+
+.mode-pill { display: flex; align-items: center; gap: 6px; width: 100%; padding: 6px 8px; border-radius: 10px; background: transparent; border: 1px solid transparent; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.12s; text-align: left; }
+.mode-pill:hover { background: var(--surface2); color: var(--text); }
+.mode-pill.active { background: var(--surface2); border-color: var(--border); color: #fff; }
+.mode-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.mode-roman { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.68rem; opacity: 0.45; }
+
+.chrom-row { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding: 14px 8px; overflow-y: hidden; }
+.chrom-chip { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; border: 2px solid rgba(0,0,0,0.15); transition: transform 0.08s; text-align: center; line-height: 1.2; }
+.chrom-chip.playing { transform: scale(1.28); z-index: 2; }
+.chrom-chip.root-chip { border: 2px solid rgba(255,255,255,0.5); }
+.chrom-chip.in-scale { border: 2px solid rgba(255,255,255,0.2); }
+
+.play-section { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.play-btn { display: flex; align-items: center; gap: 10px; padding: 0.65rem 1.3rem; border-radius: 999px; border: none; font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.1s; background: rgba(255,255,255,0.1); color: #fff; }
+.play-btn:hover { background: rgba(255,255,255,0.17); }
+.play-btn:active { transform: scale(0.97); }
+.play-btn.playing-state { background: rgba(255,90,70,0.22); }
+.play-icon { width: 16px; height: 16px; display: block; }
+.bpm-row { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); }
+.bpm-row input[type=range] { width: 80px; accent-color: rgba(255,255,255,0.45); }
+.bpm-val { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--text); min-width: 32px; }
+
+.grid-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; }
+th { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 400; color: var(--muted); padding: 7px 3px; text-align: center; border-bottom: 1px solid var(--border); }
+th.diff-head { color: #ffdd55; background: rgba(255,221,85,0.06); border-bottom-color: rgba(255,221,85,0.3); }
+th.name-head { text-align: left; padding-left: 12px; min-width: 160px; }
+td { padding: 5px 3px; text-align: center; border-bottom: 1px solid var(--faint); }
+td.name-cell { text-align: left; padding-left: 12px; white-space: nowrap; }
+td.diff-col { background: rgba(255,221,85,0.04); }
+.row-name { font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 7px; }
+.row-roman { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+
+.dot { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.58rem; font-weight: 500; transition: transform 0.08s; border: 1.5px solid rgba(0,0,0,0.12); line-height: 1; text-align: center; }
+.dot.diff-dot { transform: scale(1.12); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px rgba(255,221,85,0.55); }
+.dot.playing-dot { transform: scale(1.38) !important; }
+.empty-dot { width: 30px; height: 30px; border-radius: 50%; display: inline-block; border: 1px solid rgba(255,255,255,0.05); }
+
+.fretboard-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.fretboard-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; flex: 1; min-width: 280px; }
+.fretboard-wrap { overflow-x: auto; }
+.fretboard-svg { display: block; }
+
+.diff-pill { display: inline-block; background: rgba(255,221,85,0.1); color: #ffdd55; border: 1px solid rgba(255,221,85,0.22); border-radius: 5px; padding: 1px 7px; font-family: 'DM Mono', monospace; font-size: 0.7rem; margin: 2px 2px; }
+.root-line { margin: 0.6rem 0 0.3rem; }
+.root-row { display: flex; gap: 3px; margin-bottom: 3px; }
+.root-btn { flex: 1; padding: 6px 4px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.78rem; cursor: pointer; transition: all 0.12s; text-align: center; }
+.root-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+.root-btn.active { color: #111; border-color: transparent; font-weight: 600; }
+.root-btn.spacer { visibility: hidden; pointer-events: none; }
+.add-btn { display: flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 10px; border-radius: 10px; background: transparent; border: 1px dashed rgba(255,255,255,0.18); color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 0.8rem; cursor: pointer; width: 100%; transition: all 0.12s; }
+.add-btn:hover { background: var(--surface2); color: var(--text); border-color: rgba(255,255,255,0.3); }
+.inactive-pills { display: none; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 8px; }
+.inactive-pills.open { display: block; }
+</style>
+</head>
+<body>
+
+<div class="main">
+  <div>
+    <h1>Skaljämföraren</h1>
+    <p class="subtitle">Richard Hauer · Kyrkotonarter &amp; skalor</p>
+  </div>
+
+  <!-- Kyrkotonart & grundton -->
+  <div class="card">
+    <div class="card-label">Kyrkotonart &amp; grundton</div>
+    <select id="modeSelect" style="max-width:340px;"></select>
+    <div class="root-line" id="rootLine"></div>
+    <div class="parent-key" id="parentKeyInfo"></div>
+  </div>
+
+  <!-- Jämför med -->
+  <div class="card">
+    <div class="card-label">Jämför med</div>
+    <div id="modePills" class="mode-pills-grid"></div>
+    <button class="add-btn" id="addBtn" onclick="toggleAddPanel()">
+      <span id="addBtnIcon">+</span> Lägg till läge
+    </button>
+    <div class="inactive-pills" id="inactivePills"></div>
+  </div>
+
+  <!-- Kromatisk vy -->
+  <div class="card">
+    <div class="card-label">Skalans toner · kromatisk vy</div>
+    <div class="chrom-row" id="chromRow"></div>
+  </div>
+
+  <!-- Spela -->
+  <div class="card">
+    <div class="play-section">
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">
+        <svg class="play-icon" viewBox="0 0 16 16" fill="currentColor"><polygon id="playIcon" points="3,1 15,8 3,15"/></svg>
+        <span id="playLabel">Spela skala</span>
+      </button>
+      <div class="bpm-row">
+        <span>BPM</span>
+        <input type="range" id="bpmSlider" min="40" max="240" value="120" step="1" oninput="document.getElementById('bpmVal').textContent=this.value">
+        <span class="bpm-val" id="bpmVal">120</span>
+        <span style="margin-left:6px;font-size:0.72rem;opacity:0.4;">· 8-delar · upp → paus → ner</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jämförelsetabell -->
+  <div class="card">
+    <div class="diff-info" id="diffInfo"></div>
+    <div class="grid-scroll"><table id="scaleGrid"></table></div>
+  </div>
+
+  <!-- Greppbrädor -->
+  <div class="fretboard-row" id="fretboardRow"></div>
+
+</div>
+
+<script>
+// ── HARDCODED SCALE MAP — correct enharmonic spelling ──
+const SCALE_MAP = {
+  "Jonisk": {
+    "C":["C","D","E","F","G","A","B"],
+    "G":["G","A","B","C","D","E","F#"],
+    "D":["D","E","F#","G","A","B","C#"],
+    "A":["A","B","C#","D","E","F#","G#"],
+    "E":["E","F#","G#","A","B","C#","D#"],
+    "B":["B","C#","D#","E","F#","G#","A#"],
+    "F#":["F#","G#","A#","B","C#","D#","E#"],
+    "F":["F","G","A","Bb","C","D","E"],
+    "Bb":["Bb","C","D","Eb","F","G","A"],
+    "Eb":["Eb","F","G","Ab","Bb","C","D"],
+    "Ab":["Ab","Bb","C","Db","Eb","F","G"],
+    "Db":["Db","Eb","F","Gb","Ab","Bb","C"],
+    "Gb":["Gb","Ab","Bb","Cb","Db","Eb","F"],
+  },
+  "Dorisk": {
+    "D":["D","E","F","G","A","B","C"],
+    "A":["A","B","C","D","E","F#","G"],
+    "E":["E","F#","G","A","B","C#","D"],
+    "B":["B","C#","D","E","F#","G#","A"],
+    "F#":["F#","G#","A","B","C#","D#","E"],
+    "C#":["C#","D#","E","F#","G#","A#","B"],
+    "G#":["G#","A#","B","C#","D#","E#","F#"],
+    "G":["G","A","Bb","C","D","E","F"],
+    "C":["C","D","Eb","F","G","A","Bb"],
+    "F":["F","G","Ab","Bb","C","D","Eb"],
+    "Bb":["Bb","C","Db","Eb","F","G","Ab"],
+    "Eb":["Eb","F","Gb","Ab","Bb","C","Db"],
+    "Ab":["Ab","Bb","Cb","Db","Eb","F","Gb"],
+  },
+  "Frygisk": {
+    "E":["E","F","G","A","B","C","D"],
+    "B":["B","C","D","E","F#","G","A"],
+    "F#":["F#","G","A","B","C#","D","E"],
+    "C#":["C#","D","E","F#","G#","A","B"],
+    "G#":["G#","A","B","C#","D#","E","F#"],
+    "D#":["D#","E","F#","G#","A#","B","C#"],
+    "A#":["A#","B","C#","D#","E#","F#","G#"],
+    "A":["A","Bb","C","D","E","F","G"],
+    "D":["D","Eb","F","G","A","Bb","C"],
+    "G":["G","Ab","Bb","C","D","Eb","F"],
+    "C":["C","Db","Eb","F","G","Ab","Bb"],
+    "F":["F","Gb","Ab","Bb","C","Db","Eb"],
+    "Bb":["Bb","Cb","Db","Eb","F","Gb","Ab"],
+  },
+  "Lydisk": {
+    "F":["F","G","A","B","C","D","E"],
+    "C":["C","D","E","F#","G","A","B"],
+    "G":["G","A","B","C#","D","E","F#"],
+    "D":["D","E","F#","G#","A","B","C#"],
+    "A":["A","B","C#","D#","E","F#","G#"],
+    "E":["E","F#","G#","A#","B","C#","D#"],
+    "B":["B","C#","D#","E#","F#","G#","A#"],
+    "Bb":["Bb","C","D","E","F","G","A"],
+    "Eb":["Eb","F","G","A","Bb","C","D"],
+    "Ab":["Ab","Bb","C","D","Eb","F","G"],
+    "Db":["Db","Eb","F","G","Ab","Bb","C"],
+    "Gb":["Gb","Ab","Bb","C","Db","Eb","F"],
+    "Cb":["Cb","Db","Eb","F","Gb","Ab","Bb"],
+  },
+  "Mixolydisk": {
+    "G":["G","A","B","C","D","E","F"],
+    "D":["D","E","F#","G","A","B","C"],
+    "A":["A","B","C#","D","E","F#","G"],
+    "E":["E","F#","G#","A","B","C#","D"],
+    "B":["B","C#","D#","E","F#","G#","A"],
+    "F#":["F#","G#","A#","B","C#","D#","E"],
+    "C#":["C#","D#","E#","F#","G#","A#","B"],
+    "C":["C","D","E","F","G","A","Bb"],
+    "F":["F","G","A","Bb","C","D","Eb"],
+    "Bb":["Bb","C","D","Eb","F","G","Ab"],
+    "Eb":["Eb","F","G","Ab","Bb","C","Db"],
+    "Ab":["Ab","Bb","C","Db","Eb","F","Gb"],
+    "Db":["Db","Eb","F","Gb","Ab","Bb","Cb"],
+  },
+  "Eolisk": {
+    "A":["A","B","C","D","E","F","G"],
+    "E":["E","F#","G","A","B","C","D"],
+    "B":["B","C#","D","E","F#","G","A"],
+    "F#":["F#","G#","A","B","C#","D","E"],
+    "C#":["C#","D#","E","F#","G#","A","B"],
+    "G#":["G#","A#","B","C#","D#","E","F#"],
+    "D#":["D#","E#","F#","G#","A#","B","C#"],
+    "D":["D","E","F","G","A","Bb","C"],
+    "G":["G","A","Bb","C","D","Eb","F"],
+    "C":["C","D","Eb","F","G","Ab","Bb"],
+    "F":["F","G","Ab","Bb","C","Db","Eb"],
+    "Bb":["Bb","C","Db","Eb","F","Gb","Ab"],
+    "Eb":["Eb","F","Gb","Ab","Bb","Cb","Db"],
+  },
+  "Lokrisk": {
+    "B":["B","C","D","E","F","G","A"],
+    "F#":["F#","G","A","B","C","D","E"],
+    "C#":["C#","D","E","F#","G","A","B"],
+    "G#":["G#","A","B","C#","D","E","F#"],
+    "D#":["D#","E","F#","G#","A","B","C#"],
+    "A#":["A#","B","C#","D#","E","F#","G#"],
+    "E#":["E#","F#","G#","A#","B","C#","D#"],
+    "E":["E","F","G","A","Bb","C","D"],
+    "A":["A","Bb","C","D","Eb","F","G"],
+    "D":["D","Eb","F","G","Ab","Bb","C"],
+    "G":["G","Ab","Bb","C","Db","Eb","F"],
+    "C":["C","Db","Eb","F","Gb","Ab","Bb"],
+    "F":["F","Gb","Ab","Bb","Cb","Db","Eb"],
+  },
+  // ── MELODISK MOLL ──
+  "Mel. moll": {
+    "C":["C","D","Eb","F","G","A","B"],"G":["G","A","Bb","C","D","E","F#"],
+    "D":["D","E","F","G","A","B","C#"],"A":["A","B","C","D","E","F#","G#"],
+    "E":["E","F#","G","A","B","C#","D#"],"B":["B","C#","D","E","F#","G#","A#"],
+    "F#":["F#","G#","A","B","C#","D#","E#"],"F":["F","G","Ab","Bb","C","D","E"],
+    "Bb":["Bb","C","Db","Eb","F","G","A"],"Eb":["Eb","F","Gb","Ab","Bb","C","D"],
+    "Ab":["Ab","Bb","Cb","Db","Eb","F","G"],"Db":["Db","Eb","Fb","Gb","Ab","Bb","C"],
+    "Gb":["Gb","Ab","Bbb","Cb","Db","Eb","F"],
+  },
+  "Dorisk b9": {
+    "D":["D","Eb","F","G","A","B","C"],"A":["A","Bb","C","D","E","F#","G"],
+    "E":["E","F","G","A","B","C#","D"],"B":["B","C","D","E","F#","G#","A"],
+    "F#":["F#","G","A","B","C#","D#","E"],"C#":["C#","D","E","F#","G#","A#","B"],
+    "G#":["G#","A","B","C#","D#","E#","F#"],"G":["G","Ab","Bb","C","D","E","F"],
+    "C":["C","Db","Eb","F","G","A","Bb"],"F":["F","Gb","Ab","Bb","C","D","Eb"],
+    "Bb":["Bb","Cb","Db","Eb","F","G","Ab"],"Eb":["Eb","Fb","Gb","Ab","Bb","C","Db"],
+    "Ab":["Ab","Bbb","Cb","Db","Eb","F","Gb"],
+  },
+  "Lyd #5": {
+    "Eb":["Eb","F","G","A","B","C","D"],"Bb":["Bb","C","D","E","F#","G","A"],
+    "F":["F","G","A","B","C#","D","E"],"C":["C","D","E","F#","G#","A","B"],
+    "G":["G","A","B","C#","D#","E","F#"],"D":["D","E","F#","G#","A#","B","C#"],
+    "A":["A","B","C#","D#","E#","F#","G#"],"Ab":["Ab","Bb","C","D","E","F","G"],
+    "Db":["Db","Eb","F","G","A","Bb","C"],"Gb":["Gb","Ab","Bb","C","D","Eb","F"],
+    "B":["B","C#","D#","E#","F##","G#","A#"],"E":["E","F#","G#","A#","B#","C#","D#"],
+    "F#":["F#","G#","A#","B#","C##","D#","E#"],
+  },
+  "Lydisk dom": {
+    "F":["F","G","A","B","C","D","Eb"],"C":["C","D","E","F#","G","A","Bb"],
+    "G":["G","A","B","C#","D","E","F"],"D":["D","E","F#","G#","A","B","C"],
+    "A":["A","B","C#","D#","E","F#","G"],"E":["E","F#","G#","A#","B","C#","D"],
+    "B":["B","C#","D#","E#","F#","G#","A"],"Bb":["Bb","C","D","E","F","G","Ab"],
+    "Eb":["Eb","F","G","A","Bb","C","Db"],"Ab":["Ab","Bb","C","D","Eb","F","Gb"],
+    "Db":["Db","Eb","F","G","Ab","Bb","Cb"],"Gb":["Gb","Ab","Bb","C","Db","Eb","Fb"],
+    "F#":["F#","G#","A#","B#","C#","D#","E"],
+  },
+  "Mixo b6": {
+    "G":["G","A","B","C","D","Eb","F"],"D":["D","E","F#","G","A","Bb","C"],
+    "A":["A","B","C#","D","E","F","G"],"E":["E","F#","G#","A","B","C","D"],
+    "B":["B","C#","D#","E","F#","G","A"],"F#":["F#","G#","A#","B","C#","D","E"],
+    "C#":["C#","D#","E#","F#","G#","A","B"],"C":["C","D","E","F","G","Ab","Bb"],
+    "F":["F","G","A","Bb","C","Db","Eb"],"Bb":["Bb","C","D","Eb","F","Gb","Ab"],
+    "Eb":["Eb","F","G","Ab","Bb","Cb","Db"],"Ab":["Ab","Bb","C","Db","Eb","Fb","Gb"],
+    "Db":["Db","Eb","F","Gb","Ab","Bbb","Cb"],
+  },
+  "Eolisk b5": {
+    "A":["A","B","C","D","Eb","F","G"],"E":["E","F#","G","A","Bb","C","D"],
+    "B":["B","C#","D","E","F","G","A"],"F#":["F#","G#","A","B","C","D","E"],
+    "C#":["C#","D#","E","F#","G","A","B"],"G#":["G#","A#","B","C#","D","E","F#"],
+    "D#":["D#","E#","F#","G#","A","B","C#"],"D":["D","E","F","G","Ab","Bb","C"],
+    "G":["G","A","Bb","C","Db","Eb","F"],"C":["C","D","Eb","F","Gb","Ab","Bb"],
+    "F":["F","G","Ab","Bb","Cb","Db","Eb"],"Bb":["Bb","C","Db","Eb","Fb","Gb","Ab"],
+    "Eb":["Eb","F","Gb","Ab","Bbb","Cb","Db"],
+  },
+  "Super Lokrisk": {
+    "B":["B","C","D","Eb","F","G","A"],"F#":["F#","G","A","Bb","C","D","E"],
+    "C#":["C#","D","E","F","G","A","B"],"G#":["G#","A","B","C","D","E","F#"],
+    "D#":["D#","E","F#","G","A","B","C#"],"A#":["A#","B","C#","D","E","F#","G#"],
+    "E#":["E#","F#","G#","A","B","C#","D#"],"E":["E","F","G","Ab","Bb","C","D"],
+    "A":["A","Bb","C","Db","Eb","F","G"],"D":["D","Eb","F","Gb","Ab","Bb","C"],
+    "G":["G","Ab","Bb","Cb","Db","Eb","F"],"C":["C","Db","Eb","Fb","Gb","Ab","Bb"],
+    "F":["F","Gb","Ab","Bbb","Cb","Db","Eb"],
+  },
+  // ── HARMONISK MOLL ──
+  "Harm. moll": {
+    "A":["A","B","C","D","E","F","G#"],"E":["E","F#","G","A","B","C","D#"],
+    "B":["B","C#","D","E","F#","G","A#"],"F#":["F#","G#","A","B","C#","D","E#"],
+    "C#":["C#","D#","E","F#","G#","A","B#"],"G#":["G#","A#","B","C#","D#","E","F##"],
+    "D#":["D#","E#","F#","G#","A#","B","C##"],"D":["D","E","F","G","A","Bb","C#"],
+    "G":["G","A","Bb","C","D","Eb","F#"],"C":["C","D","Eb","F","G","Ab","B"],
+    "F":["F","G","Ab","Bb","C","Db","E"],"Bb":["Bb","C","Db","Eb","F","Gb","A"],
+    "Eb":["Eb","F","Gb","Ab","Bb","Cb","D"],
+  },
+  "Lokr 6": {
+    "B":["B","C","D","E","F","G#","A"],"F#":["F#","G","A","B","C","D#","E"],
+    "C#":["C#","D","E","F#","G","A#","B"],"G#":["G#","A","B","C#","D","E#","F#"],
+    "D#":["D#","E","F#","G#","A","B#","C#"],"A#":["A#","B","C#","D#","E","F##","G#"],
+    "E":["E","F","G","A","Bb","C#","D"],"A":["A","Bb","C","D","Eb","F#","G"],
+    "D":["D","Eb","F","G","Ab","B","C"],"G":["G","Ab","Bb","C","Db","E","F"],
+    "C":["C","Db","Eb","F","Gb","A","Bb"],"F":["F","Gb","Ab","Bb","Cb","D","Eb"],
+    "Bb":["Bb","Cb","Db","Eb","Fb","G","Ab"],
+  },
+  "Jonisk #5": {
+    "C":["C","D","E","F","G#","A","B"],"G":["G","A","B","C","D#","E","F#"],
+    "D":["D","E","F#","G","A#","B","C#"],"A":["A","B","C#","D","E#","F#","G#"],
+    "E":["E","F#","G#","A","B#","C#","D#"],"B":["B","C#","D#","E","F##","G#","A#"],
+    "F":["F","G","A","Bb","C#","D","E"],"Bb":["Bb","C","D","Eb","F#","G","A"],
+    "Eb":["Eb","F","G","Ab","B","C","D"],"Ab":["Ab","Bb","C","Db","E","F","G"],
+    "Db":["Db","Eb","F","Gb","A","Bb","C"],"Gb":["Gb","Ab","Bb","Cb","D","Eb","F"],
+    "F#":["F#","G#","A#","B","C##","D#","E#"],
+  },
+  "Dorisk #11": {
+    "D":["D","E","F","G#","A","B","C"],"A":["A","B","C","D#","E","F#","G"],
+    "E":["E","F#","G","A#","B","C#","D"],"B":["B","C#","D","E#","F#","G#","A"],
+    "F#":["F#","G#","A","B#","C#","D#","E"],"C#":["C#","D#","E","F##","G#","A#","B"],
+    "G":["G","A","Bb","C#","D","E","F"],"C":["C","D","Eb","F#","G","A","Bb"],
+    "F":["F","G","Ab","B","C","D","Eb"],"Bb":["Bb","C","Db","E","F","G","Ab"],
+    "Eb":["Eb","F","Gb","A","Bb","C","Db"],"Ab":["Ab","Bb","Cb","D","Eb","F","Gb"],
+    "Db":["Db","Eb","Fb","G","Ab","Bb","Cb"],
+  },
+  "Spansk frygisk": {
+    "E":["E","F","G#","A","B","C","D"],"B":["B","C","D#","E","F#","G","A"],
+    "F#":["F#","G","A#","B","C#","D","E"],"C#":["C#","D","E#","F#","G#","A","B"],
+    "G#":["G#","A","B#","C#","D#","E","F#"],"D#":["D#","E","F##","G#","A#","B","C#"],
+    "A":["A","Bb","C#","D","E","F","G"],"D":["D","Eb","F#","G","A","Bb","C"],
+    "G":["G","Ab","B","C","D","Eb","F"],"C":["C","Db","E","F","G","Ab","Bb"],
+    "F":["F","Gb","A","Bb","C","Db","Eb"],"Bb":["Bb","Cb","D","Eb","F","Gb","Ab"],
+    "Eb":["Eb","Fb","G","Ab","Bb","Cb","Db"],
+  },
+  "Lydisk #9": {
+    "F":["F","G#","A","B","C","D","E"],"C":["C","D#","E","F#","G","A","B"],
+    "G":["G","A#","B","C#","D","E","F#"],"D":["D","E#","F#","G#","A","B","C#"],
+    "A":["A","B#","C#","D#","E","F#","G#"],"E":["E","F##","G#","A#","B","C#","D#"],
+    "Bb":["Bb","C#","D","E","F","G","A"],"Eb":["Eb","F#","G","A","Bb","C","D"],
+    "Ab":["Ab","B","C","D","Eb","F","G"],"Db":["Db","E","F","G","Ab","Bb","C"],
+    "Gb":["Gb","A","Bb","C","Db","Eb","F"],"B":["B","C##","D#","E#","F#","G#","A#"],
+    "F#":["F#","G##","A#","B#","C#","D#","E#"],
+  },
+  "Super Lokr+13": {
+    "B":["B","C","D","Eb","F","G#","A"],"F#":["F#","G","A","Bb","C","D#","E"],
+    "C#":["C#","D","E","F","G","A#","B"],"G#":["G#","A","B","C","D","E#","F#"],
+    "D#":["D#","E","F#","G","A","B#","C#"],"A#":["A#","B","C#","D","E","F##","G#"],
+    "E":["E","F","G","Ab","Bb","C#","D"],"A":["A","Bb","C","Db","Eb","F#","G"],
+    "D":["D","Eb","F","Gb","Ab","B","C"],"G":["G","Ab","Bb","Cb","Db","E","F"],
+    "C":["C","Db","Eb","Fb","Gb","A","Bb"],"F":["F","Gb","Ab","Bbb","Cb","D","Eb"],
+    "Bb":["Bb","Cb","Db","Ebb","Fb","G","Ab"],
+  },
+};
+
+// Parent key lookup
+const PARENT_KEY = {
+  "Jonisk":     {"C":"C","G":"G","D":"D","A":"A","E":"E","B":"B","F#":"F#","F":"F","Bb":"Bb","Eb":"Eb","Ab":"Ab","Db":"Db","Gb":"Gb"},
+  "Dorisk":     {"D":"C","A":"G","E":"D","B":"A","F#":"E","C#":"B","G#":"F#","G":"F","C":"Bb","F":"Eb","Bb":"Ab","Eb":"Db","Ab":"Gb"},
+  "Frygisk":    {"E":"C","B":"G","F#":"D","C#":"A","G#":"E","D#":"B","A#":"F#","A":"F","D":"Bb","G":"Eb","C":"Ab","F":"Db","Bb":"Gb"},
+  "Lydisk":     {"F":"C","C":"G","G":"D","D":"A","A":"E","E":"B","B":"F#","Bb":"F","Eb":"Bb","Ab":"Eb","Db":"Ab","Gb":"Db","Cb":"Gb"},
+  "Mixolydisk": {"G":"C","D":"G","A":"D","E":"A","B":"E","F#":"B","C#":"F#","C":"F","F":"Bb","Bb":"Eb","Eb":"Ab","Ab":"Db","Db":"Gb"},
+  "Eolisk":     {"A":"C","E":"G","B":"D","F#":"A","C#":"E","G#":"B","D#":"F#","D":"F","G":"Bb","C":"Eb","F":"Ab","Bb":"Db","Eb":"Gb"},
+  "Lokrisk":    {"B":"C","F#":"G","C#":"D","G#":"A","D#":"E","A#":"B","E#":"F#","E":"F","A":"Bb","D":"Eb","G":"Ab","C":"Db","F":"Gb"},
+};
+
+// Roots per mode (circle of fifths order, sharp side first then flat)
+const MODE_ROOTS = {
+  "Jonisk":     ["C","G","D","A","E","B","F#","F","Bb","Eb","Ab","Db","Gb"],
+  "Dorisk":     ["D","A","E","B","F#","C#","G#","G","C","F","Bb","Eb","Ab"],
+  "Frygisk":    ["E","B","F#","C#","G#","D#","A#","A","D","G","C","F","Bb"],
+  "Lydisk":     ["F","C","G","D","A","E","B","Bb","Eb","Ab","Db","Gb","Cb"],
+  "Mixolydisk": ["G","D","A","E","B","F#","C#","C","F","Bb","Eb","Ab","Db"],
+  "Eolisk":     ["A","E","B","F#","C#","G#","D#","D","G","C","F","Bb","Eb"],
+  "Lokrisk":    ["B","F#","C#","G#","D#","A#","E#","E","A","D","G","C","F"],
+};
+
+const MODE_COLORS = {
+  "Jonisk":"#888","Dorisk":"#22bb44","Frygisk":"#9933cc",
+  "Lydisk":"#dd2222","Mixolydisk":"#ee8800","Eolisk":"#2266dd","Lokrisk":"#996633",
+  "Mel. moll":"#888","Dorisk b9":"#22bb44","Lyd #5":"#9933cc",
+  "Lydisk dom":"#dd2222","Mixo b6":"#ee8800","Eolisk b5":"#2266dd","Super Lokrisk":"#996633",
+  "Harm. moll":"#888","Lokr 6":"#22bb44","Jonisk #5":"#9933cc",
+  "Dorisk #11":"#dd2222","Spansk frygisk":"#ee8800","Lydisk #9":"#2266dd","Super Lokr+13":"#996633",
+};
+const MODE_INTERVALS = {
+  "Jonisk":          [0,2,4,5,7,9,11],
+  "Dorisk":          [0,2,3,5,7,9,10],
+  "Frygisk":         [0,1,3,5,7,8,10],
+  "Lydisk":          [0,2,4,6,7,9,11],
+  "Mixolydisk":      [0,2,4,5,7,9,10],
+  "Eolisk":          [0,2,3,5,7,8,10],
+  "Lokrisk":         [0,1,3,5,6,8,10],
+  "Mel. moll":       [0,2,3,5,7,9,11],
+  "Dorisk b9":       [0,1,3,5,7,9,10],
+  "Lyd #5":          [0,2,4,6,8,9,11],
+  "Lydisk dom":      [0,2,4,6,7,9,10],
+  "Mixo b6":         [0,2,4,5,7,8,10],
+  "Eolisk b5":       [0,2,3,5,6,8,10],
+  "Super Lokrisk":   [0,1,3,4,6,8,10],
+  "Harm. moll":      [0,2,3,5,7,8,11],
+  "Lokr 6":          [0,1,3,5,6,9,10],
+  "Jonisk #5":       [0,2,4,5,8,9,11],
+  "Dorisk #11":      [0,2,3,6,7,9,10],
+  "Spansk frygisk":  [0,1,4,5,7,8,10],
+  "Lydisk #9":       [0,3,4,6,7,9,11],
+  "Super Lokr+13":   [0,1,3,4,6,9,10],
+};
+const DIATONIC_MODES = ["Jonisk","Dorisk","Frygisk","Lydisk","Mixolydisk","Eolisk","Lokrisk"];
+const MEL_MODES      = ["Mel. moll","Dorisk b9","Lyd #5","Lydisk dom","Mixo b6","Eolisk b5","Super Lokrisk"];
+const HARM_MODES     = ["Harm. moll","Lokr 6","Jonisk #5","Dorisk #11","Spansk frygisk","Lydisk #9","Super Lokr+13"];
+const ALL_MODES = [...DIATONIC_MODES, ...MEL_MODES, ...HARM_MODES];
+const MODE_ROMANS = {
+  "Jonisk":"I","Dorisk":"II","Frygisk":"III","Lydisk":"IV","Mixolydisk":"V","Eolisk":"VI","Lokrisk":"VII",
+  "Mel. moll":"I","Dorisk b9":"II","Lyd #5":"III","Lydisk dom":"IV","Mixo b6":"V","Eolisk b5":"VI","Super Lokrisk":"VII",
+  "Harm. moll":"I","Lokr 6":"II","Jonisk #5":"III","Dorisk #11":"IV","Spansk frygisk":"V","Lydisk #9":"VI","Super Lokr+13":"VII",
+};
+
+const CHROM_COLORS = ['#ffffff','#ff1a00','#ff8800','#ffee00','#aaee00','#33dd00','#00dd88','#00dddd','#00aaff','#0044ff','#7700ff','#ee00cc'];
+const CHROM_TEXT   = ['#111','#fff','#111','#111','#111','#111','#111','#111','#111','#fff','#fff','#fff'];
+const INT_NAMES    = ['R1','b9','9','b3','3','4','b5','R5','b6','6','b7','maj7'];
+
+const NOTE_SEMI = {"C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,"Fb":4,"F":5,"E#":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,"A#":10,"Bb":10,"B":11,"Cb":11,"B#":0};
+
+// State
+let currentMode = "Jonisk";
+let currentRoot = "C";
+let selected = new Set(["Jonisk","Dorisk"]);
+
+// Audio
+let audioCtx = null, isPlaying = false, stopFlag = false;
+
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function noteFreq(name, octave) {
+  const s = NOTE_SEMI[name] ?? 0;
+  return 440 * Math.pow(2, ((octave-4)*12 + s - 9) / 12);
+}
+function playSine(freq, t, dur, ctx) {
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = 'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(0.4, t+0.015);
+  g.gain.exponentialRampToValueAtTime(0.001, t+dur*0.88);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t+dur);
+}
+
+let mainMasterGain = null;
+
+async function togglePlay() {
+  if (isPlaying) {
+    stopFlag = true;
+    if (mainMasterGain) {
+      mainMasterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.01);
+    }
+    return;
+  }
+  const ctx = getCtx();
+  if (ctx.state==='suspended') await ctx.resume();
+
+  mainMasterGain = ctx.createGain();
+  mainMasterGain.gain.value = 1;
+  mainMasterGain.connect(ctx.destination);
+
+  const bpm = parseInt(document.getElementById('bpmSlider').value);
+  const eighth = 60/bpm/2;
+  const notes = SCALE_MAP[currentMode]?.[currentRoot] ?? [];
+  if (!notes.length) return;
+  const rootS = NOTE_SEMI[currentRoot] ?? 0;
+  const up = [...notes, notes[0]];
+  const down = [...notes].reverse();
+  isPlaying = true; stopFlag = false; setPlayState(true);
+  let t = ctx.currentTime + 0.05;
+  const tids = [];
+
+  const schedMain = (name, octave, semiIdx) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = noteFreq(name, octave);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.4, t+0.015);
+    g.gain.exponentialRampToValueAtTime(0.001, t+eighth*0.82*0.88);
+    o.connect(g); g.connect(mainMasterGain);
+    o.start(t); o.stop(t+eighth*0.82);
+    const d = (t - ctx.currentTime)*1000;
+    tids.push(setTimeout(()=>{ if(!stopFlag) highlightSemi(semiIdx); }, d));
+    t += eighth;
+  };
+
+  up.forEach((n,i) => {
+    const s = NOTE_SEMI[n]??0;
+    const rel = (s - rootS + 12)%12;
+    const oct = (i===7) ? 5 : (s < rootS ? 5 : 4);
+    schedMain(n, oct, i===7 ? 0 : rel);
+  });
+  t += eighth*2;
+  down.forEach(n => {
+    const s = NOTE_SEMI[n]??0;
+    const rel = (s - rootS + 12)%12;
+    schedMain(n, s < rootS ? 5 : 4, rel);
+  });
+  const total = (t - ctx.currentTime)*1000;
+  tids.push(setTimeout(()=>{ highlightSemi(-1); isPlaying=false; stopFlag=false; setPlayState(false); }, total));
+  const chk = setInterval(()=>{
+    if(stopFlag){ tids.forEach(clearTimeout); clearInterval(chk); highlightSemi(-1); isPlaying=false; stopFlag=false; setPlayState(false); }
+  },40);
+}
+function setPlayState(p) {
+  document.getElementById('playBtn').classList.toggle('playing-state',p);
+  document.getElementById('playIcon').setAttribute('points', p?'3,2 7,2 7,14 3,14 M9,2 13,2 13,14 9,14':'3,1 15,8 3,15');
+  document.getElementById('playLabel').textContent = p?'Stopp':'Spela skala';
+}
+function highlightSemi(s) {
+  document.querySelectorAll('.chrom-chip').forEach((el,i)=>el.classList.toggle('playing', i===s || (i===12 && s===0)));
+  // Only highlight dots in the first (primary) table row, not comparison rows
+  const primaryRow = document.querySelector('#scaleGrid tbody tr:first-child');
+  if (primaryRow) {
+    primaryRow.querySelectorAll('.dot[data-semi]').forEach(el=>el.classList.toggle('playing-dot', parseInt(el.dataset.semi)===s));
+  }
+}
+
+// Always look up currentRoot directly in the target mode's scale map.
+// If exact match missing, try enharmonic equivalent.
+const ENHARMONIC_PAIRS = {"C#":"Db","Db":"C#","D#":"Eb","Eb":"D#","F#":"Gb","Gb":"F#","G#":"Ab","Ab":"G#","A#":"Bb","Bb":"A#","E#":"F","Fb":"E","B#":"C","Cb":"B"};
+function getRootForMode(mode) {
+  const map = SCALE_MAP[mode] ?? {};
+  if (map[currentRoot]) return currentRoot;
+  const enh = ENHARMONIC_PAIRS[currentRoot];
+  if (enh && map[enh]) return enh;
+  return Object.keys(map)[0]; // last resort
+}
+
+// All roots as individual buttons — separate # and b versions
+const ROOT_BUTTONS = [
+  'C','C#','Db','D','D#','Eb','E','F','F#','Gb','G','G#','Ab','A','A#','Bb','B'
+];
+
+// ── RENDER ──
+function buildSelects() {
+  const ms = document.getElementById('modeSelect');
+  ms.innerHTML =
+    '<optgroup label="Diatonisk">' + DIATONIC_MODES.map(m=>`<option value="${m}"${m===currentMode?' selected':''}>${m} (${MODE_ROMANS[m]})</option>`).join('') + '</optgroup>' +
+    '<optgroup label="Melodisk moll">' + MEL_MODES.map(m=>`<option value="${m}"${m===currentMode?' selected':''}>${m} (${MODE_ROMANS[m]})</option>`).join('') + '</optgroup>' +
+    '<optgroup label="Harmonisk moll">' + HARM_MODES.map(m=>`<option value="${m}"${m===currentMode?' selected':''}>${m} (${MODE_ROMANS[m]})</option>`).join('') + '</optgroup>';
+  renderRootLine();
+}
+
+function renderRootLine() {
+  const el = document.getElementById('rootLine');
+  el.innerHTML = '';
+
+  // Top row: all 12 naturals + sharps (C C# D D# E F F# G G# A A# B)
+  const topRow = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  // Bottom row: flats aligned under their sharp equivalent, spacer where no flat exists
+  // C#=Db, D#=Eb, F#=Gb, G#=Ab, A#=Bb — others get spacer
+  const bottomRow = [null,'Db',null,'Eb',null,null,'Gb',null,'Ab',null,'Bb',null];
+
+  const makeBtn = (note) => {
+    const semi = NOTE_SEMI[note] ?? 0;
+    const isActive = note === currentRoot;
+    const btn = document.createElement('button');
+    btn.className = 'root-btn' + (isActive ? ' active' : '');
+    btn.textContent = note.replace('b','♭').replace('#','♯');
+    if (isActive) {
+      btn.style.background = CHROM_COLORS[semi];
+      btn.style.color = CHROM_TEXT[semi];
+      btn.style.borderColor = 'transparent';
+    }
+    btn.onclick = () => { currentRoot = note; renderParentKey(); renderRootLine(); renderRight(); };
+    return btn;
+  };
+
+  const row1 = document.createElement('div');
+  row1.className = 'root-row';
+  topRow.forEach(note => row1.appendChild(makeBtn(note)));
+  el.appendChild(row1);
+
+  const row2 = document.createElement('div');
+  row2.className = 'root-row';
+  bottomRow.forEach(note => {
+    if (note === null) {
+      const sp = document.createElement('button');
+      sp.className = 'root-btn spacer';
+      sp.textContent = '-';
+      row2.appendChild(sp);
+    } else {
+      row2.appendChild(makeBtn(note));
+    }
+  });
+  el.appendChild(row2);
+}
+
+function renderParentKey() {
+  // Show parent key only for diatonic modes
+  if (DIATONIC_MODES.includes(currentMode)) {
+    const pk = PARENT_KEY[currentMode]?.[currentRoot] ?? '?';
+    document.getElementById('parentKeyInfo').textContent = `Modertonart: ${pk}-dur`;
+  } else if (MEL_MODES.includes(currentMode)) {
+    document.getElementById('parentKeyInfo').textContent = 'Melodisk moll';
+  } else {
+    document.getElementById('parentKeyInfo').textContent = 'Harmonisk moll';
+  }
+}
+
+function renderChrom() {
+  const el = document.getElementById('chromRow');
+  el.innerHTML = '';
+  const notes = SCALE_MAP[currentMode]?.[currentRoot] ?? [];
+  const rootS = NOTE_SEMI[currentRoot] ?? 0;
+  const semiToName = {};
+  notes.forEach(n => { semiToName[(NOTE_SEMI[n]-rootS+12)%12] = n; });
+
+  for (let s=0; s<12; s++) {
+    const chip = document.createElement('div');
+    const inScale = s in semiToName;
+    chip.className = 'chrom-chip' + (s===0?' root-chip':inScale?' in-scale':'');
+    chip.style.background = CHROM_COLORS[s];
+    chip.style.color = CHROM_TEXT[s];
+    chip.style.opacity = inScale || s===0 ? '1' : '0.28';
+    chip.textContent = semiToName[s] ?? '';
+    el.appendChild(chip);
+  }
+  // Octave chip (repeat of root)
+  const octaveChip = document.createElement('div');
+  octaveChip.className = 'chrom-chip root-chip';
+  octaveChip.style.background = CHROM_COLORS[0];
+  octaveChip.style.color = CHROM_TEXT[0];
+  octaveChip.style.opacity = '0.6';
+  octaveChip.style.borderStyle = 'dashed';
+  octaveChip.textContent = currentRoot;
+  el.appendChild(octaveChip);
+}
+
+function toggleAddPanel() {
+  const panel = document.getElementById('inactivePills');
+  const btn = document.getElementById('addBtnIcon');
+  const open = panel.classList.toggle('open');
+  btn.textContent = open ? '−' : '+';
+}
+
+function makePill(name) {
+  const isActive = selected.has(name);
+  const btn = document.createElement('button');
+  btn.className = 'mode-pill' + (isActive ? ' active' : '');
+  btn.innerHTML = `<span class="mode-dot" style="background:${MODE_COLORS[name]}"></span>${name}<span class="mode-roman">${MODE_ROMANS[name]}</span>`;
+  btn.onclick = () => {
+    if (selected.has(name)) { if (selected.size > 1) selected.delete(name); }
+    else selected.add(name);
+    renderRight();
+  };
+  return btn;
+}
+
+function sectionLabel(text, borderTop) {
+  const el = document.createElement('div');
+  el.style.cssText = `font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:${borderTop?'8px':'2px'} 10px 4px;font-weight:500;${borderTop?'border-top:1px solid var(--border);margin-top:4px;':''}`;
+  el.textContent = text;
+  return el;
+}
+
+function renderPills() {
+  const activeEl = document.getElementById('modePills');
+  const inactiveEl = document.getElementById('inactivePills');
+  activeEl.innerHTML = '';
+  inactiveEl.innerHTML = '';
+
+  // All diatonic modes always visible (except currentMode if diatonic)
+  DIATONIC_MODES.forEach(name => {
+    if (name === currentMode) return;
+    activeEl.appendChild(makePill(name));
+  });
+
+  // Add panel: melodic + harmonic minor
+  inactiveEl.appendChild(sectionLabel('Melodisk moll', false));
+  MEL_MODES.forEach(name => inactiveEl.appendChild(makePill(name)));
+
+  inactiveEl.appendChild(sectionLabel('Harmonisk moll', true));
+  HARM_MODES.forEach(name => inactiveEl.appendChild(makePill(name)));
+}
+
+function getDiffs() {
+  const active = [currentMode,...selected].filter((v,i,a)=>a.indexOf(v)===i).map(m=>new Set(MODE_INTERVALS[m]));
+  if (active.length<2) return new Set();
+  const d = new Set();
+  for (let s=0;s<12;s++) { const p=active.map(a=>a.has(s)); if(!p.every(v=>v===p[0])) d.add(s); }
+  return d;
+}
+
+function renderGrid() {
+  const table = document.getElementById('scaleGrid');
+  table.innerHTML='';
+  const diffs = getDiffs();
+  // Rows: currentMode first, then selected
+  const rows = [currentMode, ...ALL_MODES.filter(m=>m!==currentMode&&selected.has(m))];
+
+  // Diff info
+  const infoEl = document.getElementById('diffInfo');
+  if (rows.length<2) {
+    infoEl.innerHTML='Välj minst ett läge att jämföra med';
+  } else {
+    const rootS = NOTE_SEMI[currentRoot]??0;
+    const notes = SCALE_MAP[currentMode]?.[currentRoot]??[];
+    const semiToName={};
+    notes.forEach(n=>{semiToName[(NOTE_SEMI[n]-rootS+12)%12]=n;});
+    if (diffs.size===0) {
+      infoEl.innerHTML = rows.map(m=>`<span style="color:${MODE_COLORS[m]};font-weight:600">${currentRoot} ${m}</span>`).join(' vs ') + ' — <span style="color:#55ff88">identiska!</span>';
+    } else {
+      const dp = [...diffs].map(s=>`<span class="diff-pill">${semiToName[s]??'—'}</span>`).join('');
+      infoEl.innerHTML = rows.map(m=>`<span style="color:${MODE_COLORS[m]};font-weight:600">${currentRoot} ${m}</span>`).join(' vs ') + ' — skiljande: '+dp;
+    }
+  }
+
+  // Header
+  const rootS = NOTE_SEMI[currentRoot]??0;
+  const baseNotes = SCALE_MAP[currentMode]?.[currentRoot]??[];
+  const semiToName={};
+  baseNotes.forEach(n=>{semiToName[(NOTE_SEMI[n]-rootS+12)%12]=n;});
+
+  const thead=document.createElement('thead');
+  let hr='<tr><th class="name-head">Läge</th>';
+  for(let s=0;s<12;s++){
+    const dc=diffs.has(s)?' diff-head':'';
+    const nn=semiToName[s]??'';
+    hr+=`<th class="${dc}">${nn}<br><span style="opacity:0.35;font-size:0.58rem">${INT_NAMES[s]}</span></th>`;
+  }
+  hr+='</tr>';
+  thead.innerHTML=hr;
+  table.appendChild(thead);
+
+  const tbody=document.createElement('tbody');
+  rows.forEach(modeName=>{
+    const iset=new Set(MODE_INTERVALS[modeName]);
+    const modeRoot=getRootForMode(modeName);
+    const modeNotes=SCALE_MAP[modeName]?.[modeRoot]??[];
+    const mRootS=NOTE_SEMI[modeRoot]??0;
+    const mSemiToName={};
+    modeNotes.forEach(n=>{mSemiToName[(NOTE_SEMI[n]-mRootS+12)%12]=n;});
+
+    const tr=document.createElement('tr');
+    const isPrimary = modeName===currentMode;
+    let cells=`<td class="name-cell"><div class="row-name"><span style="width:9px;height:9px;border-radius:50%;background:${MODE_COLORS[modeName]};display:inline-block;flex-shrink:0;${isPrimary?'box-shadow:0 0 0 2px rgba(255,255,255,0.25)':''}"></span>${currentRoot} ${modeName}<span class="row-roman">${MODE_ROMANS[modeName]}</span></div></td>`;
+    for(let s=0;s<12;s++){
+      const dc=diffs.has(s)?' diff-col':'';
+      if(iset.has(s)){
+        const noteName=mSemiToName[s]??'';
+        const isDiff=diffs.has(s);
+        cells+=`<td class="${dc}"><div class="dot${isDiff?' diff-dot':''}" data-semi="${s}" style="background:${CHROM_COLORS[s]};color:${CHROM_TEXT[s]}">${noteName}</div></td>`;
+      } else {
+        cells+=`<td class="${dc}"><div class="empty-dot"></div></td>`;
+      }
+    }
+    tr.innerHTML=cells;
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+}
+
+// ── FRETBOARD ──
+const OPEN_STRINGS = [0, 5, 10, 15, 19, 24]; // E2 A2 D3 G3 B3 e4 in semitones relative to E2
+const STRING_LABELS = ['E', 'A', 'D', 'G', 'B', 'e'];
+
+function buildFretboard(modeName) {
+  const modeRoot = getRootForMode(modeName);
+  const notes = SCALE_MAP[modeName]?.[modeRoot] ?? [];
+  const intervals = MODE_INTERVALS[modeName] ?? [];
+  const rootSemi = NOTE_SEMI[currentRoot] ?? 0;
+
+  // Build ordered scale semitones (relative 0-11) in scale order
+  const scaleSemis = [...intervals]; // e.g. [0,2,4,5,7,9,11]
+
+  // Find which fret on low E string the root sits on.
+  // Never use open string (fret 0) — always fret 1 or higher.
+  // If result is 0 (i.e. root is E) use fret 12 instead.
+  const lowEAbsolute = 4; // E = semitone 4 in chromatic (C=0)
+  let rootFretOnE = (rootSemi - lowEAbsolute + 120) % 12;
+  if (rootFretOnE === 0) rootFretOnE = 12; // E always at fret 12, never open
+
+  // We'll walk through the scale chromatically upward from rootFretOnE on low E
+  // Building an infinite scale sequence: scale degrees repeating over octaves
+  // For each string, pick 3 consecutive scale tones
+
+  // Generate a long sequence of (absoluteSemi, relSemi, noteName) starting from rootFretOnE on low E
+  // absoluteSemi = fret + openStringSemi (relative to low E open=0)
+  // We need enough tones for 6 strings × 3 = 18 tones
+  function getScaleSequence(startAbsoluteSemi) {
+    const seq = [];
+    let octave = 0;
+    let startRelSemi = (startAbsoluteSemi - (lowEAbsolute - 4 + rootSemi) + 120) % 12;
+    // Find position in scaleSemis
+    // startAbsoluteSemi corresponds to rootSemi on low E
+    // We walk scale tones upward from that point
+    let currentAbs = startAbsoluteSemi;
+    // Find the first scale tone >= startAbsoluteSemi
+    // scaleSemis are relative to root; absolute = rootSemi + degree + octave*12 - lowEAbsolute + 4 - 4 ...
+    // Simpler: just scan upward from startAbsoluteSemi and check if each semitone is in scale
+    const scaleSet = new Set(scaleSemis);
+    for (let abs = startAbsoluteSemi; seq.length < 24; abs++) {
+      const relSemi = (abs - startAbsoluteSemi + rootSemi) % 12;
+      // relSemi relative to root
+      const rel = ((abs + lowEAbsolute - rootSemi) % 12 + 12) % 12;
+      if (scaleSet.has(rel)) {
+        const noteName = notes.find(n => (NOTE_SEMI[n] - rootSemi + 12) % 12 === rel) ?? '';
+        seq.push({ abs, rel, noteName });
+      }
+    }
+    return seq;
+  }
+
+  const sequence = getScaleSequence(rootFretOnE);
+
+  // Assign 3 tones per string
+  // For each string, find which frets the next 3 sequence tones fall on
+  let seqIdx = 0;
+  const stringResults = OPEN_STRINGS.map((openPitch, strIdx) => {
+    // openPitch is relative to low E open (0)
+    const tones = [];
+    let taken = 0;
+    while (taken < 3 && seqIdx < sequence.length) {
+      const { abs, rel, noteName } = sequence[seqIdx];
+      // fret on this string = abs - openPitch
+      const fret = abs - openPitch;
+      if (fret >= 0) {
+        tones.push({ fret, relSemi: rel, noteName });
+        taken++;
+        seqIdx++;
+      } else {
+        seqIdx++;
+      }
+    }
+    return tones;
+  });
+
+  // Fret range — 1 empty band above and 1 below the pattern
+  // A "band" is the cell between two wires. To show an empty band above,
+  // we need one extra wire at the top so the cell is visible.
+  const allFrets = stringResults.flat().map(t => t.fret);
+  const lowestFret = Math.min(...allFrets);
+  const highestFret = Math.max(...allFrets);
+  const minFret = Math.max(0, lowestFret - 2); // 2 wires above lowest dot = 1 empty band
+  const maxFret = highestFret + 1;             // 1 wire below highest dot = 1 empty band
+  const numFrets = maxFret - minFret;           // number of cells (bands)
+
+  return { stringResults, minFret, numFrets, modeName };
+}
+
+function renderFretboardSVG(data, modeColor) {
+  const { stringResults, minFret, numFrets } = data;
+  const numStrings = 6;
+
+  // Layout
+  const padLeft = 50;
+  const padTop = 28;
+  const padBottom = 16;
+  const padRight = 16;
+  const stringSpacing = 32;
+  const fretSpacing = 40;
+
+  const W = padLeft + (numStrings - 1) * stringSpacing + padRight;
+  const H = padTop + numFrets * fretSpacing + padBottom;
+
+  let svg = `<svg class="fretboard-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<rect width="${W}" height="${H}" fill="transparent"/>`;
+
+  // Draw fret wires — numFrets+1 wires create numFrets cells
+  for (let f = 0; f <= numFrets; f++) {
+    const y = padTop + f * fretSpacing;
+    const isNut = (minFret === 0 && f === 0);
+    svg += `<line x1="${padLeft}" y1="${y}" x2="${padLeft + (numStrings-1)*stringSpacing}" y2="${y}" stroke="rgba(255,255,255,${isNut?'0.7':'0.15'})" stroke-width="${isNut?3:1}"/>`;
+    const fretNum = minFret + f;
+    if (fretNum > 0) {
+      // Label sits in the middle of the cell above this wire (between wire f-1 and wire f)
+      svg += `<text x="${padLeft - 10}" y="${y - fretSpacing/2 + 4}" text-anchor="end" font-family="DM Mono, monospace" font-size="10" fill="rgba(255,255,255,0.35)">${fretNum}</text>`;
+    }
+  }
+
+  // Draw strings
+  const stringThickness = [2.5, 2.0, 1.6, 1.2, 0.9, 0.7];
+  for (let s = 0; s < numStrings; s++) {
+    const x = padLeft + s * stringSpacing;
+    svg += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${padTop + numFrets * fretSpacing}" stroke="rgba(255,255,255,0.35)" stroke-width="${stringThickness[s]}"/>`;
+    svg += `<text x="${x}" y="${padTop - 8}" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="rgba(255,255,255,0.4)">${STRING_LABELS[s]}</text>`;
+  }
+
+  // Draw tone dots
+  stringResults.forEach((tones, strIdx) => {
+    const x = padLeft + strIdx * stringSpacing;
+    tones.forEach(({ fret, relSemi, noteName }) => {
+      // Dot sits in cell between wire (fret-1) and wire (fret)
+      // Wire fret N is at: padTop + (N - minFret) * fretSpacing
+      // Cell center = wireN - fretSpacing/2
+      const wireY = padTop + (fret - minFret) * fretSpacing;
+      const y = wireY - fretSpacing / 2;
+      const bg = CHROM_COLORS[relSemi];
+      const tc = CHROM_TEXT[relSemi];
+      const isRoot = relSemi === 0;
+      svg += `<circle cx="${x}" cy="${y}" r="${isRoot ? 13 : 11}" fill="${bg}" stroke="${isRoot ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.2)'}" stroke-width="${isRoot ? 2 : 1}"/>`;
+      const display = noteName.replace('b','♭').replace('#','♯');
+      const fontSize = display.length > 2 ? 7 : 9;
+      svg += `<text x="${x}" y="${y + fontSize/2 - (display.length>2?1:0)}" text-anchor="middle" font-family="DM Mono, monospace" font-size="${fontSize}" font-weight="500" fill="${tc}">${display}</text>`;
+    });
+  });
+
+  svg += '</svg>';
+  return svg;
+}
+
+function renderFretboards() {
+  const container = document.getElementById('fretboardRow');
+  container.innerHTML = '';
+
+  // Get first two rows: currentMode + first selected
+  const rows = [currentMode, ...ALL_MODES.filter(m => m !== currentMode && selected.has(m))].slice(0, 2);
+
+  rows.forEach(modeName => {
+    const data = buildFretboard(modeName);
+    const fbId = 'fb_' + modeName.replace(/[^a-z]/gi,'_');
+    const modeColor = MODE_COLORS[modeName];
+    const card = document.createElement('div');
+    card.className = 'fretboard-card';
+    card.innerHTML = `
+      <div class="card-label" style="margin-bottom:0.8rem;">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${modeColor};margin-right:6px;vertical-align:middle;"></span>
+        ${currentRoot} ${modeName}
+      </div>
+      <div class="fretboard-wrap" id="${fbId}_svg">${renderFretboardSVG(data, modeColor)}</div>
+      <div style="margin-top:0.8rem;">
+        <button class="play-btn" id="${fbId}_btn" style="font-size:0.8rem;padding:0.5rem 1rem;" onclick="playFretboard('${fbId}','${modeName}')">
+          <svg style="width:12px;height:12px;display:block;" viewBox="0 0 16 16" fill="currentColor"><polygon id="${fbId}_icon" points="3,1 15,8 3,15"/></svg>
+          <span id="${fbId}_label">Spela</span>
+        </button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+const fretboardPlaying = {};
+const fretboardGains = {};
+
+async function playFretboard(fbId, modeName) {
+  // Stop if already playing
+  if (fretboardPlaying[fbId]) {
+    fretboardPlaying[fbId] = false;
+    if (fretboardGains[fbId]) {
+      fretboardGains[fbId].gain.setTargetAtTime(0, getCtx().currentTime, 0.01);
+    }
+    setFbPlayState(fbId, false);
+    return;
+  }
+  const ctx = getCtx();
+  if (ctx.state === 'suspended') await ctx.resume();
+
+  const modeRoot = getRootForMode(modeName);
+  const notes = SCALE_MAP[modeName]?.[modeRoot] ?? [];
+  const rootSemi = NOTE_SEMI[currentRoot] ?? 0;
+
+  // Build the same 3NPS sequence as the fretboard
+  const bpm = parseInt(document.getElementById('bpmSlider').value);
+  const eighth = 60 / bpm / 2;
+
+  // Get fretboard data to extract the exact note sequence string→string
+  const data = buildFretboard(modeName);
+  const sequence = data.stringResults.flat(); // [{fret, relSemi, noteName}] in string order
+
+  // Open string MIDI notes: E2=40, A2=45, D3=50, G3=55, B3=59, e4=64
+  const OPEN_MIDI = [40, 45, 50, 55, 59, 64];
+
+  // Master gain for this fretboard — allows instant stop
+  const masterGain = ctx.createGain();
+  masterGain.gain.value = 1;
+  masterGain.connect(ctx.destination);
+  fretboardGains[fbId] = masterGain;
+
+  fretboardPlaying[fbId] = true;
+  setFbPlayState(fbId, true);
+
+  const startT = ctx.currentTime + 0.05;
+  let t = startT;
+
+  function midiToFreq(midi) {
+    return 440 * Math.pow(2, (midi - 69) / 12);
+  }
+
+  // Play sine through master gain instead of directly to destination
+  function playSineFb(freq, startTime, duration) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(0.4, startTime + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.88);
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(startTime);
+    osc.stop(startTime + duration);
+  }
+
+  const upSequence = data.stringResults.flatMap((tones, strIdx) =>
+    tones.map(({ fret }) => midiToFreq(OPEN_MIDI[strIdx] + fret))
+  );
+
+  upSequence.forEach(freq => {
+    playSineFb(freq, t, eighth * 0.82);
+    t += eighth;
+  });
+
+  t += eighth;
+  [...upSequence].reverse().forEach(freq => {
+    playSineFb(freq, t, eighth * 0.82);
+    t += eighth;
+  });
+
+  const totalMs = (t - ctx.currentTime) * 1000;
+  const doneT = setTimeout(() => {
+    fretboardPlaying[fbId] = false;
+    setFbPlayState(fbId, false);
+  }, totalMs);
+
+  const chk = setInterval(() => {
+    if (!fretboardPlaying[fbId]) {
+      clearTimeout(doneT);
+      clearInterval(chk);
+      setFbPlayState(fbId, false);
+    }
+  }, 40);
+}
+
+function setFbPlayState(fbId, playing) {
+  const btn = document.getElementById(fbId + '_btn');
+  const icon = document.getElementById(fbId + '_icon');
+  const label = document.getElementById(fbId + '_label');
+  if (!btn) return;
+  btn.classList.toggle('playing-state', playing);
+  if (icon) icon.setAttribute('points', playing ? '3,2 7,2 7,14 3,14 M9,2 13,2 13,14 9,14' : '3,1 15,8 3,15');
+  if (label) label.textContent = playing ? 'Stopp' : 'Spela';
+}
+
+function renderRight() { renderChrom(); renderPills(); renderGrid(); renderFretboards(); }
+function renderAll()   { buildSelects(); renderParentKey(); renderRight(); }
+
+document.getElementById('modeSelect').addEventListener('change', e=>{
+  currentMode=e.target.value;
+  currentRoot=MODE_ROOTS[currentMode][0];
+  selected=new Set(ALL_MODES.filter(m=>m!==currentMode).slice(0,1));
+  renderAll();
+});
+
+renderAll();
+</script>
+</body>
+</html>

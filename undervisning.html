@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undervisning – Richard Hauer</title>
-  <meta name="description" content="Interaktiva undervisningsverktyg för gitarr och musikteori av Richard Hauer.">
+  <title>Undervisning &amp; Verktyg · Richard Hauer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -25,101 +24,60 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 3rem;
-      background: rgba(11,11,12,.97);
-      border-bottom: 1px solid var(--border);
-    }
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
     .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
-    .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s; display: flex; align-items: center; gap: .5rem; }
+    .nav-back { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
     .nav-back::before { content: '←'; }
     .nav-back:hover { color: var(--gold); }
 
-    .hero {
-      padding: 12rem 3rem 5rem;
-      max-width: 1100px; margin: 0 auto;
-    }
-    .section-label {
-      font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      font-weight: 700; line-height: 1.05; margin-bottom: 1rem;
-    }
+    /* ── Hero ── */
+    .hero { padding: 12rem 3rem 6rem; max-width: 1100px; margin: 0 auto; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 700; line-height: 1; margin-bottom: .75rem; }
     .hero-desc { color: var(--muted); max-width: 580px; font-size: 1.05rem; line-height: 1.85; }
 
-    /* ── LEKTIONER ── */
-    .lessons {
-      max-width: 1100px; margin: 0 auto;
-      padding: 2rem 3rem 8rem;
-    }
-    .lessons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
+    /* ── Section ── */
+    .section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 600; line-height: 1.15; margin-bottom: 2.5rem; }
+
+    /* ── Cards grid ── */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    /* ── Lesson card ── */
     .lesson-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      padding: 2.5rem; text-decoration: none; color: var(--text);
       display: flex; flex-direction: column;
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 2.5rem;
+      text-decoration: none; color: var(--text);
+      transition: border-color .2s, transform .2s;
       position: relative; overflow: hidden;
-      transition: border-color .3s, transform .2s;
     }
-    .lesson-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
-    .lesson-card::before {
-      content: ''; position: absolute; top: 0; left: 0;
-      width: 3px; height: 100%; background: var(--gold);
-      transform: scaleY(0); transition: transform .3s;
-      transform-origin: top;
-    }
-    .lesson-card:hover::before { transform: scaleY(1); }
-    .lesson-icon {
-      font-size: 2.2rem; margin-bottom: 1.25rem;
-      line-height: 1;
-    }
-    .lesson-number {
-      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: .6rem;
-    }
-    .lesson-title {
-      font-family: var(--font-display);
-      font-size: 1.7rem; font-weight: 600; margin-bottom: .75rem;
-    }
-    .lesson-desc { color: var(--muted); font-size: .92rem; line-height: 1.7; flex: 1; }
-    .lesson-cta {
-      margin-top: 1.5rem;
-      font-size: .73rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--gold); font-weight: 500;
-    }
-    .lesson-cta::after { content: ' →'; }
+    .lesson-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+    .lesson-card.coming-soon { opacity: .4; pointer-events: none; }
+    .lesson-icon { font-size: 2rem; margin-bottom: 1.25rem; }
+    .lesson-number { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
+    .lesson-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; margin-bottom: .75rem; }
+    .lesson-desc { color: var(--muted); font-size: .9rem; line-height: 1.7; flex: 1; margin-bottom: 1.5rem; }
+    .lesson-cta { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; display: flex; align-items: center; gap: .5rem; }
+    .lesson-cta::after { content: '→'; }
+    .coming-badge { position: absolute; top: 1.25rem; right: 1.25rem; font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: .2rem .6rem; }
 
-    .coming-soon {
-      opacity: .45; cursor: default;
-    }
-    .coming-soon:hover { transform: none; border-color: var(--border); }
-    .coming-soon:hover::before { transform: scaleY(0); }
-    .coming-label {
-      display: inline-block; font-size: .63rem; letter-spacing: .18em;
-      text-transform: uppercase; color: var(--muted);
-      border: 1px solid var(--border); padding: .2rem .6rem;
-      margin-top: 1.5rem;
-    }
+    /* ── Divider ── */
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 0 3rem; }
 
-    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; }
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; margin-top: 4rem; }
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--gold); }
 
-    @media (max-width: 700px) {
+    @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
-      .hero { padding: 10rem 1.5rem 3rem; }
-      .lessons { padding: 1rem 1.5rem 5rem; }
+      .hero { padding: 9rem 1.5rem 4rem; }
+      .section { padding: 3.5rem 1.5rem; }
+      .section-divider { margin: 0 1.5rem; }
     }
   </style>
 </head>
@@ -131,74 +89,83 @@
   </nav>
 
   <div class="hero">
-    <div class="section-label">Lärare</div>
-    <h1 class="hero-title">Interaktiva<br>undervisningsverktyg</h1>
-    <p class="hero-desc">Verktyg och genomgångar som hjälper dig att förstå musikteori, ackord och gitarrspel. Klicka på en lektion för att börja.</p>
+    <div class="hero-eyebrow">Richard Hauer · Gitarrundervisning</div>
+    <h1 class="hero-title">Interaktiva<br>lektioner &amp; verktyg</h1>
+    <p class="hero-desc">Verktyg och lektioner för gitarrister på alla nivåer – från musikteori och skalor till ackord och notskrivning.</p>
   </div>
 
-  <div class="lessons">
+  <!-- Lektioner -->
+  <div class="section">
     <div class="section-label">Lektioner</div>
-    <div class="lessons-grid">
+    <h2 class="section-title">Musikteori i praktiken</h2>
+    <div class="cards-grid">
 
-      <a href="undervisning/kvintcirkeln/index.html" class="lesson-card">
-        <div class="lesson-icon">🎼</div>
+      <a href="undervisning/kvintcirkeln/index.html" class="lesson-card" target="_blank" rel="noopener">
+        <div class="lesson-icon">🎵</div>
         <div class="lesson-number">Lektion 1</div>
         <div class="lesson-title">Kvintcirkeln</div>
-        <p class="lesson-desc">En interaktiv genomgång av kvintcirkeln — grundstenen i musikteori. Lär dig tonarter, förtecken och harmoniska relationer genom att klicka och utforska.</p>
+        <div class="lesson-desc">Utforska kvintcirkeln interaktivt – se hur tonarter, ackord och skalor hänger ihop på ett visuellt sätt.</div>
         <div class="lesson-cta">Öppna lektion</div>
       </a>
 
-      <a href="undervisning/ackordfinnaren/fretboard_html.html" class="lesson-card">
+      <a href="undervisning/ackordfinnaren/fretboard_html.html" class="lesson-card" target="_blank" rel="noopener">
         <div class="lesson-icon">🎸</div>
         <div class="lesson-number">Lektion 2</div>
         <div class="lesson-title">Ackordfinnaren</div>
-        <p class="lesson-desc">Hitta och visualisera ackord på gitarrhalsen. Välj grundton och ackordtyp och se direkt var fingrarna ska ligga — ett praktiskt verktyg för alla nivåer.</p>
+        <div class="lesson-desc">Hitta ackord på gitarrhalsen dynamiskt. Välj ett ackord och se fingersättningen direkt på ett interaktivt greppbräde.</div>
+        <div class="lesson-cta">Öppna lektion</div>
+      </a>
+
+      <a href="undervisning/skaljamforaren/skaljamforaren.html" class="lesson-card" target="_blank" rel="noopener">
+        <div class="lesson-icon">📊</div>
+        <div class="lesson-number">Lektion 3</div>
+        <div class="lesson-title">Skaljämföraren</div>
+        <div class="lesson-desc">Jämför skalor med varandra och se skillnader och likheter på ett överskådligt sätt.</div>
         <div class="lesson-cta">Öppna lektion</div>
       </a>
 
       <div class="lesson-card coming-soon">
-        <div class="lesson-icon">🎵</div>
-        <div class="lesson-number">Lektion 3</div>
-        <div class="lesson-title">Skalor &amp; modes</div>
-        <p class="lesson-desc">En genomgång av de vanligaste skalorna och moderna — från pentatonisk till dorisk och mixolydisk — visualiserade på gitarrhalsen.</p>
-        <div class="coming-label">Kommer snart</div>
-      </div>
-
-      <div class="lesson-card coming-soon">
-        <div class="lesson-icon">👂</div>
+        <div class="coming-badge">Kommer snart</div>
+        <div class="lesson-icon">🎼</div>
         <div class="lesson-number">Lektion 4</div>
-        <div class="lesson-title">Gehörsträning</div>
-        <p class="lesson-desc">Träna ditt öra på intervall, ackord och rytmik. Gehöret är ett av de viktigaste verktygen för en musiker.</p>
-        <div class="coming-label">Kommer snart</div>
+        <div class="lesson-title">Mer kommer</div>
+        <div class="lesson-desc">Fler interaktiva lektioner är på gång.</div>
+        <div class="lesson-cta">Öppna lektion</div>
       </div>
 
     </div>
+  </div>
 
-    <!-- ── VERKTYG ── -->
-    <div class="section-label" style="margin-top:4rem;">Verktyg</div>
-    <div class="lessons-grid">
+  <hr class="section-divider">
 
-      <a href="../plankning/musicxmlgenerator.html" class="lesson-card">
-        <div class="lesson-icon">📄</div>
-        <div class="lesson-number">Verktyg</div>
+  <!-- Verktyg -->
+  <div class="section">
+    <div class="section-label">Verktyg</div>
+    <h2 class="section-title">För komponister &amp; arrangörer</h2>
+    <div class="cards-grid">
+
+      <a href="plankning/musicxmlgenerator.html" class="lesson-card" target="_blank" rel="noopener">
+        <div class="lesson-icon">🎹</div>
+        <div class="lesson-number">Verktyg 1</div>
         <div class="lesson-title">MusicXML Generator</div>
-        <p class="lesson-desc">Skapa noterade musikfiler i MusicXML-format — ett standardformat som kan importeras i notationsprogram som MuseScore, Sibelius och Finale. Praktiskt för att ta fram övningsmaterial och arrangemang.</p>
-        <div class="lesson-cta">Öppna verktyget</div>
+        <div class="lesson-desc">Skapa MusicXML-filer direkt i webbläsaren – exportera till noter i Sibelius, Finale eller MuseScore.</div>
+        <div class="lesson-cta">Öppna verktyg</div>
       </a>
 
       <div class="lesson-card coming-soon">
-        <div class="lesson-icon">🎙️</div>
-        <div class="lesson-number">Verktyg</div>
-        <div class="lesson-title">Plankningshjälp</div>
-        <p class="lesson-desc">Verktyg för att underlätta plankning — lyssna, sakta ner och analysera musik för att lära dig låtar och solon på gehör.</p>
-        <div class="coming-label">Kommer snart</div>
+        <div class="coming-badge">Kommer snart</div>
+        <div class="lesson-icon">🎧</div>
+        <div class="lesson-number">Verktyg 2</div>
+        <div class="lesson-title">Mer kommer</div>
+        <div class="lesson-desc">Fler verktyg är på gång.</div>
+        <div class="lesson-cta">Öppna verktyg</div>
       </div>
 
     </div>
   </div>
 
   <footer>
-    <p>© 2026 Richard Hauer · <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> · <a href="index.html">richardhauer.com</a></p>
+    <p>&copy; 2026 Richard Hauer · <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> · <a href="index.html">richardhauer.com</a></p>
   </footer>
 
 </body>
