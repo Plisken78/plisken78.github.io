@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kvintcirkeln</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center, #1a1208 0%, #0d0a04 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: 'Georgia', serif; padding: 20px;
+}
+h1 { color: #c9a84c; font-size: 1.4rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 4px; font-weight: 400; }
+.credit { color: #4a3a18; font-size: 0.6rem; letter-spacing: 0.2em; margin-bottom: 10px; text-transform: uppercase; }
+.subtitle { color: #7a6535; font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 24px; }
+.subtitle strong { color: #c9a84c; }
+.toggle { display: flex; gap: 8px; margin-bottom: 16px; }
+.toggle button {
+  padding: 4px 14px; font-size: 0.75rem; font-family: 'Georgia', serif;
+  border: 1px solid #c9a84c; border-radius: 4px; cursor: pointer;
+  background: transparent; color: #c9a84c;
+}
+.toggle button.active { background: #c9a84c; color: #0d0a04; }
+.seg { cursor: pointer; }
+.seg:hover { opacity: 0.85; }
+text { user-select: none; }
+.rows { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 0; }
+.row { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; width: 100%; max-width: 560px; }
+.cell {
+  width: 72px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; font-size: 13px; font-family: 'Georgia', serif;
+  font-weight: normal; letter-spacing: 0.03em;
+}
+</style>
+</head>
+<body>
+<h1>Kvintcirkeln</h1>
+<p class="credit">Richard Hauer &amp; Claude</p>
+<p class="subtitle" id="subtitle">Klicka på en ton för att centrera den · Grundton: <strong id="active-label">C</strong></p>
+<div class="toggle" id="toggle" style="display:none">
+  <button id="btn-sharp" onclick="setFlat(false)">F♯</button>
+  <button id="btn-flat"  onclick="setFlat(true)">G♭</button>
+</div>
+<svg id="qc" width="580" height="580" viewBox="-50 -50 580 580" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#2a1f0a"/>
+    <stop offset="100%" stop-color="#141007"/>
+  </radialGradient>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+    <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+</svg>
+<div class="rows" id="rows"></div>
+
+<script>
+const NOTES   = ["C","G","D","A","E","B","F♯/G♭","D♭","A♭","E♭","B♭","F"];
+const SHARPS  = ["0","1","2","3","4","5","6♯/6♭","5♭","4♭","3♭","2♭","1♭"];
+const ROMAN   = ["IV","I","V","II","VI","III","VII°"];
+const GERMAN  = ["S","T","D","Sp","Tp","Dp","D\u0338"];
+const SHARD_OFFSETS = [11,0,1,2,3,4,5];
+const FUNC_QUALITY  = {"S":"","T":"","D":"","Sp":"m","Tp":"m","Dp":"m","D\u0338":"m♭5"};
+const FC = {
+  "T":        {fill:"#e8e0cc", dim:"#8a8070", text:"#1a1208"},
+  "Sp":       {fill:"#4a9e4a", dim:"#1e4a1e", text:"#d8f0d8"},
+  "Dp":       {fill:"#7a4aaa", dim:"#3a1e5a", text:"#e8d8f8"},
+  "S":        {fill:"#cc3333", dim:"#6a1414", text:"#ffe0e0"},
+  "D":        {fill:"#cc7722", dim:"#6a3a08", text:"#fff0d0"},
+  "Tp":       {fill:"#3366cc", dim:"#1a2e6a", text:"#d8e8ff"},
+  "D\u0338":  {fill:"#8a6a3a", dim:"#3a2a14", text:"#f0e0c0"},
+};
+
+const NS = "http://www.w3.org/2000/svg";
+const cx=240, cy=240;
+const outerR=210, mid1R=162, mid2R=122, innerR=86;
+const SH1=-45, SH2=165;
+const S_OUT2=outerR+44, S_OUT1=outerR+22, S_IN2=outerR+21, S_IN1=outerR+2;
+
+let activeNote=0, rotation=0, preferFlat=false;
+
+function toRad(d){ return (d-90)*Math.PI/180; }
+function pt(d,r){ return {x:cx+r*Math.cos(toRad(d)), y:cy+r*Math.sin(toRad(d))}; }
+
+function segP(a1,a2,rO,rI){
+  const s1=pt(a1,rO),e1=pt(a2,rO),s2=pt(a1,rI),e2=pt(a2,rI);
+  return `M${s1.x},${s1.y} A${rO},${rO} 0 0,1 ${e1.x},${e1.y} L${e2.x},${e2.y} A${rI},${rI} 0 0,0 ${s2.x},${s2.y}Z`;
+}
+function arcP(a1,a2,rO,rI){
+  const s1=pt(a1,rO),e1=pt(a2,rO),s2=pt(a1,rI),e2=pt(a2,rI);
+  const lg=((a2-a1)+360)%360>180?1:0;
+  return `M${s1.x},${s1.y} A${rO},${rO} 0 ${lg},1 ${e1.x},${e1.y} L${e2.x},${e2.y} A${rI},${rI} 0 ${lg},0 ${s2.x},${s2.y}Z`;
+}
+function mk(tag,attrs,par){
+  const e=document.createElementNS(NS,tag);
+  for(const[k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  if(par) par.appendChild(e); return e;
+}
+function tx(x,y,str,attrs,par){
+  const t=mk("text",{x,y,"text-anchor":"middle","dominant-baseline":"central",...attrs},par);
+  t.textContent=str; return t;
+}
+
+function getNoteName(idx, an, pf){
+  const sharpCtx = (an>=1 && an<=5) || (an===6 && !pf);
+  if(idx===6) return sharpCtx?"F♯":"G♭";
+  if(sharpCtx){
+    const sm={7:"C♯",8:"G♯",9:"D♯",10:"A♯"};
+    if(sm[idx]) return sm[idx];
+  }
+  if(!sharpCtx && an===6 && idx===5) return "C♭";
+  return NOTES[idx];
+}
+function diaFunc(idx){
+  for(let fi=0;fi<7;fi++)
+    if((activeNote+SHARD_OFFSETS[fi])%12===idx) return GERMAN[fi];
+  return null;
+}
+function shardNote(fi){ return getNoteName((activeNote+SHARD_OFFSETS[fi])%12, activeNote, preferFlat); }
+function chordLabel(idx){
+  const fn=diaFunc(idx); if(!fn) return "";
+  return getNoteName(idx,activeNote,preferFlat)+(FUNC_QUALITY[fn]||"");
+}
+
+function setFlat(pf){
+  preferFlat=pf;
+  document.getElementById("btn-sharp").classList.toggle("active",!pf);
+  document.getElementById("btn-flat").classList.toggle("active",pf);
+  render();
+}
+
+function render(){
+  const svg=document.getElementById("qc");
+  [...svg.children].forEach(c=>{ if(c.tagName!=="defs") svg.removeChild(c); });
+
+  const an=activeNote, pf=preferFlat;
+  const activeName=getNoteName(an,an,pf);
+
+  document.getElementById("active-label").textContent=activeName;
+  document.getElementById("toggle").style.display = an===6?"flex":"none";
+  document.getElementById("subtitle").style.marginBottom = an===6?"8px":"24px";
+
+  mk("circle",{cx,cy,r:outerR,fill:"url(#bgGrad)",stroke:"#4a3820","stroke-width":"1.5"},svg);
+
+  // Rotating group
+  const grp=mk("g",{transform:`rotate(${rotation},${cx},${cy})`,style:"transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1)"},svg);
+
+  for(let i=0;i<12;i++){
+    const a1=i*30-15, a2=i*30+15, mid=i*30;
+    const isAct=i===an;
+    const fn=diaFunc(i); const fc=fn?FC[fn]:null;
+    const p1=pt(mid,(outerR+mid1R)/2);
+    const p2=pt(mid,(mid1R+mid2R)/2);
+    const p3=pt(mid,(mid2R+innerR)/2);
+    const cl=chordLabel(i);
+    const noteName=getNoteName(i,an,pf);
+
+    const g=mk("g",{"class":"seg"},grp);
+    g.addEventListener("click",()=>{ activeNote=i; rotation=-i*30; if(i!==6) preferFlat=false; render(); });
+
+    mk("path",{d:segP(a1,a2,outerR-1,mid1R+1),
+      fill:fc?fc.dim:(isAct?"#3d2a08":"#1e1508"),
+      stroke:isAct?"#c9a84c":"#4a3820","stroke-width":isAct?"1.5":"0.8"},g);
+    const t1=tx(p1.x,p1.y,noteName,{
+      fill:fc?fc.text:(isAct?"#f0d078":"#c9a84c"),
+      "font-size":noteName.length>2?"12":"16",
+      "font-weight":isAct?"bold":"normal"},g);
+    if(isAct) t1.setAttribute("filter","url(#glow)");
+
+    mk("path",{d:segP(a1,a2,mid1R,mid2R+1),
+      fill:fc?fc.dim+"cc":(isAct?"#2a1f08":"#181208"),
+      stroke:"#3a2c14","stroke-width":"0.6"},g);
+    tx(p2.x,p2.y,cl,{fill:fc?fc.text:(isAct?"#d4956a":"#8a6545"),"font-size":"11"},g);
+
+    mk("path",{d:segP(a1,a2,mid2R,innerR+1),
+      fill:isAct?"#1f1808":"#130f06",stroke:"#2e2410","stroke-width":"0.6"},g);
+    tx(p3.x,p3.y,SHARPS[i],{fill:isAct?"#a09060":"#5a4830","font-size":"10"},g);
+  }
+  mk("circle",{cx,cy,r:innerR,fill:"#0d0a04",stroke:"#3a2c14","stroke-width":"1"},grp);
+
+  // Fixed shard backgrounds
+  mk("path",{d:arcP(SH1,SH2,S_IN2,S_IN1),fill:"rgba(20,10,0,0.90)",stroke:"#6a4a18","stroke-width":"0.8"},svg);
+  mk("path",{d:arcP(SH1,SH2,S_OUT2,S_OUT1),fill:"rgba(10,8,0,0.90)",stroke:"#5a4020","stroke-width":"1"},svg);
+
+  // Shard segments
+  for(let fi=0;fi<7;fi++){
+    const a1=SH1+fi*30, a2=a1+30, mid=a1+15;
+    const fc=FC[GERMAN[fi]];
+    const outerMid=(S_OUT1+S_OUT2)/2;
+    const innerMid=(S_IN1+S_IN2)/2;
+    mk("path",{d:segP(a1,a2,S_OUT2,S_OUT1),fill:fc.fill,stroke:"rgba(0,0,0,0.3)","stroke-width":"0.5"},svg);
+    tx(pt(mid,outerMid).x,pt(mid,outerMid).y,GERMAN[fi],{fill:fc.text,"font-size":"11","font-weight":"bold"},svg);
+    tx(pt(mid,innerMid).x,pt(mid,innerMid).y,ROMAN[fi],{fill:"#c9a84c","font-size":"9"},svg);
+  }
+
+  // Divider arc
+  const d1=pt(SH1,S_OUT1), d2=pt(SH2,S_OUT1);
+  mk("path",{d:`M${d1.x},${d1.y} A${S_OUT1},${S_OUT1} 0 1,1 ${d2.x},${d2.y}`,fill:"none",stroke:"#5a4020","stroke-width":"0.7"},svg);
+
+  // Shard dividers
+  for(let i=0;i<=7;i++){
+    const ang=SH1+i*30, p1=pt(ang,S_IN1), p2=pt(ang,S_OUT2);
+    mk("line",{x1:p1.x,y1:p1.y,x2:p2.x,y2:p2.y,stroke:"#4a3820","stroke-width":"0.6"},svg);
+  }
+
+  // Pointer
+  mk("polygon",{points:`${cx},${cy-outerR-62} ${cx-5},${cy-outerR-50} ${cx+5},${cy-outerR-50}`,fill:"#c9a84c",opacity:"0.8"},svg);
+
+  // Center
+  const ct=tx(cx,cy-14,activeName,{fill:"#c9a84c","font-size":"28","font-weight":"bold"},svg);
+  ct.setAttribute("filter","url(#glow)");
+  tx(cx,cy+14,shardNote(4)+"m",{fill:"#7a6535","font-size":"13"},svg);
+
+  // Scale rows
+  const SCALE_FI=[1,3,5,0,2,4,6];
+  const cells=SCALE_FI.map(fi=>{
+    const gfn=GERMAN[fi], roman=ROMAN[fi];
+    const ni=(activeNote+SHARD_OFFSETS[fi])%12;
+    const name=getNoteName(ni,activeNote,preferFlat);
+    const chord=name+(FUNC_QUALITY[gfn]||"");
+    const fc=FC[gfn];
+    return {gfn,roman,name,chord,fc};
+  });
+
+  const rows=document.getElementById("rows");
+  rows.innerHTML="";
+
+  const rowData=[
+    cells.map(({name,fc})=>({text:name, bg:fc.dim+"ff", color:fc.text, bold:true, fs:name.length>2?"11px":"14px"})),
+    cells.map(({chord,fc})=>({text:chord, bg:fc.dim+"dd", color:fc.text, bold:false, fs:chord.length>3?"10px":"12px"})),
+    cells.map(({gfn,fc})=>({text:gfn, bg:fc.fill, color:fc.text, bold:true, fs:"12px"})),
+    cells.map(({roman,fc})=>({text:roman, bg:"transparent", color:fc.fill, bold:false, fs:"11px", border:`1px solid ${fc.fill}88`})),
+  ];
+
+  rowData.forEach(row=>{
+    const div=document.createElement("div");
+    div.className="row";
+    row.forEach(({text,bg,color,bold,fs,border})=>{
+      const cell=document.createElement("div");
+      cell.className="cell";
+      cell.textContent=text;
+      cell.style.background=bg;
+      cell.style.color=color;
+      cell.style.fontWeight=bold?"bold":"normal";
+      cell.style.fontSize=fs;
+      if(border) cell.style.border=border;
+      div.appendChild(cell);
+    });
+    rows.appendChild(div);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
