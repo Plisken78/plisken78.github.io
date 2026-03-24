@@ -194,14 +194,11 @@ async function nextSong() {
   const container = document.getElementById('score-container');
   container.innerHTML = '<div class="loading">Renderar noter…</div>';
   try {
-    const res = await fetch(song.file);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const xmlText = await res.text();
     container.innerHTML = '';
     if (!osmd) {
       osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, { autoResize: true, backend: 'svg' });
     } else { osmd.container = container; }
-    await osmd.load(xmlText);
+    await osmd.load(song.file);
     osmd.render();
     document.getElementById('toolbarStatus').textContent = song.title || song.file;
   } catch (e) {
