@@ -92,6 +92,9 @@
     .placeholder p { font-size: 1.1rem; font-style: italic; color: #999; }
     .error-msg { padding: 1rem 1.5rem; background: #2a1010; color: #e07070; border-left: 3px solid var(--red); font-size: 0.9rem; margin: 1rem; border-radius: 2px; }
     .loading { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); font-style: italic; font-size: 1.1rem; }
+    footer { padding: 0.7rem 2rem; border-top: 1px solid var(--line); text-align: right; font-size: 0.78rem; color: var(--text-dim); font-style: italic; }
+    footer a { color: var(--amber-dim); text-decoration: none; }
+    footer a:hover { color: var(--amber); }
     @media (max-width: 700px) {
       .main-layout { flex-direction: column; }
       .sidebar { width: 100%; min-width: unset; border-right: none; border-bottom: 1px solid var(--line); }
@@ -143,6 +146,7 @@
     </div>
   </div>
 </div>
+<footer>Utvecklad av <a href="https://richardhauer.com">Richard Hauer</a> &amp; Claude</footer>
 <script>
 const SONGS_JSON = 'songs.json';
 const STORAGE_KEY = 'notlasning_counts';
