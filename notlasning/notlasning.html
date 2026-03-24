@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notläsning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay/build/opensheetmusicdisplay.min.js"></script>
+  <style>
+    :root {
+      --bg:        #0f0e0c;
+      --surface:   #1a1814;
+      --paper:     #f5f0e8;
+      --amber:     #c8913a;
+      --amber-dim: #7a5520;
+      --text-light:#e8e0d0;
+      --text-dim:  #8a7f6e;
+      --red:       #c0392b;
+      --line:      #2e2b24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-light);
+      font-family: 'Crimson Pro', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 1.8rem 2.5rem 1.2rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--amber);
+    }
+    header .subtitle { font-size: 1rem; color: var(--text-dim); font-style: italic; }
+    .main-layout { display: flex; flex: 1; }
+    .sidebar {
+      width: 260px; min-width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--line);
+      padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 1.8rem;
+    }
+    .sidebar-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-dim);
+      margin-bottom: 0.8rem;
+    }
+    .metro-display { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--amber); text-align: center; line-height: 1; }
+    .metro-bpm-label { text-align: center; font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .metro-slider { width: 100%; margin: 0.8rem 0; accent-color: var(--amber); cursor: pointer; }
+    .metro-controls { display: flex; gap: 0.6rem; }
+    .btn {
+      flex: 1; padding: 0.5rem 0.8rem;
+      border: 1px solid var(--amber-dim); background: transparent;
+      color: var(--text-light); font-family: 'Crimson Pro', serif; font-size: 0.95rem;
+      cursor: pointer; transition: background 0.15s, color 0.15s; border-radius: 2px;
+    }
+    .btn:hover { background: var(--amber-dim); }
+    .btn.active { background: var(--amber); color: var(--bg); border-color: var(--amber); font-weight: 700; }
+    .metro-beat { width: 12px; height: 12px; border-radius: 50%; background: var(--amber-dim); margin: 0.6rem auto 0; transition: background 0.05s, transform 0.05s; }
+    .metro-beat.pulse { background: var(--amber); transform: scale(1.5); }
+    .song-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--text-light); margin-bottom: 0.3rem; line-height: 1.3; }
+    .song-meta { font-size: 0.85rem; color: var(--text-dim); font-style: italic; }
+    .song-counter { margin-top: 0.5rem; font-size: 0.8rem; color: var(--amber-dim); }
+    .stats-list { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+    .stats-list li { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-dim); padding: 0.25rem 0; border-bottom: 1px solid var(--line); }
+    .stats-list li span.count { color: var(--amber-dim); font-weight: 600; }
+    .stats-list li.current-song { color: var(--amber); }
+    .score-area { flex: 1; display: flex; flex-direction: column; }
+    .score-toolbar { padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 1rem; }
+    .btn-next { padding: 0.5rem 1.4rem; background: var(--amber); color: var(--bg); border: none; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; cursor: pointer; border-radius: 2px; transition: opacity 0.15s; }
+    .btn-next:hover { opacity: 0.85; }
+    .toolbar-status { font-size: 0.88rem; color: var(--text-dim); font-style: italic; }
+    #score-container { flex: 1; background: var(--paper); padding: 2rem; overflow-y: auto; }
+    #score-container svg { max-width: 100%; }
+    .placeholder { display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; gap: 1rem; }
+    .placeholder .big-clef { font-size: 8rem; opacity: 0.15; color: #333; line-height: 1; }
+    .placeholder p { font-size: 1.1rem; font-style: italic; color: #999; }
+    .error-msg { padding: 1rem 1.5rem; background: #2a1010; color: #e07070; border-left: 3px solid var(--red); font-size: 0.9rem; margin: 1rem; border-radius: 2px; }
+    .loading { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); font-style: italic; font-size: 1.1rem; }
+    @media (max-width: 700px) {
+      .main-layout { flex-direction: column; }
+      .sidebar { width: 100%; min-width: unset; border-right: none; border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Notläsning</h1>
+  <span class="subtitle">Slumpmässiga övningar</span>
+</header>
+<div class="main-layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h2>Metronom</h2>
+      <div class="metro-display" id="bpmDisplay">80</div>
+      <div class="metro-bpm-label">BPM</div>
+      <input type="range" class="metro-slider" id="bpmSlider" min="40" max="220" value="80">
+      <div class="metro-controls">
+        <button class="btn" id="btnMetroMinus">−</button>
+        <button class="btn" id="btnMetroToggle">Start</button>
+        <button class="btn" id="btnMetroPlus">+</button>
+      </div>
+      <div class="metro-beat" id="metroBeat"></div>
+    </div>
+    <div class="sidebar-section">
+      <h2>Aktuell låt</h2>
+      <div class="song-title" id="currentTitle">—</div>
+      <div class="song-meta" id="currentMeta">Tryck på "Ny låt" för att börja</div>
+      <div class="song-counter" id="currentCount"></div>
+    </div>
+    <div class="sidebar-section">
+      <h2>Statistik</h2>
+      <ul class="stats-list" id="statsList">
+        <li style="color:var(--text-dim);font-style:italic;font-size:0.82rem;">Inga låtar spelade än</li>
+      </ul>
+    </div>
+  </aside>
+  <div class="score-area">
+    <div class="score-toolbar">
+      <button class="btn-next" id="btnNext">Ny låt →</button>
+      <span class="toolbar-status" id="toolbarStatus">Laddar låtlista…</span>
+    </div>
+    <div id="score-container">
+      <div class="placeholder">
+        <div class="big-clef">𝄞</div>
+        <p>Tryck på "Ny låt" för att börja</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const SONGS_JSON = 'songs.json';
+const STORAGE_KEY = 'notlasning_counts';
+let songs = [], counts = {}, currentSong = null, osmd = null;
+let metroRunning = false, metroInterval = null, bpm = 80, audioCtx = null;
+
+async function init() {
+  loadCounts();
+  await loadSongList();
+  initMetronome();
+  document.getElementById('btnNext').addEventListener('click', nextSong);
+}
+
+async function loadSongList() {
+  const status = document.getElementById('toolbarStatus');
+  try {
+    const res = await fetch(SONGS_JSON);
+    if (!res.ok) throw new Error(`songs.json svarade ${res.status}`);
+    songs = await res.json();
+    status.textContent = `${songs.length} låtar inladdade — välj en!`;
+    updateStats();
+  } catch (e) {
+    status.textContent = 'Kunde inte ladda songs.json';
+    document.getElementById('score-container').innerHTML =
+      `<div class="error-msg">⚠️ Kan inte hitta <strong>songs.json</strong>.<br>Lägg filen i samma mapp som notlasning.html.</div>`;
+  }
+}
+
+function pickSong() {
+  if (!songs.length) return null;
+  const weights = songs.map(s => 1 / ((counts[s.file] || 0) + 1));
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < songs.length; i++) { r -= weights[i]; if (r <= 0) return songs[i]; }
+  return songs[songs.length - 1];
+}
+
+async function nextSong() {
+  if (!songs.length) return;
+  const song = pickSong();
+  currentSong = song;
+  counts[song.file] = (counts[song.file] || 0) + 1;
+  saveCounts();
+  updateStats();
+  document.getElementById('currentTitle').textContent = song.title || song.file;
+  document.getElementById('currentMeta').textContent = song.file;
+  document.getElementById('currentCount').textContent = `Visad ${counts[song.file]} gång${counts[song.file] !== 1 ? 'er' : ''}`;
+  document.getElementById('toolbarStatus').textContent = `Laddar ${song.title || song.file}…`;
+  const container = document.getElementById('score-container');
+  container.innerHTML = '<div class="loading">Renderar noter…</div>';
+  try {
+    const res = await fetch(song.file);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const xmlText = await res.text();
+    container.innerHTML = '';
+    if (!osmd) {
+      osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, { autoResize: true, backend: 'svg' });
+    } else { osmd.container = container; }
+    await osmd.load(xmlText);
+    osmd.render();
+    document.getElementById('toolbarStatus').textContent = song.title || song.file;
+  } catch (e) {
+    container.innerHTML = `<div class="error-msg">⚠️ Kunde inte ladda <strong>${song.file}</strong><br>${e.message}</div>`;
+    document.getElementById('toolbarStatus').textContent = 'Fel vid inladdning';
+  }
+}
+
+function updateStats() {
+  const list = document.getElementById('statsList');
+  if (!songs.length) return;
+  const sorted = [...songs].map(s => ({ ...s, count: counts[s.file] || 0 })).sort((a, b) => b.count - a.count);
+  list.innerHTML = sorted.map(s => `
+    <li class="${currentSong && s.file === currentSong.file ? 'current-song' : ''}">
+      <span>${s.title || s.file}</span><span class="count">${s.count}</span>
+    </li>`).join('');
+}
+
+function loadCounts() { try { counts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { counts = {}; } }
+function saveCounts() { localStorage.setItem(STORAGE_KEY, JSON.stringify(counts)); }
+
+function initMetronome() {
+  const slider = document.getElementById('bpmSlider');
+  const display = document.getElementById('bpmDisplay');
+  slider.addEventListener('input', () => { bpm = parseInt(slider.value); display.textContent = bpm; if (metroRunning) restartMetro(); });
+  document.getElementById('btnMetroMinus').addEventListener('click', () => { bpm = Math.max(40, bpm-1); slider.value = bpm; display.textContent = bpm; if (metroRunning) restartMetro(); });
+  document.getElementById('btnMetroPlus').addEventListener('click', () => { bpm = Math.min(220, bpm+1); slider.value = bpm; display.textContent = bpm; if (metroRunning) restartMetro(); });
+  document.getElementById('btnMetroToggle').addEventListener('click', () => metroRunning ? stopMetro() : startMetro());
+}
+
+function startMetro() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  metroRunning = true;
+  document.getElementById('btnMetroToggle').textContent = 'Stopp';
+  document.getElementById('btnMetroToggle').classList.add('active');
+  tick(); metroInterval = setInterval(tick, (60/bpm)*1000);
+}
+function stopMetro() {
+  metroRunning = false; clearInterval(metroInterval);
+  document.getElementById('btnMetroToggle').textContent = 'Start';
+  document.getElementById('btnMetroToggle').classList.remove('active');
+}
+function restartMetro() { clearInterval(metroInterval); metroInterval = setInterval(tick, (60/bpm)*1000); }
+function tick() {
+  if (audioCtx) {
+    const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+    osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.05);
+  }
+  const beat = document.getElementById('metroBeat');
+  beat.classList.add('pulse');
+  setTimeout(() => beat.classList.remove('pulse'), 80);
+}
+
+init();
+</script>
+</body>
+</html>
