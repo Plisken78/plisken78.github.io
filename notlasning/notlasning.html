@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay/build/opensheetmusicdisplay.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/osmd-audio-player/dist/osmd-audio-player.min.js"></script>
   <style>
     :root {
       --bg:        #0f0e0c;
@@ -85,9 +84,6 @@
     .score-toolbar { padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 1rem; }
     .btn-next { padding: 0.5rem 1.4rem; background: var(--amber); color: var(--bg); border: none; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; cursor: pointer; border-radius: 2px; transition: opacity 0.15s; }
     .btn-next:hover { opacity: 0.85; }
-    .btn-play { padding: 0.5rem 1.2rem; background: transparent; color: var(--amber); border: 1px solid var(--amber-dim); font-family: 'Playfair Display', serif; font-size: 1rem; cursor: pointer; border-radius: 2px; transition: all 0.15s; display: none; }
-    .btn-play:hover { background: var(--amber-dim); }
-    .btn-play.playing { background: var(--amber); color: var(--bg); border-color: var(--amber); }
     .toolbar-status { font-size: 0.88rem; color: var(--text-dim); font-style: italic; }
     #score-container { flex: 1; background: var(--paper); padding: 2rem; overflow-y: auto; }
     #score-container svg { max-width: 100%; }
@@ -137,7 +133,6 @@
   <div class="score-area">
     <div class="score-toolbar">
       <button class="btn-next" id="btnNext">Ny låt →</button>
-      <button class="btn-play" id="btnPlay">▶ Spela</button>
       <span class="toolbar-status" id="toolbarStatus">Laddar låtlista…</span>
     </div>
     <div id="score-container">
@@ -153,14 +148,12 @@ const SONGS_JSON = 'songs.json';
 const STORAGE_KEY = 'notlasning_counts';
 let songs = [], counts = {}, currentSong = null, osmd = null;
 let metroRunning = false, metroInterval = null, bpm = 80, audioCtx = null;
-let playbackManager = null, isPlaying = false;
 
 async function init() {
   loadCounts();
   await loadSongList();
   initMetronome();
   document.getElementById('btnNext').addEventListener('click', nextSong);
-  document.getElementById('btnPlay').addEventListener('click', togglePlayback);
 }
 
 async function loadSongList() {
@@ -208,45 +201,9 @@ async function nextSong() {
     await osmd.load(song.file);
     osmd.render();
     document.getElementById('toolbarStatus').textContent = song.title || song.file;
-    // Initiera playback
-    await initPlayback();
   } catch (e) {
     container.innerHTML = `<div class="error-msg">⚠️ Kunde inte ladda <strong>${song.file}</strong><br>${e.message}</div>`;
     document.getElementById('toolbarStatus').textContent = 'Fel vid inladdning';
-  }
-}
-
-async function initPlayback() {
-  const btnPlay = document.getElementById('btnPlay');
-  try {
-    if (playbackManager) { playbackManager.pause(); isPlaying = false; }
-    const audioPlayer = new BasicAudioPlayer();
-    playbackManager = new opensheetmusicdisplay.PlaybackManager(osmd, undefined, audioPlayer, undefined);
-    await playbackManager.initialize();
-    playbackManager.addListener({ bpmChanged: () => {}, volumeChanged: () => {},
-      pauseOccurred: () => { isPlaying = false; btnPlay.textContent = '▶ Spela'; btnPlay.classList.remove('playing'); },
-      selectionEndReached: () => { isPlaying = false; btnPlay.textContent = '▶ Spela'; btnPlay.classList.remove('playing'); },
-      resetOccurred: () => {} });
-    btnPlay.style.display = 'inline-block';
-    btnPlay.textContent = '▶ Spela';
-    btnPlay.classList.remove('playing');
-    isPlaying = false;
-  } catch(e) { btnPlay.style.display = 'none'; console.warn('Playback ej tillgängligt:', e); }
-}
-
-function togglePlayback() {
-  const btnPlay = document.getElementById('btnPlay');
-  if (!playbackManager) return;
-  if (isPlaying) {
-    playbackManager.pause();
-    isPlaying = false;
-    btnPlay.textContent = '▶ Spela';
-    btnPlay.classList.remove('playing');
-  } else {
-    playbackManager.play();
-    isPlaying = true;
-    btnPlay.textContent = '⏸ Paus';
-    btnPlay.classList.add('playing');
   }
 }
 
