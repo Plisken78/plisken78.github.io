@@ -196,7 +196,7 @@ async function nextSong() {
   try {
     container.innerHTML = '';
     if (!osmd) {
-      osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, { autoResize: true, backend: 'svg' });
+      osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container, { autoResize: true, backend: 'svg', drawPartNames: false });
     } else { osmd.container = container; }
     await osmd.load(song.file);
     osmd.render();
