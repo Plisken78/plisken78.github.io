@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skaljämföraren</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;1,300&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0a0a0f;
@@ -16,7 +16,7 @@
   --faint: rgba(240,240,248,0.07);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; padding: 2rem 1.5rem 4rem; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; padding: 2rem 1.5rem 4rem; }
 
 h1 { font-size: clamp(1.8rem,4vw,3rem); font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg,#fff 30%,rgba(255,255,255,0.4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.2rem; }
 .subtitle { font-size: 0.8rem; color: var(--muted); font-weight: 300; margin-bottom: 2rem; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -41,8 +41,8 @@ select:focus { border-color: rgba(255,255,255,0.2); }
 .mode-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .mode-roman { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.68rem; opacity: 0.45; }
 
-.chrom-row { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding: 14px 8px; overflow-y: hidden; }
-.chrom-chip { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; border: 2px solid rgba(0,0,0,0.15); transition: transform 0.08s; text-align: center; line-height: 1.2; }
+.chrom-row { display: flex; gap: 3px; flex-wrap: nowrap; padding: 10px 4px; }
+.chrom-chip { flex: 1; min-width: 0; aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.85rem; font-weight: 600; border: 2px solid rgba(0,0,0,0.15); transition: transform 0.08s; text-align: center; line-height: 1.2; }
 .chrom-chip.playing { transform: scale(1.28); z-index: 2; }
 .chrom-chip.root-chip { border: 2px solid rgba(255,255,255,0.5); }
 .chrom-chip.in-scale { border: 2px solid rgba(255,255,255,0.2); }
@@ -57,24 +57,25 @@ select:focus { border-color: rgba(255,255,255,0.2); }
 .bpm-row input[type=range] { width: 80px; accent-color: rgba(255,255,255,0.45); }
 .bpm-val { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--text); min-width: 32px; }
 
-.grid-scroll { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; min-width: 560px; }
-th { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 400; color: var(--muted); padding: 7px 3px; text-align: center; border-bottom: 1px solid var(--border); }
+.scale-card { display: inline-block; vertical-align: top; width: 90px; margin-right: 6px; padding: 8px 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; } .scale-card-header { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; font-size: 0.78rem; font-weight: 600; color: var(--text); } .scale-dots-row { display: flex; flex-direction: column; gap: 9px; } .scale-dot-row { display: flex; align-items: center; gap: 10px; } .scale-int-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: rgba(240,240,248,0.45); min-width: 28px; }
+table { border-collapse: collapse; width: 100%; }
+th { font-family: 'DM Mono', monospace; font-size: 0.6rem; font-weight: 400; color: var(--muted); padding: 5px 1px; text-align: center; border-bottom: 1px solid var(--border); }
 th.diff-head { color: #ffdd55; background: rgba(255,221,85,0.06); border-bottom-color: rgba(255,221,85,0.3); }
-th.name-head { text-align: left; padding-left: 12px; min-width: 160px; }
-td { padding: 5px 3px; text-align: center; border-bottom: 1px solid var(--faint); }
+th.name-head { text-align: left; padding-left: 12px; min-width: 90px; }
+td { padding: 4px 1px; text-align: center; border-bottom: 1px solid var(--faint); }
 td.name-cell { text-align: left; padding-left: 12px; white-space: nowrap; }
 td.diff-col { background: rgba(255,221,85,0.04); }
 .row-name { font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 7px; }
 .row-roman { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); }
 
-.dot { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.58rem; font-weight: 500; transition: transform 0.08s; border: 1.5px solid rgba(0,0,0,0.12); line-height: 1; text-align: center; }
+.dot { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.9rem; font-weight: 700; transition: transform 0.08s; border: 1.5px solid rgba(0,0,0,0.12); line-height: 1; text-align: center; }
 .dot.diff-dot { transform: scale(1.12); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px rgba(255,221,85,0.55); }
 .dot.playing-dot { transform: scale(1.38) !important; }
-.empty-dot { width: 30px; height: 30px; border-radius: 50%; display: inline-block; border: 1px solid rgba(255,255,255,0.05); }
+.empty-dot { width: 28px; height: 28px; border-radius: 50%; display: inline-block; border: 1.5px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
 
-.fretboard-row { display: flex; gap: 1rem; flex-wrap: wrap; }
-.fretboard-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; flex: 1; min-width: 280px; }
+.fretboard-row { display: flex; gap: 0.6rem; flex-wrap: nowrap; }
+.fretboard-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0.8rem; flex: 1; min-width: 0; overflow: hidden; }
+.fretboard-svg { width: 100%; height: auto; display: block; }
 .fretboard-wrap { overflow-x: auto; }
 .fretboard-svg { display: block; }
 
@@ -95,8 +96,8 @@ td.diff-col { background: rgba(255,221,85,0.04); }
 
 <div class="main">
   <div>
-    <h1>Skaljämföraren</h1>
-    <p class="subtitle">Richard Hauer · Kyrkotonarter &amp; skalor</p>
+    <h1 style="text-align:right;padding-top:16px;text-transform:uppercase;letter-spacing:3px">Skaljämföraren</h1>
+    <p class="subtitle" style="text-align:right">Richard Hauer · Kyrkotonarter &amp; skalor</p>
   </div>
 
   <!-- Kyrkotonart & grundton -->
@@ -140,9 +141,9 @@ td.diff-col { background: rgba(255,221,85,0.04); }
   </div>
 
   <!-- Jämförelsetabell -->
-  <div class="card">
+  <div class="card" style="overflow-x:auto;">
     <div class="diff-info" id="diffInfo"></div>
-    <div class="grid-scroll"><table id="scaleGrid"></table></div>
+    <div id="scaleGrid" style="display:flex;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;align-items:flex-start;gap:6px;"></div>
   </div>
 
   <!-- Greppbrädor -->
@@ -724,10 +725,10 @@ function getDiffs() {
 }
 
 function renderGrid() {
-  const table = document.getElementById('scaleGrid');
-  table.innerHTML='';
+  const el = document.getElementById('scaleGrid');
+  el.innerHTML='';
+  el.style.cssText='overflow-x:auto;white-space:nowrap;';
   const diffs = getDiffs();
-  // Rows: currentMode first, then selected
   const rows = [currentMode, ...ALL_MODES.filter(m=>m!==currentMode&&selected.has(m))];
 
   // Diff info
@@ -747,24 +748,6 @@ function renderGrid() {
     }
   }
 
-  // Header
-  const rootS = NOTE_SEMI[currentRoot]??0;
-  const baseNotes = SCALE_MAP[currentMode]?.[currentRoot]??[];
-  const semiToName={};
-  baseNotes.forEach(n=>{semiToName[(NOTE_SEMI[n]-rootS+12)%12]=n;});
-
-  const thead=document.createElement('thead');
-  let hr='<tr><th class="name-head">Läge</th>';
-  for(let s=0;s<12;s++){
-    const dc=diffs.has(s)?' diff-head':'';
-    const nn=semiToName[s]??'';
-    hr+=`<th class="${dc}">${nn}<br><span style="opacity:0.35;font-size:0.58rem">${INT_NAMES[s]}</span></th>`;
-  }
-  hr+='</tr>';
-  thead.innerHTML=hr;
-  table.appendChild(thead);
-
-  const tbody=document.createElement('tbody');
   rows.forEach(modeName=>{
     const iset=new Set(MODE_INTERVALS[modeName]);
     const modeRoot=getRootForMode(modeName);
@@ -772,24 +755,72 @@ function renderGrid() {
     const mRootS=NOTE_SEMI[modeRoot]??0;
     const mSemiToName={};
     modeNotes.forEach(n=>{mSemiToName[(NOTE_SEMI[n]-mRootS+12)%12]=n;});
-
-    const tr=document.createElement('tr');
     const isPrimary = modeName===currentMode;
-    let cells=`<td class="name-cell"><div class="row-name"><span style="width:9px;height:9px;border-radius:50%;background:${MODE_COLORS[modeName]};display:inline-block;flex-shrink:0;${isPrimary?'box-shadow:0 0 0 2px rgba(255,255,255,0.25)':''}"></span>${currentRoot} ${modeName}<span class="row-roman">${MODE_ROMANS[modeName]}</span></div></td>`;
-    for(let s=0;s<12;s++){
-      const dc=diffs.has(s)?' diff-col':'';
+
+    const card = document.createElement('div');
+    card.className = 'scale-card';
+
+    // Header row
+    const header = document.createElement('div');
+    header.className = 'scale-card-header';
+    header.innerHTML = `<span style="width:10px;height:10px;border-radius:50%;background:${MODE_COLORS[modeName]};display:inline-block;flex-shrink:0;${isPrimary?'box-shadow:0 0 0 2px rgba(255,255,255,0.3)':''}"></span>${currentRoot} ${modeName} <span style="font-family:'DM Mono',monospace;font-size:0.65rem;opacity:0.4;margin-left:4px">${MODE_ROMANS[modeName]}</span>`;
+    card.appendChild(header);
+
+    // Dots row
+    const dotsRow = document.createElement('div');
+    dotsRow.className = 'scale-dots-row';
+    // Octave at top
+    {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'scale-dot-row';
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.background = CHROM_COLORS[0];
+      dot.style.color = CHROM_TEXT[0];
+      dot.style.width = '28px';
+      dot.style.height = '28px';
+      dot.textContent = modeNotes.length ? modeNotes[0] : modeRoot;
+      const intLabel = document.createElement('span');
+      intLabel.className = 'scale-int-label';
+      intLabel.textContent = 'R8';
+      rowDiv.appendChild(dot);
+      rowDiv.appendChild(intLabel);
+      dotsRow.appendChild(rowDiv);
+    }
+    for(let s=11;s>=0;s--){
       if(iset.has(s)){
         const noteName=mSemiToName[s]??'';
         const isDiff=diffs.has(s);
-        cells+=`<td class="${dc}"><div class="dot${isDiff?' diff-dot':''}" data-semi="${s}" style="background:${CHROM_COLORS[s]};color:${CHROM_TEXT[s]}">${noteName}</div></td>`;
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'scale-dot-row';
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (isDiff?' diff-dot':'');
+        dot.dataset.semi = s;
+        dot.style.background = CHROM_COLORS[s];
+        dot.style.color = CHROM_TEXT[s];
+        dot.style.width = '28px';
+        dot.style.height = '28px';
+        dot.textContent = noteName;
+        const intLabel = document.createElement('span');
+        intLabel.className = 'scale-int-label';
+        intLabel.textContent = INT_NAMES[s];
+        rowDiv.appendChild(dot);
+        rowDiv.appendChild(intLabel);
+        dotsRow.appendChild(rowDiv);
       } else {
-        cells+=`<td class="${dc}"><div class="empty-dot"></div></td>`;
+        const emptyRow = document.createElement('div');
+        emptyRow.className = 'scale-dot-row';
+        const empty = document.createElement('div');
+        empty.className = 'empty-dot';
+        empty.style.width = '28px';
+        empty.style.height = '28px';
+        emptyRow.appendChild(empty);
+        dotsRow.appendChild(emptyRow);
       }
     }
-    tr.innerHTML=cells;
-    tbody.appendChild(tr);
+    card.appendChild(dotsRow);
+    el.appendChild(card);
   });
-  table.appendChild(tbody);
 }
 
 // ── FRETBOARD ──
@@ -895,7 +926,7 @@ function renderFretboardSVG(data, modeColor) {
   const W = padLeft + (numStrings - 1) * stringSpacing + padRight;
   const H = padTop + numFrets * fretSpacing + padBottom;
 
-  let svg = `<svg class="fretboard-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+  let svg = `<svg class="fretboard-svg" viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg">`;
   svg += `<rect width="${W}" height="${H}" fill="transparent"/>`;
 
   // Draw fret wires — numFrets+1 wires create numFrets cells

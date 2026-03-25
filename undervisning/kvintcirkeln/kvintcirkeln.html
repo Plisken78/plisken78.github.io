@@ -2,34 +2,35 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kvintcirkeln</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Kvintcirkeln — HAUER</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   min-height: 100vh;
   background: radial-gradient(ellipse at center, #1a1208 0%, #0d0a04 100%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  font-family: 'Georgia', serif; padding: 20px;
+  font-family: 'DM Sans', sans-serif; padding: 4px;
 }
-h1 { color: #c9a84c; font-size: 1.4rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 4px; font-weight: 400; }
-.credit { color: #4a3a18; font-size: 0.6rem; letter-spacing: 0.2em; margin-bottom: 10px; text-transform: uppercase; }
-.subtitle { color: #7a6535; font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 24px; }
-.subtitle strong { color: #c9a84c; }
+h1 { color: #c8a96e; font-size: 1.4rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 4px; font-weight: 400; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; }
+.credit { color: #4a3a18; font-size: 0.6rem; letter-spacing: 0.2em; margin-bottom: 10px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
+.subtitle { color: #7a6535; font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 24px; font-family: 'DM Sans', sans-serif; }
+.subtitle strong { color: #c8a96e; }
 .toggle { display: flex; gap: 8px; margin-bottom: 16px; }
 .toggle button {
-  padding: 4px 14px; font-size: 0.75rem; font-family: 'Georgia', serif;
-  border: 1px solid #c9a84c; border-radius: 4px; cursor: pointer;
-  background: transparent; color: #c9a84c;
+  padding: 4px 14px; font-size: 0.75rem; font-family: 'DM Sans', sans-serif;
+  border: 1px solid #c8a96e; border-radius: 4px; cursor: pointer;
+  background: transparent; color: #c8a96e;
 }
-.toggle button.active { background: #c9a84c; color: #0d0a04; }
+.toggle button.active { background: #c8a96e; color: #0d0a04; }
 .seg { cursor: pointer; }
 .seg:hover { opacity: 0.85; }
 text { user-select: none; }
 .rows { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 0; }
-.row { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; width: 100%; max-width: 560px; }
+.row { display: flex; justify-content: center; gap: 2px; margin-bottom: 2px; width: 100%; max-width: 100%; }
 .cell {
-  width: 72px; height: 30px; display: flex; align-items: center; justify-content: center;
+  width: 46px; height: 28px; display: flex; align-items: center; justify-content: center;
   border-radius: 4px; font-size: 13px; font-family: 'Georgia', serif;
   font-weight: normal; letter-spacing: 0.03em;
 }
@@ -43,7 +44,7 @@ text { user-select: none; }
   <button id="btn-sharp" onclick="setFlat(false)">F♯</button>
   <button id="btn-flat"  onclick="setFlat(true)">G♭</button>
 </div>
-<svg id="qc" width="580" height="580" viewBox="-50 -50 580 580" xmlns="http://www.w3.org/2000/svg">
+<svg id="qc" width="100%" viewBox="-50 -50 580 580" style="max-width:823px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
     <stop offset="0%" stop-color="#2a1f0a"/>
@@ -232,10 +233,10 @@ function render(){
   rows.innerHTML="";
 
   const rowData=[
+    cells.map(({roman,fc})=>({text:roman, bg:"transparent", color:fc.fill, bold:false, fs:"11px", border:`1px solid ${fc.fill}88`})),
     cells.map(({name,fc})=>({text:name, bg:fc.dim+"ff", color:fc.text, bold:true, fs:name.length>2?"11px":"14px"})),
     cells.map(({chord,fc})=>({text:chord, bg:fc.dim+"dd", color:fc.text, bold:false, fs:chord.length>3?"10px":"12px"})),
     cells.map(({gfn,fc})=>({text:gfn, bg:fc.fill, color:fc.text, bold:true, fs:"12px"})),
-    cells.map(({roman,fc})=>({text:roman, bg:"transparent", color:fc.fill, bold:false, fs:"11px", border:`1px solid ${fc.fill}88`})),
   ];
 
   rowData.forEach(row=>{
