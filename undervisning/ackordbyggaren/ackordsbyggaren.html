@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Ackordsbyggaren – HAUER</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0f;--surf:#13131a;--surf2:#1c1c28;--surf3:#22222e;
+      --gold:#c8a96e;--goldD:#9a7d4e;--w:#ededed;
+      --g1:#888;--g2:#555;--br:#2a2a3a
+    }
+    body{background:var(--bg);color:var(--w);font-family:'DM Sans',sans-serif;min-height:100vh}
+
+    /* ── TOPBAR ─────────────────────────────────────────────────── */
+    .topbar{
+      background:var(--surf);border-bottom:1px solid var(--br);
+      padding:10px 20px;display:flex;align-items:center;gap:10px
+    }
+    .brand{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px}
+    .sep{color:var(--g2)}
+    .sub{font-family:'Crimson Pro',serif;font-size:13px;color:var(--g1);font-style:italic}
+    .tname{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--g1)}
+
+    /* ── LAYOUT ─────────────────────────────────────────────────── */
+    main{padding:16px 20px;max-width:1360px;margin:0 auto}
+    .lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g1);margin-bottom:8px}
+
+    /* ── KEY SELECTOR ───────────────────────────────────────────── */
+    #keyRow{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px}
+    .kcol{display:flex;flex-direction:column;gap:3px}
+    .kb{
+      background:var(--surf2);border:1px solid var(--br);color:var(--w);
+      border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;
+      font-size:14px;font-weight:500;min-width:46px;height:40px;
+      transition:border-color .12s,background .12s
+    }
+    .kb:hover{border-color:var(--goldD)}
+    .kb.on{background:var(--gold);color:#0a0a0f;border-color:var(--gold);font-weight:700}
+    .kb.alt{height:40px;font-size:14px;color:var(--g1)}
+    .kb.alt.on{color:#0a0a0f}
+
+    /* ── CONTROLS ───────────────────────────────────────────────── */
+    .ctrl{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:22px;align-items:flex-end}
+    .cg{display:flex;flex-direction:column;gap:8px}
+    .bg{display:flex;gap:5px;flex-wrap:wrap}
+    .sb{
+      background:var(--surf2);border:1px solid var(--br);color:var(--g1);
+      padding:8px 15px;border-radius:8px;cursor:pointer;
+      font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+      transition:all .12s;white-space:nowrap
+    }
+    .sb:hover{border-color:var(--goldD);color:var(--w)}
+    .sb.on{background:var(--gold);color:#0a0a0f;border-color:var(--gold);font-weight:600}
+
+    /* ── CHORD GRID ─────────────────────────────────────────────── */
+    #cGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+    @media(max-width:1050px){#cGrid{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:620px){
+      #cGrid{grid-template-columns:repeat(2,1fr)}
+      main{padding:12px}
+      .ctrl{gap:14px}
+    }
+
+    /* ── CARD ───────────────────────────────────────────────────── */
+    .card{background:var(--surf);border:1px solid var(--br);border-radius:10px;overflow:hidden}
+
+    .ch{padding:10px 12px 8px;border-bottom:1px solid var(--br);border-left:3px solid transparent}
+    .qmaj .ch{border-left-color:#c8a96e}
+    .qmin .ch{border-left-color:#5a8fc2}
+    .qdom .ch{border-left-color:#d47a3a}
+    .qdim .ch{border-left-color:#9a4a9a}
+    .qaug .ch{border-left-color:#d45a5a}
+
+    .rom{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--gold)}
+    .mname{font-family:'Crimson Pro',serif;font-size:11px;color:var(--g1);font-style:italic;margin-top:2px}
+
+    /* ── CHORD SECTION ──────────────────────────────────────────── */
+    .cs{padding:7px 12px;border-bottom:1px solid #1a1a22}
+    .cs:last-child{border-bottom:none}
+    .csl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);margin-bottom:3px}
+    .csym{font-size:15px;font-weight:600;color:var(--w);margin-bottom:5px;line-height:1}
+    .csym .r{color:var(--gold)}
+    .nts{display:flex;gap:3px;flex-wrap:wrap}
+    .nt{font-size:10px;color:var(--g1);background:#1a1a24;border-radius:3px;padding:1px 5px}
+    .nt.rn{color:var(--gold);background:#2a1e0a}
+
+    /* ── LEGEND ─────────────────────────────────────────────────── */
+    .legend{
+      margin-top:24px;padding:12px 16px;background:var(--surf);
+      border:1px solid var(--br);border-radius:10px;
+      display:flex;gap:16px;flex-wrap:wrap;align-items:center
+    }
+    .leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--g1)}
+    .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="brand">HAUER</span>
+  <span class="sep">/</span>
+  <span class="sub">en modern musikskola</span>
+  <span class="tname">ACKORDSBYGGAREN</span>
+</div>
+
+<main>
+  <div class="lbl">Grundton</div>
+  <div id="keyRow"></div>
+
+  <div class="ctrl">
+    <div class="cg">
+      <div class="lbl">Skalgrupp</div>
+      <div class="bg" id="famRow">
+        <button class="sb on" data-f="diatonic">Diatonisk</button>
+        <button class="sb" data-f="melodic">Melodisk Moll</button>
+        <button class="sb" data-f="harmonic">Harmonisk Moll</button>
+      </div>
+    </div>
+    <div class="cg">
+      <div class="lbl">Visa</div>
+      <div class="bg" id="typeRow">
+        <button class="sb on" data-t="all">Alla</button>
+        <button class="sb" data-t="triad">Treklang</button>
+        <button class="sb" data-t="seventh">7-ackord</button>
+        <button class="sb" data-t="ninth">9-ackord</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cGrid"></div>
+
+  <div class="legend">
+    <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--g2);margin-right:4px">Kvalitet:</span>
+    <div class="leg-item"><div class="leg-dot" style="background:#c8a96e"></div>Dur (maj)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#5a8fc2"></div>Moll (min)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#d47a3a"></div>Dominant (dom7)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#9a4a9a"></div>Förminskad (dim)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#d45a5a"></div>Förstärkt (aug)</div>
+  </div>
+</main>
+
+<script>
+// ── Diatonic letter-based note spelling ──────────────────────────────────────
+// The 7 letter names in order, and their "natural" semitone value (C=0)
+const LETTERS=['C','D','E','F','G','A','B'];
+const LETTER_SEMI=[0,2,4,5,7,9,11];
+
+// Spell a note given its letter index (0-6) and target semitone (0-11)
+function spellNote(li,semi){
+  const nat=LETTER_SEMI[((li%7)+7)%7];
+  let diff=((semi-nat)%12+12)%12;
+  if(diff>6)diff-=12; // prefer -5..+6, so flat over triple-sharp
+  const acc=diff===-2?'bb':diff===-1?'b':diff===0?'':diff===1?'#':diff===2?'x':'??';
+  return LETTERS[((li%7)+7)%7]+acc;
+}
+
+// ── Key definitions ──────────────────────────────────────────────────────────
+const KEYS=[
+  {s:0,  n:'C',   a:null,  df:false},
+  {s:1,  n:'C#',  a:'Db',  df:false},
+  {s:2,  n:'D',   a:null,  df:false},
+  {s:3,  n:'D#',  a:'Eb',  df:false},
+  {s:4,  n:'E',   a:null,  df:false},
+  {s:5,  n:'F',   a:null,  df:true },
+  {s:6,  n:'F#',  a:'Gb',  df:false},
+  {s:7,  n:'G',   a:null,  df:false},
+  {s:8,  n:'G#',  a:'Ab',  df:false},
+  {s:9,  n:'A',   a:null,  df:false},
+  {s:10, n:'A#',  a:'Bb',  df:false},
+  {s:11, n:'B',   a:null,  df:false},
+];
+
+// ── Scale families ───────────────────────────────────────────────────────────
+// parent = intervals of the family's root scale (semitones from root)
+const FAM={
+  diatonic:{
+    p:[0,2,4,5,7,9,11],
+    m:['Jonisk','Dorisk','Frygisk','Lydisk','Mixolydisk','Eolisk','Lokrisk'],
+    r:['I','II','III','IV','V','VI','VII']
+  },
+  melodic:{
+    p:[0,2,3,5,7,9,11],
+    m:['Melodisk moll','Dorisk b9','Lyd #5','Lydisk dom','Mixo b6','Eolisk b5','Super Lokrisk'],
+    r:['I','II','III','IV','V','VI','VII']
+  },
+  harmonic:{
+    p:[0,2,3,5,7,8,11],
+    m:['Harmonisk moll','Lokr 6','Jonisk #5','Dorisk #11','Spansk frygisk','Lydisk #9','Super Lokr add13'],
+    r:['I','II','III','IV','V','VI','VII']
+  }
+};
+
+// ── App state ────────────────────────────────────────────────────────────────
+let ss=0, sf=false, sfam='diatonic', stype='all';
+
+// ── Music theory helpers ─────────────────────────────────────────────────────
+
+// Return mode intervals (semitones from chord root) for degree i of parent p
+function modeInts(p,i){
+  return [0,1,2,3,4,5,6].map(j=>((p[(i+j)%7]-p[i])+12)%12);
+}
+
+// Analyse chord quality from mode intervals
+// mi[0]=root  mi[1]=9th  mi[2]=3rd  mi[3]=11th  mi[4]=5th  mi[5]=13th  mi[6]=7th
+function qual(mi){
+  const th3=mi[2], th5=mi[4], th7=mi[6], th9=mi[1], th11=mi[3], th13=mi[5];
+  const tri =
+    th3===4&&th5===7?'maj':
+    th3===3&&th5===7?'min':
+    th3===3&&th5===6?'dim':
+    th3===4&&th5===8?'aug':'unk';
+  const sev =
+    th7===11              ?'maj7':
+    th7===10&&tri==='maj' ?'dom7':
+    th7===10              ?'min7':
+    th7===9               ?'dim7':'unk';
+  return{tri,sev,th9,th11,th13};
+}
+
+// Build chord symbol string
+function buildSym(root,q,type){
+  const{tri,sev,th9,th11,th13}=q;
+  const s9 =th9===1?'b9':th9===3?'#9':'';
+  const s11=th11===6?'#11':'';
+  const s13=th13===8?'b13':'';
+  const alts=s11+s13;
+
+  if(type==='triad')
+    return root+(tri==='maj'?'':tri==='min'?'m':tri==='dim'?'°':tri==='aug'?'+':'?');
+
+  if(type==='seventh'){
+    if(tri==='maj'&&sev==='maj7') return root+'maj7'+s11;
+    if(tri==='maj'&&sev==='dom7') return root+'7'+alts;
+    if(tri==='min'&&sev==='min7') return root+'m7';
+    if(tri==='min'&&sev==='maj7') return root+'mMaj7';
+    if(tri==='dim'&&sev==='min7') return root+'m7b5';
+    if(tri==='dim'&&sev==='dim7') return root+'°7';
+    if(tri==='aug'&&sev==='maj7') return root+'Maj7#5';
+    if(tri==='aug'&&sev==='dom7') return root+'7#5';
+    return root+'?';
+  }
+
+  if(type==='ninth'){
+    if(tri==='maj'&&sev==='maj7') return root+(th9===2?'maj9':'maj7'+s9)+s11;
+    if(tri==='maj'&&sev==='dom7') return root+(th9===2?'9':'7'+s9)+alts;
+    if(tri==='min'&&sev==='min7') return root+(th9===2?'m9':'m7'+s9);
+    if(tri==='min'&&sev==='maj7') return root+(th9===2?'mMaj9':'mMaj7'+s9);
+    if(tri==='dim'&&sev==='min7') return root+(th9===2?'m9b5':'m7'+s9+'b5');
+    if(tri==='dim'&&sev==='dim7') return root+'°7';
+    if(tri==='aug'&&sev==='maj7') return root+(th9===2?'Maj9#5':'Maj7'+s9+'#5');
+    if(tri==='aug'&&sev==='dom7') return root+(th9===2?'9#5':'7'+s9+'#5');
+    return root+'?';
+  }
+}
+
+// CSS quality class for card border color
+function qcls(q){
+  if(q.tri==='dim') return'qdim';
+  if(q.tri==='aug') return'qaug';
+  if(q.tri==='min') return'qmin';
+  if(q.sev==='dom7')return'qdom';
+  return'qmaj';
+}
+
+// Wrap root part in <span class="r"> for gold color
+function symH(rootName,s){
+  const l=rootName.length;
+  return`<span class="r">${s.slice(0,l)}</span>${s.slice(l)}`;
+}
+
+// Render note chips, root highlighted
+function chips(notes,root){
+  return notes.map(n=>`<span class="nt${n===root?' rn':''}">${n}</span>`).join('');
+}
+
+// Render one chord section (Treklang / 7-ackord / 9-ackord)
+function csHTML(label,symStr,notes,root){
+  return`<div class="cs">`+
+    `<div class="csl">${label}</div>`+
+    `<div class="csym">${symH(root,symStr)}</div>`+
+    `<div class="nts">${chips(notes,root)}</div>`+
+    `</div>`;
+}
+
+// ── Compute all 7 chords ─────────────────────────────────────────────────────
+function compute(){
+  const fam=FAM[sfam];
+  // Determine root letter index from selected key name
+  const keyDef=KEYS.find(k=>k.s===ss);
+  const rootStr=sf&&keyDef.a?keyDef.a:keyDef.n;
+  const rootLI=LETTERS.indexOf(rootStr[0]);
+
+  // Spell a scale degree d (0-6) using the correct letter from the key
+  function tone(d){
+    const di=((d%7)+7)%7;
+    const li=(rootLI+di)%7;
+    const semi=(ss+fam.p[di])%12;
+    return spellNote(li,semi);
+  }
+
+  return[0,1,2,3,4,5,6].map(i=>{
+    const rn=tone(i);
+    const mi=modeInts(fam.p,i);
+    const q=qual(mi);
+    // Chord tones are built in thirds on scale degrees i, i+2, i+4, i+6, i+1
+    const triN=[tone(i),tone((i+2)%7),tone((i+4)%7)];
+    const sevN=[tone(i),tone((i+2)%7),tone((i+4)%7),tone((i+6)%7)];
+    const ninN=[tone(i),tone((i+2)%7),tone((i+4)%7),tone((i+6)%7),tone((i+1)%7)];
+    return{
+      roman:fam.r[i],mode:fam.m[i],root:rn,qc:qcls(q),
+      triN,sevN,ninN,
+      triS:buildSym(rn,q,'triad'),
+      sevS:buildSym(rn,q,'seventh'),
+      ninS:buildSym(rn,q,'ninth'),
+    };
+  });
+}
+
+// ── Render functions ─────────────────────────────────────────────────────────
+function renderKeys(){
+  const kr=document.getElementById('keyRow');
+  kr.innerHTML='';
+  KEYS.forEach(k=>{
+    const col=document.createElement('div');
+    col.className='kcol';
+    const mainOn=ss===k.s&&(!sf||!k.a);
+    const mb=document.createElement('button');
+    mb.className='kb'+(mainOn?' on':'');
+    mb.textContent=k.n;
+    mb.onclick=()=>{ss=k.s;sf=k.df;renderKeys();renderChords()};
+    col.appendChild(mb);
+    if(k.a){
+      const altOn=ss===k.s&&sf;
+      const ab=document.createElement('button');
+      ab.className='kb alt'+(altOn?' on':'');
+      ab.textContent=k.a;
+      ab.onclick=()=>{ss=k.s;sf=true;renderKeys();renderChords()};
+      col.appendChild(ab);
+    }
+    kr.appendChild(col);
+  });
+}
+
+function renderChords(){
+  const grid=document.getElementById('cGrid');
+  const chords=compute();
+  const st=stype;
+  const showT=st==='all'||st==='triad';
+  const showS=st==='all'||st==='seventh';
+  const showN=st==='all'||st==='ninth';
+  grid.innerHTML=chords.map(c=>`
+    <div class="card ${c.qc}">
+      <div class="ch">
+        <div class="rom">${c.roman}</div>
+        <div class="mname">${c.mode}</div>
+      </div>
+      ${showT?csHTML('Treklang',c.triS,c.triN,c.root):''}
+      ${showS?csHTML('7-ackord',c.sevS,c.sevN,c.root):''}
+      ${showN?csHTML('9-ackord',c.ninS,c.ninN,c.root):''}
+    </div>`).join('');
+}
+
+// ── Event listeners ──────────────────────────────────────────────────────────
+document.getElementById('famRow').addEventListener('click',e=>{
+  const b=e.target.closest('.sb');
+  if(!b)return;
+  sfam=b.dataset.f;
+  document.querySelectorAll('#famRow .sb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  renderChords();
+});
+
+document.getElementById('typeRow').addEventListener('click',e=>{
+  const b=e.target.closest('.sb');
+  if(!b)return;
+  stype=b.dataset.t;
+  document.querySelectorAll('#typeRow .sb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  renderChords();
+});
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+renderKeys();
+renderChords();
+</script>
+</body>
+</html>

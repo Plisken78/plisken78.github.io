@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Negativ Harmonik – HAUER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0a0a0f;
+  --surface:   #101018;
+  --surface2:  #181825;
+  --surface3:  #1f1f30;
+  --gold:      #c8a96e;
+  --gold-dim:  rgba(200,169,110,0.35);
+  --gold-line: rgba(200,169,110,0.1);
+  --neg:       #c4a8f0;
+  --neg-dim:   rgba(196,168,240,0.35);
+  --neg-line:  rgba(196,168,240,0.1);
+  --white:     #f0ede8;
+  --muted:     #5a5770;
+  --muted2:    #333248;
+  --radius:    3px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.header {
+  background: #0c0c14;
+  border-bottom: 1px solid var(--gold-line);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left { display: flex; align-items: baseline; gap: 14px; }
+.header-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 8px;
+  color: var(--gold);
+}
+.header-divider {
+  width: 1px; height: 14px;
+  background: var(--gold-line);
+}
+.header-tagline {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+}
+
+/* ── CONTENT ── */
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 5px;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.page-desc {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* ── CTRL LABEL ── */
+.ctrl-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ── BUTTON GROUPS ── */
+.btn-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--muted2);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  letter-spacing: 0.3px;
+}
+.btn:hover { border-color: var(--gold-dim); color: var(--white); }
+.btn.active {
+  border-color: var(--gold);
+  background: rgba(200,169,110,0.08);
+  color: var(--gold);
+}
+.btn.sm { padding: 6px 12px; font-size: 11px; }
+
+/* ── ROOT BUTTONS ── */
+.root-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.root-btn {
+  width: 46px;
+  height: 38px;
+  border: 1px solid var(--muted2);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+}
+.root-btn:hover { border-color: var(--gold-dim); color: var(--white); }
+.root-btn.active {
+  border-color: var(--gold);
+  background: rgba(200,169,110,0.08);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── RULE ── */
+.rule {
+  border: none;
+  border-top: 1px solid var(--gold-line);
+  margin: 28px 0;
+}
+
+/* ── SCALE INFO GRID ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 0;
+  margin-bottom: 24px;
+  align-items: stretch;
+}
+
+.info-box {
+  background: var(--surface);
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.info-box.neg-box {
+  border-color: var(--neg-line);
+}
+
+.info-box-badge {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.info-box-badge.neg { color: var(--neg); font-size: 10px; }
+
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.badge-dot.neg { background: var(--neg); }
+
+.info-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.info-notes {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  line-height: 1.8;
+}
+
+.mirror-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.self-neg-badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--neg);
+  border: 1px solid var(--neg-line);
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ── CHROMATIC VISUALIZATION ── */
+.chroma-wrap {
+  background: var(--surface);
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.chroma-inner { min-width: 460px; }
+
+.chroma-head {
+  display: grid;
+  grid-template-columns: 140px 1fr 52px 1fr 140px;
+  margin-bottom: 6px;
+}
+.ch-head-left {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-align: right;
+  padding-right: 16px;
+}
+.ch-head-right {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--neg);
+  text-align: left;
+  padding-left: 16px;
+}
+.ch-head-center {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.chroma-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 52px 1fr 140px;
+  height: 30px;
+  align-items: center;
+}
+.chroma-row + .chroma-row {
+  border-top: 1px solid rgba(255,255,255,0.025);
+}
+
+.ch-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-right: 0;
+}
+.ch-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding-left: 0;
+}
+
+.ch-line {
+  height: 2px;
+  flex: 1;
+  border-radius: 1px;
+  transition: background 0.2s;
+}
+.ch-line.left-active {
+  background: linear-gradient(to left, var(--gold), transparent);
+}
+.ch-line.left-inactive {
+  background: rgba(255,255,255,0.02);
+}
+.ch-line.right-active {
+  background: linear-gradient(to right, var(--neg), transparent);
+}
+.ch-line.right-inactive {
+  background: rgba(255,255,255,0.02);
+}
+
+.ch-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: var(--surface2);
+  border-left: 1px solid rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.04);
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+.ch-center.is-root {
+  background: rgba(200,169,110,0.07);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.ch-note-name {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.ch-note-name.gold { color: var(--gold); }
+.ch-note-name.neg  { color: var(--neg); font-size: 14px; }
+.ch-note-name.ghost { opacity: 0; pointer-events: none; }
+
+.ch-degree {
+  font-size: 9px;
+  font-weight: 300;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.ch-degree.gold { color: var(--gold); opacity: 0.55; }
+.ch-degree.neg  { color: var(--neg); opacity: 0.65; font-size: 10px; }
+
+/* ── CHORD TABLE ── */
+.chord-wrap {
+  background: var(--surface);
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.chord-inner { min-width: 520px; }
+
+.chord-header-row {
+  display: grid;
+  grid-template-columns: 88px repeat(7, 1fr);
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gold-line);
+  margin-bottom: 4px;
+}
+.chord-header-degree {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.chord-data-row {
+  display: grid;
+  grid-template-columns: 88px repeat(7, 1fr);
+  gap: 4px;
+  padding: 12px 0;
+  align-items: start;
+}
+.chord-data-row + .chord-data-row {
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.chord-row-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 6px;
+}
+.label-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chord-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+.chord-roman {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+.chord-sym {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1;
+}
+.chord-root-note {
+  font-size: 13px;
+  color: var(--white);
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── INFO TOOLTIP SECTION ── */
+.info-note {
+  margin-top: 16px;
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  border-left: 2px solid var(--gold-line);
+  padding-left: 12px;
+}
+
+/* ── ANIMATION ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate { animation: fadeIn 0.25s ease; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="header-brand">HAUER</div>
+    <div class="header-divider"></div>
+    <div class="header-tagline">en modern musikskola</div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="content">
+  <div class="page-title">Negativ Harmonik</div>
+  <div class="page-desc">
+    Välj en skalfamilj, ett läge och en grundton — och se skalans negativa spegelbild samt hur harmoniken förändras.
+  </div>
+
+  <!-- Family -->
+  <div class="ctrl-label">Skalfamilj</div>
+  <div class="btn-row" id="familyBtns"></div>
+
+  <!-- Mode -->
+  <div class="ctrl-label">Kyrkotonart / Läge</div>
+  <div class="btn-row" id="modeBtns"></div>
+
+  <!-- Root -->
+  <div class="ctrl-label">Grundton</div>
+  <div class="root-row" id="rootBtns"></div>
+
+  <hr class="rule">
+
+  <!-- Scale info -->
+  <div class="info-grid" id="infoGrid">
+    <div class="info-box" id="normalBox"></div>
+    <div class="mirror-arrow">↔</div>
+    <div class="info-box neg-box" id="negBox"></div>
+  </div>
+
+  <!-- Chromatic visualization -->
+  <div class="chroma-wrap">
+    <div class="chroma-inner" id="chromaVis"></div>
+  </div>
+
+  <!-- Chord table -->
+  <div class="chord-wrap">
+    <div class="chord-inner" id="chordTable"></div>
+    <div class="info-note" id="chordNote"></div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════
+
+const FAMILIES = {
+  'Diatonisk': [
+    { name:'Jonisk',       num:'I',   int:[2,2,1,2,2,2,1] },
+    { name:'Dorisk',       num:'II',  int:[2,1,2,2,2,1,2] },
+    { name:'Frygisk',      num:'III', int:[1,2,2,2,1,2,2] },
+    { name:'Lydisk',       num:'IV',  int:[2,2,2,1,2,2,1] },
+    { name:'Mixolydisk',   num:'V',   int:[2,2,1,2,2,1,2] },
+    { name:'Eolisk',       num:'VI',  int:[2,1,2,2,1,2,2] },
+    { name:'Lokrisk',      num:'VII', int:[1,2,2,1,2,2,2] },
+  ],
+  'Melodisk Moll': [
+    { name:'Melodisk moll',  num:'I',   int:[2,1,2,2,2,2,1] },
+    { name:'Dorisk b9',      num:'II',  int:[1,2,2,2,2,1,2] },
+    { name:'Lyd #5',         num:'III', int:[2,2,2,2,1,2,1] },
+    { name:'Lydisk dom',     num:'IV',  int:[2,2,2,1,2,1,2] },
+    { name:'Mixo b6',        num:'V',   int:[2,2,1,2,1,2,2] },
+    { name:'Eolisk b5',      num:'VI',  int:[2,1,2,1,2,2,2] },
+    { name:'Super Lokrisk',  num:'VII', int:[1,2,1,2,2,2,2] },
+  ],
+  'Harmonisk Moll': [
+    { name:'Harmonisk moll',    num:'I',   int:[2,1,2,2,1,3,1] },
+    { name:'Lokr 6',            num:'II',  int:[1,2,2,1,3,1,2] },
+    { name:'Jonisk #5',         num:'III', int:[2,2,1,3,1,2,1] },
+    { name:'Dorisk #11',        num:'IV',  int:[2,1,3,1,2,2,1] },
+    { name:'Spansk frygisk',    num:'V',   int:[1,3,1,2,2,1,2] },
+    { name:'Lydisk #9',         num:'VI',  int:[3,1,2,2,1,2,1] },
+    { name:'Super Lokr add13',  num:'VII', int:[1,2,2,1,2,1,3] },
+  ]
+};
+
+const ALL_MODES = [];
+for (const [fam, modes] of Object.entries(FAMILIES))
+  for (const m of modes)
+    ALL_MODES.push({ ...m, family: fam });
+
+const ROMAN_UP  = ['I','II','III','IV','V','VI','VII'];
+const ROMAN_LO  = ['i','ii','iii','iv','v','vi','vii'];
+
+const ROOTS_DISPLAY = ['C','D♭','D','E♭','E','F','G♭','G','A♭','A','B♭','B'];
+const NOTE_SHARP = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const NOTE_FLAT  = ['C','D♭','D','E♭','E','F','G♭','G','A♭','A','B♭','B'];
+const INTERVAL_LABELS = ['1','♭2','2','♭3','3','4','♭5','5','♭6','6','♭7','7'];
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+
+let state = { family:'Diatonisk', modeIdx:0, root:0 };
+
+// ════════════════════════════════════════════════════════════
+// MUSIC HELPERS
+// ════════════════════════════════════════════════════════════
+
+function scaleNotes(root, intervals) {
+  const out = [root % 12];
+  let cur = root;
+  for (let i = 0; i < intervals.length - 1; i++) {
+    cur += intervals[i];
+    out.push(cur % 12);
+  }
+  return out;
+}
+
+function negativeIntervals(int) { return [...int].reverse(); }
+
+function arrEq(a, b) { return a.length === b.length && a.every((v,i) => v === b[i]); }
+
+function identifyMode(intervals) {
+  for (const m of ALL_MODES)
+    if (arrEq(m.int, intervals))
+      return { name: m.name, num: m.num, family: m.family };
+  return null;
+}
+
+function prefFlats(root, intervals) {
+  // Roots that prefer flats
+  if ([1,3,5,6,8,10].includes(root % 12)) return true;
+  // Mode with b2 (first step = 1 semitone)
+  if (intervals[0] === 1) return true;
+  return false;
+}
+
+function noteName(semitone, flats) {
+  const s = ((semitone % 12) + 12) % 12;
+  return flats ? NOTE_FLAT[s] : NOTE_SHARP[s];
+}
+
+function scaleNoteNames(root, intervals) {
+  const flat = prefFlats(root, intervals);
+  return scaleNotes(root, intervals).map(n => noteName(n, flat));
+}
+
+// Build 7th chord quality at scale degree degIdx
+function chordAt(intervals, degIdx) {
+  const n = 7;
+  let t = 0, f = 0, s = 0;
+  for (let i = 0; i < 6; i++) {
+    const step = intervals[(degIdx + i) % n];
+    if (i < 2) t += step;
+    if (i < 4) f += step;
+    s += step;
+  }
+  return quality(t % 12, f % 12, s % 12);
+}
+
+function quality(t, f, s) {
+  const key = `${t},${f},${s}`;
+  const MAP = {
+    '4,7,11': { sym:'Δ7',      minor:false },
+    '3,7,10': { sym:'m7',      minor:true  },
+    '4,7,10': { sym:'7',       minor:false },
+    '3,6,10': { sym:'ø7',      minor:true  },
+    '3,6,9':  { sym:'°7',      minor:true  },
+    '3,7,11': { sym:'mΔ7',     minor:true  },
+    '4,8,11': { sym:'Δ7♯5',    minor:false },
+    '4,8,10': { sym:'7♯5',     minor:false },
+    '4,6,10': { sym:'7♭5',     minor:false },
+    '4,6,11': { sym:'Δ7♭5',    minor:false },
+    '3,8,10': { sym:'m7♯5',    minor:true  },
+    '3,8,11': { sym:'mΔ7♯5',   minor:true  },
+    '2,7,10': { sym:'sus2·7',  minor:false },
+    '5,7,10': { sym:'sus4·7',  minor:false },
+    '2,6,10': { sym:'dim·sus2',minor:true  },
+    '1,7,10': { sym:'(1,7,10)',minor:false },
+  };
+  return MAP[key] || { sym:`(${t},${f},${s})`, minor:false };
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════
+
+function renderFamilyBtns() {
+  const el = document.getElementById('familyBtns');
+  el.innerHTML = '';
+  for (const fam of Object.keys(FAMILIES)) {
+    const b = document.createElement('button');
+    b.className = 'btn' + (fam === state.family ? ' active' : '');
+    b.textContent = fam;
+    b.onclick = () => { state.family = fam; state.modeIdx = 0; renderAll(); };
+    el.appendChild(b);
+  }
+}
+
+function renderModeBtns() {
+  const el = document.getElementById('modeBtns');
+  el.innerHTML = '';
+  FAMILIES[state.family].forEach((m, i) => {
+    const b = document.createElement('button');
+    b.className = 'btn sm' + (i === state.modeIdx ? ' active' : '');
+    b.textContent = m.num + ' – ' + m.name;
+    b.onclick = () => { state.modeIdx = i; renderAll(); };
+    el.appendChild(b);
+  });
+}
+
+function renderRootBtns() {
+  const el = document.getElementById('rootBtns');
+  el.innerHTML = '';
+  ROOTS_DISPLAY.forEach((name, i) => {
+    const b = document.createElement('button');
+    b.className = 'root-btn' + (i === state.root ? ' active' : '');
+    b.textContent = name;
+    b.onclick = () => { state.root = i; renderAll(); };
+    el.appendChild(b);
+  });
+}
+
+function renderInfo(normInt, negInt) {
+  const root    = state.root;
+  const mode    = FAMILIES[state.family][state.modeIdx];
+  const isSelf  = arrEq(normInt, negInt);
+  const negMode = identifyMode(negInt);
+
+  const flatN   = prefFlats(root, normInt);
+  const flatNeg = prefFlats(root, negInt);
+
+  const nRoot   = noteName(root, flatN);
+  const negRoot = noteName(root, flatNeg);
+
+  const normNotes = scaleNoteNames(root, normInt).join('  –  ');
+  const negNotes  = scaleNoteNames(root, negInt).join('  –  ');
+
+  document.getElementById('normalBox').innerHTML = `
+    <div class="info-box-badge">
+      <span class="badge-dot"></span>ORIGINAL
+    </div>
+    <div class="info-name">${nRoot} ${mode.name}</div>
+    <div class="info-notes">${normNotes}</div>
+  `;
+
+  document.getElementById('negBox').innerHTML = `
+    <div class="info-box-badge neg">
+      <span class="badge-dot neg"></span>NEGATIV SPEGEL
+    </div>
+    <div class="info-name">${negRoot} ${negMode ? negMode.name : 'Negativ skala'}</div>
+    <div class="info-notes">${negNotes}</div>
+    ${isSelf ? '<div class="self-neg-badge">PALINDROM – EGEN SPEGEL</div>' : ''}
+  `;
+}
+
+function renderChroma(normInt, negInt) {
+  const root    = state.root;
+  const flatN   = prefFlats(root, normInt);
+  const flatNeg = prefFlats(root, negInt);
+
+  const normSet = new Set(scaleNotes(root, normInt));
+  const negSet  = new Set(scaleNotes(root, negInt));
+
+  // Build degree maps
+  const normDeg = {}, negDeg = {};
+  scaleNotes(root, normInt).forEach((n, i) => { normDeg[n] = ROMAN_UP[i]; });
+  scaleNotes(root, negInt).forEach((n, i) => { negDeg[n]  = ROMAN_UP[i]; });
+
+  let html = `
+    <div class="chroma-head">
+      <div class="ch-head-left">ORIGINAL</div>
+      <div></div>
+      <div class="ch-head-center">INTERVALL</div>
+      <div></div>
+      <div class="ch-head-right">NEGATIV</div>
+    </div>
+  `;
+
+  // Rows from semitone 11 down to 0 (top=high, bottom=root)
+  for (let offset = 11; offset >= 0; offset--) {
+    const sem   = (root + offset) % 12;
+    const inN   = normSet.has(sem);
+    const inNeg = negSet.has(sem);
+    const isRoot = offset === 0;
+
+    const noteN   = noteName(sem, flatN);
+    const noteNeg = noteName(sem, flatNeg);
+
+    html += `
+      <div class="chroma-row">
+        <!-- LEFT -->
+        <div class="ch-left">
+          ${inN ? `
+            <span class="ch-degree gold">${normDeg[sem]}</span>
+            <span class="ch-note-name gold">${noteN}</span>
+          ` : `<span class="ch-note-name ghost">·</span>`}
+          <div class="ch-line ${inN ? 'left-active' : 'left-inactive'}"></div>
+        </div>
+
+        <!-- CENTER -->
+        <div class="ch-center${isRoot ? ' is-root' : ''}">
+          ${INTERVAL_LABELS[offset]}
+        </div>
+
+        <!-- RIGHT -->
+        <div class="ch-right">
+          <div class="ch-line ${inNeg ? 'right-active' : 'right-inactive'}"></div>
+          ${inNeg ? `
+            <span class="ch-note-name neg">${noteNeg}</span>
+            <span class="ch-degree neg">${negDeg[sem]}</span>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('chromaVis').innerHTML = html;
+}
+
+function renderChords(normInt, negInt) {
+  const root    = state.root;
+  const flatN   = prefFlats(root, normInt);
+  const flatNeg = prefFlats(root, negInt);
+
+  const normNotes = scaleNotes(root, normInt);
+  const negNotes  = scaleNotes(root, negInt);
+
+  function buildRow(intervals, notes, flat, color) {
+    return ROMAN_UP.map((_, i) => {
+      const q    = chordAt(intervals, i);
+      const rom  = q.minor ? ROMAN_LO[i] : ROMAN_UP[i];
+      const rn   = noteName(notes[i], flat);
+      return `
+        <div class="chord-cell">
+          <div class="chord-roman" style="color:${color}">${rom}</div>
+          <div class="chord-root-note">${rn}</div>
+          <div class="chord-sym">${q.sym}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  const normMode = FAMILIES[state.family][state.modeIdx];
+  const negMode  = identifyMode(negInt);
+
+  document.getElementById('chordTable').innerHTML = `
+    <div class="chord-header-row">
+      <div></div>
+      ${ROMAN_UP.map(r => `<div class="chord-header-degree">${r}</div>`).join('')}
+    </div>
+
+    <div class="chord-data-row">
+      <div class="chord-row-label">
+        <span class="label-dot" style="background:var(--gold)"></span>
+        ORIGINAL
+      </div>
+      ${buildRow(normInt, normNotes, flatN, 'var(--gold)')}
+    </div>
+
+    <div class="chord-data-row">
+      <div class="chord-row-label">
+        <span class="label-dot" style="background:var(--neg)"></span>
+        NEGATIV
+      </div>
+      ${buildRow(negInt, negNotes, flatNeg, 'var(--neg)')}
+    </div>
+  `;
+
+  // Contextual note
+  let note = '';
+  if (negMode) {
+    if (arrEq(normInt, negInt)) {
+      note = `${normMode.name} är en palindromskala – intervallfölden är identisk framifrån och bakifrån. Skaln är sin egen negativa spegel, men ackordkvaliteterna på varje grad behåller sin karaktär.`;
+    } else {
+      note = `Den negativa spegeln av ${normMode.name} är ${negMode.name} (${negMode.family}). Jämför ackordkvaliteterna grad för grad – vad händer med dur och moll? Vad händer med kvintcirkeln?`;
+    }
+  } else {
+    note = `Den negativa spegeln av ${normMode.name} finns inte som en standardiserad kyrkotonart i de tre familjerna – men harmoniken fungerar fullt ut.`;
+  }
+  document.getElementById('chordNote').textContent = note;
+}
+
+function renderAll() {
+  const mode    = FAMILIES[state.family][state.modeIdx];
+  const normInt = mode.int;
+  const negInt  = negativeIntervals(normInt);
+
+  renderFamilyBtns();
+  renderModeBtns();
+  renderRootBtns();
+  renderInfo(normInt, negInt);
+  renderChroma(normInt, negInt);
+  renderChords(normInt, negInt);
+
+  document.getElementById('infoGrid').classList.add('animate');
+  setTimeout(() => document.getElementById('infoGrid').classList.remove('animate'), 300);
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+renderAll();
+</script>
+</body>
+</html>
