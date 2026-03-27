@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HAUER — Intervaller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0a0a0f;
+            --panel: #13131a;
+            --border: #2a2a3a;
+            --accent: #c8a96e;
+            --text: #f0f0f8;
+            --muted: rgba(240,240,248,0.6);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 16px 8px 100px 4px;
+        }
+
+        /* ===== HEADINGS & TEXT ===== */
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin: 1.5rem 0 0.8rem;
+            text-transform: uppercase;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        strong { color: var(--text); }
+
+        /* ===== PAGE CONTAINERS ===== */
+        .page {
+            display: none;
+            animation: fadeIn 0.2s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== FLOATING PILL NAV ===== */
+        .nav-pill {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: #1a1a24;
+            border: 1px solid rgba(200,169,110,0.3);
+            border-radius: 999px;
+            padding: 4px;
+            gap: 4px;
+            z-index: 2000;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+        }
+
+        .nav-btn {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding: 8px 20px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text);
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .nav-btn.active {
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover:not(.active) {
+            color: var(--accent);
+        }
+
+        /* ===== GRID & CARDS ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: stretch;
+        }
+
+        @media (max-width: 500px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* ===== SVG FRETBOARDS ===== */
+        .fretboard-card {
+        }
+
+        .fretboard {
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        /* ===== INTERVAL CIRCLE (CANVAS) ===== */
+        .interval-canvas {
+            display: block;
+            width: 100%;
+        }
+
+        /* ===== KEYBOARD SELECTOR ===== */
+        .keyboard-selector {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 0;
+            margin: 0;
+        }
+
+        .key-btn {
+            padding: 0.5rem;
+            background: var(--panel);
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.15s;
+            text-align: center;
+        }
+
+        .key-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .key-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* ===== SELECTOR GROUPS ===== */
+        .selector-group {
+            margin: 1.5rem 0;
+        }
+
+        .selector-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--panel);
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* ===== TABLE ===== */
+        .interval-table {
+            width: 100%;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+        }
+
+        .interval-table th {
+            background: rgba(200, 169, 110, 0.1);
+            border-bottom: 2px solid var(--border);
+            padding: 1rem 0.8rem;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .interval-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .interval-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* ===== HELPERS ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1.5rem;
+        }
+
+        .mt-3 {
+            margin-top: 2.5rem;
+        }
+
+        ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.6rem;
+            line-height: 1.6;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* ===== INTRO BOX ===== */
+        .intro-box {
+            background: rgba(200, 169, 110, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .intro-box h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* ===== QUIZ BUTTONS ===== */
+        .quiz-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .quiz-btn {
+            padding: 1rem;
+            background: var(--panel);
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+
+        .quiz-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .quiz-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .quiz-btn.correct {
+            background: #1a3a1a;
+            border-color: #4ac8a0;
+            color: #4ac8a0;
+        }
+
+        .quiz-btn.wrong {
+            background: #3a1a1a;
+            border-color: #e04040;
+            color: #e04040;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== FLOATING NAVIGATION ===== -->
+<div class="nav-pill">
+    <button class="nav-btn active" onclick="switchPage('page-explanation', this)">📚 FÖRKLARING</button>
+    <button class="nav-btn" onclick="switchPage('page-experiment', this)">🔬 EXPERIMENTERA</button>
+    <button class="nav-btn" onclick="switchPage('page-quiz', this)">⚡ QUIZ</button>
+</div>
+
+<!-- ===== PAGE 1: FÖRKLARING (TEORI) ===== -->
+<div id="page-explanation" class="page active">
+    <h1>INTERVALLER</h1>
+
+    <div class="intro-box">
+        <h3>Vad är ett intervall?</h3>
+        <p>
+            Ett <strong>intervall</strong> är avståndet mellan två toner, mätt i <strong>halvtoner</strong> (semitoner). 
+            För gitarrister är detta en av de mest centrala sakerna att förstå för att:
+        </p>
+        <ul>
+            <li>Förstå hur ackord är byggda</li>
+            <li>Spela efter gehör och identifiera melodier</li>
+            <li>Transponera och omforma musik</li>
+            <li>Kommunicera med andra musiker</li>
+            <li>Förbättra ditt melodiska tänkande</li>
+        </ul>
+        <p>
+            <strong>Intervaller räknas alltid från en grundton (root)</strong> uppåt. En <strong>oktav</strong> är när vi når samma ton åtta steg högre, vilket är 12 halvtoner.
+        </p>
+    </div>
+
+    <h2>Intervallernas namn & färger</h2>
+    <p>
+        Här kan du se de tretton intervaller vi tränar på. Varje intervall har en egen färg som hjälper dig 
+        att igenkänna det visuellt på gitarren och i cirkeln.
+    </p>
+
+    <div class="grid-2">
+        <div class="card fretboard-card">
+            <span class="card-label">Exempel: Stor ters (3) från C till E</span>
+            <svg id="example1-fret" class="fretboard"></svg>
+            <p style="text-align: center; font-size: 0.85rem; color: var(--muted); margin-top: 1rem;">
+                E-strängen: C (band 8) → E (band 12) · Samma E visas också på A-strängen (band 7)
+            </p>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <span class="card-label" style="display:block;padding:0.8rem 1rem 0;">Intervallcirkeln</span>
+            <canvas id="example-circle" class="interval-canvas"></canvas>
+
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <span class="card-label">Intervalllinjen</span>
+        <svg id="example-line" style="width: 100%; max-width: none; height: auto; display: block;"></svg>
+        <p style="text-align: center; font-size: 0.85rem; color: var(--muted); margin-top: 1rem;">
+            Alla intervaller från vänster till höger
+        </p>
+    </div>
+
+    <div class="card mt-2">
+        <span class="card-label">Alla intervaller — från Prim till Oktav</span>
+        <table class="interval-table">
+            <thead>
+                <tr>
+                    <th>Intervall</th>
+                    <th>Halvtoner</th>
+                    <th>Från C</th>
+                    <th>Beskrivning</th>
+                </tr>
+            </thead>
+            <tbody id="interval-reference-table">
+                <!-- Generated by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mt-2">
+        <p style="font-size: 0.9rem; line-height: 1.7;">
+            <strong>💡 Tips:</strong> Ju mer du tränar på att identifiera intervaller, desto snabbare 
+            blir ditt öra och dina fingrar. Börja med att spela samma intervall på alla strängar för att 
+            förstå dess plats på gitarren.
+        </p>
+    </div>
+</div>
+
+<!-- ===== PAGE 2: EXPERIMENTERA (LABB) ===== -->
+<div id="page-experiment" class="page">
+    <h1>EXPERIMENTERA</h1>
+
+    <div class="card mt-2">
+        <span class="card-label">Grundton</span>
+        <div id="root-selector-sharp" class="keyboard-selector"></div>
+        <div id="root-selector-flat" class="keyboard-selector"></div>
+    </div>
+
+    <div class="card">
+        <span class="card-label">Välj intervall att studera</span>
+        <canvas id="interval-selector-canvas" style="width:100%;cursor:pointer;display:block;"></canvas>
+        <div id="interval-selector-label" style="text-align:center;font-family:'DM Mono',monospace;font-size:0.8rem;margin-top:0.5rem;color:var(--accent);letter-spacing:1px;min-height:1.2em;"></div>
+    </div>
+
+    <h2 class="mt-2">Visualiseringar</h2>
+
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-label">Gitarrhals</span>
+            <svg id="experiment-fret" class="fretboard"></svg>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <span class="card-label" style="display:block;padding:0.8rem 1rem 0;">Intervallcirkel</span>
+            <canvas id="experiment-circle" class="interval-canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <span class="card-label">Intervallets ordning på en linje</span>
+        <svg id="experiment-line" style="display: block; width: 100%; height: 80px; margin: 1rem 0;"></svg>
+    </div>
+
+    <div class="card mt-3">
+        <span id="experiment-table-label" style="display:block;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:var(--accent);margin-bottom:0.8rem;">Toner upp och ned</span>
+        <table class="interval-table">
+            <thead>
+                <tr>
+                    <th>Ned</th>
+                    <th>Ton</th>
+                    <th>Upp</th>
+                </tr>
+            </thead>
+            <tbody id="experiment-table">
+                <!-- Generated by JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ===== PAGE 3: QUIZ ===== -->
+<div id="page-quiz" class="page">
+    <h1>QUIZ</h1>
+
+    <!-- ===== START SCREEN ===== -->
+    <div id="quiz-start">
+        <div class="card mt-2">
+            <span class="card-label">Så här funkar det</span>
+            <div style="display:flex;flex-direction:column;gap:1rem;margin-top:0.5rem;">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="width:22px;height:22px;border-radius:50%;background:#ffffff;flex-shrink:0;"></div>
+                    <p style="margin:0;font-size:0.9rem;">Den <strong>vita</strong> pricken är din grundton</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="width:22px;height:22px;border-radius:50%;background:#e04040;flex-shrink:0;"></div>
+                    <p style="margin:0;font-size:0.9rem;">Den <strong>röda</strong> pricken är intervallet du skall identifiera</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="font-size:1.2rem;width:22px;text-align:center;flex-shrink:0;">↑</div>
+                    <p style="margin:0;font-size:0.9rem;">Intervallet är alltid <strong>stigande</strong> — röd prick är alltid högre upp på halsen</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="font-size:1.2rem;width:22px;text-align:center;flex-shrink:0;">↷</div>
+                    <p style="margin:0;font-size:0.9rem;">Intervall större än stor ters byter sträng</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="font-size:1.2rem;width:22px;text-align:center;flex-shrink:0;">⏱</div>
+                    <p style="margin:0;font-size:0.9rem;">Varje fråga mäts i sekunder — snabbare svar ger mer poäng</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-2" style="background:rgba(200,169,110,0.06);border-color:rgba(200,169,110,0.3);">
+            <span class="card-label">Poängsystem</span>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem;font-size:0.9rem;">
+                <div>✅ Rätt svar: <strong style="color:var(--accent)">10p</strong></div>
+                <div>⚡ Under 3 sek: <strong style="color:var(--accent)">+5 bonus</strong></div>
+                <div>🏃 3–7 sek: <strong style="color:var(--accent)">+2 bonus</strong></div>
+                <div>❌ Fel svar: <strong style="color:#e04040">0p</strong></div>
+                <div>🔥 Streak ×3+: <strong style="color:var(--accent)">multiplikator</strong></div>
+            </div>
+        </div>
+
+        <button onclick="startQuiz()" style="width:100%;padding:1.2rem;background:var(--accent);color:#000;border:none;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:3px;cursor:pointer;border-radius:4px;margin-top:1.5rem;">
+            ▶ STARTA QUIZ
+        </button>
+    </div>
+
+    <!-- ===== ACTIVE QUIZ ===== -->
+    <div id="quiz-active" style="display:none;">
+
+        <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;">
+            <div class="stat-box" style="flex:1;">
+                <div class="stat-number" id="quiz-correct">0</div>
+                <div class="stat-label">Rätt</div>
+            </div>
+            <div class="stat-box" style="flex:1;">
+                <div class="stat-number" id="quiz-wrong">0</div>
+                <div class="stat-label">Fel</div>
+            </div>
+            <div class="stat-box" style="flex:1;">
+                <div class="stat-number" id="quiz-streak">0</div>
+                <div class="stat-label">Streak 🔥</div>
+            </div>
+            <div class="stat-box" style="flex:1;">
+                <div class="stat-number" id="quiz-timer">—</div>
+                <div class="stat-label">Sekunder</div>
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <svg id="quiz-fret" class="fretboard"></svg>
+        </div>
+
+        <div class="card text-center" style="margin-top:0.8rem;">
+            <h2 style="margin:0;color:var(--accent);font-size:1rem;letter-spacing:2px;">VILKET INTERVALL ÄR DETTA?</h2>
+        </div>
+
+        <div class="quiz-btn-grid" id="quiz-buttons" style="margin-top:0.8rem;">
+            <!-- Generated by JS -->
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:1rem;">
+            <button id="quiz-next-btn" onclick="generateQuizQuestion()" style="flex:1;padding:1rem;background:var(--accent);color:#000;border:none;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;cursor:pointer;border-radius:4px;">
+                ▶ NÄSTA FRÅGA
+            </button>
+            <button onclick="stopQuiz()" style="padding:1rem 1.4rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;cursor:pointer;border-radius:4px;">
+                ⏹ AVBRYT
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== DATA & CONSTANTS =====
+
+const NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+const FLAT_ROOTS = new Set([5, 10, 3, 8, 1, 6]); // F Bb Eb Ab Db Gb (chromatic indices)
+
+// Returns display name for a chromatic semitone (for Ton column — no interval context)
+function noteForSemi(semi) {
+    const sh = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][semi % 12];
+    const fl = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'][semi % 12];
+    if (sh === fl) return sh;
+    return FLAT_ROOTS.has(currentRoot) ? fl + '/' + sh : sh + '/' + fl;
+}
+
+// Diatonic spelling engine
+const LETTERS   = ['C','D','E','F','G','A','B'];
+const NAT_SEMI  = [0, 2, 4, 5, 7, 9, 11];
+
+const LETTER_OFFSET = {
+    '1':0,'b2':1,'2':1,'b3':2,'#9':2,'3':2,'b4':3,'4':3,
+    '#4':3,'b5':4,'5':4,'b6':5,'#5':5,'6':5,'b7':6,'7':6,'maj7':6,'8':7
+};
+
+// Parse a note name string like "F#", "Gb", "C" into {letterIdx, semi}
+function parseNote(name) {
+    const letter = name[0];
+    const acc = name.slice(1);
+    const letterIdx = LETTERS.indexOf(letter);
+    const natS = NAT_SEMI[letterIdx];
+    const accVal = acc === '#' ? 1 : acc === '##' ? 2 : acc === 'b' ? -1 : acc === 'bb' ? -2 : 0;
+    return { letterIdx, semi: ((natS + accVal) % 12 + 12) % 12 };
+}
+
+// Spell the interval from a specific named note (not just semitone)
+function spellIntervalFrom(noteName, intervalKey, direction) {
+    const { letterIdx, semi: rootSemi } = parseNote(noteName);
+    const lOffset = LETTER_OFFSET[intervalKey] || 0;
+    const ivSemi = INTERVALS[intervalKey].semi;
+    const targetSemi = ((rootSemi + direction * ivSemi) % 12 + 12) % 12;
+    const targetLetterIdx = ((letterIdx + direction * lOffset) % 7 + 7) % 7;
+    const natSemi = NAT_SEMI[targetLetterIdx];
+    let diff = (targetSemi - natSemi + 12) % 12;
+    if (diff > 6) diff -= 12;
+    const acc = diff === 1 ? '#' : diff === 2 ? '##' : diff === -1 ? 'b' : diff === -2 ? 'bb' : '';
+    return LETTERS[targetLetterIdx] + acc;
+}
+
+// Get one or two note names for a semitone, based on root preference
+function noteNamesForSemi(semi) {
+    const s = ((semi % 12) + 12) % 12;
+    const sh = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][s];
+    const fl = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'][s];
+    if (sh === fl) return [sh];
+    return FLAT_ROOTS.has(currentRoot) ? [fl, sh] : [sh, fl];
+}
+
+// Compute diatonic Ned or Upp for a note (possibly enharmonic), return paired string
+function spellColumn(noteSemi, intervalKey, direction) {
+    const names = noteNamesForSemi(noteSemi);
+    const results = names.map(n => spellIntervalFrom(n, intervalKey, direction));
+    // deduplicate
+    const unique = results.filter((v, i, a) => a.indexOf(v) === i);
+    return unique.join('/');
+}
+
+// Intervallnamnen från C - enharmoniskt korrekt
+const INTERVAL_NOTES_FROM_C = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'G#', 'A', 'Bb', 'B', 'C'];
+
+// Intervaller med färger från Ackordsrecept
+const INTERVALS = {
+    '1':   { name: 'Prim',                semi: 0,  color: '#ffffff' },
+    'b2':  { name: 'Liten sekund',         semi: 1,  color: '#FF00CC' },
+    '2':   { name: 'Stor sekund',          semi: 2,  color: '#FF1500' },
+    'b3':  { name: 'Liten ters',           semi: 3,  color: '#FF7700' },
+    '3':   { name: 'Stor ters',            semi: 4,  color: '#FFDD00' },
+    '4':   { name: 'Ren kvart',            semi: 5,  color: '#AAFF00' },
+    'b5':  { name: 'Överstigande kvart / Förminskad kvint', semi: 6,  color: '#00FF55' },
+    '5':   { name: 'Ren kvint',            semi: 7,  color: '#00FFAA' },
+    'b6':  { name: 'Liten sext',           semi: 8,  color: '#00EEFF' },
+    '6':   { name: 'Stor sext',            semi: 9,  color: '#0099FF' },
+    '7':   { name: 'Liten septim',         semi: 10, color: '#2244FF' },
+    'maj7':{ name: 'Stor septim',          semi: 11, color: '#8800FF' },
+    '8':   { name: 'Oktav',               semi: 12, color: '#FF0066' },
+    // Enharmonic aliases (alias:true = hide in circle/line)
+    '#9':  { name: 'Överstigen nia',        semi: 3,  color: '#FF7700', alias: true },
+    'b4':  { name: 'Förminskad kvart',      semi: 4,  color: '#FFDD00', alias: true },
+    '#4':  { name: 'Överstigande kvart',    semi: 6,  color: '#00FF55', alias: true },
+    '#5':  { name: 'Överstigande kvint',    semi: 8,  color: '#00EEFF', alias: true }
+};
+
+const STRINGS = [
+    { note: 'E', midi: 40, thick: '2.5' },
+    { note: 'A', midi: 45, thick: '2.0' },
+    { note: 'D', midi: 50, thick: '1.6' },
+    { note: 'G', midi: 55, thick: '1.2' },
+    { note: 'B', midi: 59, thick: '0.9' },
+    { note: 'e', midi: 64, thick: '0.7' }
+];
+
+// State
+let currentRoot = 0; // Default C
+let currentRootNote = 'C'; // Track note name for flat/sharp
+let currentInterval = '3'; // Default Major third
+let quizCorrect = 0, quizWrong = 0, quizStreak = 0;
+let quizAnswered = false;
+
+// ===== PAGE NAVIGATION =====
+function switchPage(pageId, buttonEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    
+    document.querySelectorAll('.nav-pill .nav-btn').forEach(btn => btn.classList.remove('active'));
+    buttonEl.classList.add('active');
+    
+    if (pageId === 'page-explanation') initExplanation();
+    else if (pageId === 'page-experiment') initExperiment();
+    else if (pageId === 'page-quiz') generateQuizQuestion();
+}
+
+// ===== INITIALIZATION: PAGE 1 - EXPLANATION =====
+function initExplanation() {
+    buildIntervalReferenceTable();
+    drawExampleFretboard1();
+    drawExampleCircle();
+    drawExampleIntervalLine('example-line', '3'); // Draw interval line with large third highlighted
+}
+
+function intervalKeyHtml(key) {
+    const sup = s => `<sup style="font-size:0.7em;vertical-align:super;">${s}</sup>`;
+    if (key.startsWith('maj')) return sup('maj') + key.slice(3);
+    // handle compound like #4/b5 — replace each accidental
+    return key.replace(/(maj|[b#])/g, m => sup(m));
+}
+
+function noteHtml(note) {
+    // e.g. Bb → B + superscript b, F# → F + superscript #
+    return note.replace(/([b#])/g, m => `<sup style="font-size:0.7em;vertical-align:super;">${m}</sup>`);
+}
+
+function buildIntervalReferenceTable() {
+    const tbody = document.getElementById('interval-reference-table');
+    tbody.innerHTML = '';
+    
+    // Sort intervals by semitones (11-0, highest first)
+    const sortedIntervals = Object.entries(INTERVALS)
+        .filter(([, iv]) => !iv.alias)
+        .sort(([, a], [, b]) => b.semi - a.semi);
+    
+    sortedIntervals.forEach(([key, iv]) => {
+        const noteFromC = key === 'b5'
+            ? 'F#/Gb'
+            : key === 'b6'
+            ? 'Ab'
+            : INTERVAL_NOTES_FROM_C[iv.semi % 13];
+        const displayKey = key === 'b5' ? '#4/b5' : key;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${intervalKeyHtml(displayKey)}</strong></td>
+            <td>${iv.semi + 1}</td>
+            <td style="color: ${iv.color}; font-weight: bold;">${noteHtml(noteFromC)}</td>
+            <td style="color: var(--muted); font-size: 0.9rem;">${iv.name}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function drawVerticalIntervalChart() {
+    // Removed - using table instead
+}
+
+// ===== FRETBOARD DRAWING (SVG) =====
+function drawFretboard(svgId, marks = []) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+
+    const NS = 6, NF = 12;
+    let fS = 0, fE = NF;
+    
+    if (marks.length > 0) {
+        const frets = marks.map(m => m.fret);
+        const minF = Math.min(...frets);
+        const maxF = Math.max(...frets);
+        fS = Math.max(0, minF - 2);
+        fE = Math.min(NF, maxF + 2);
+    } else {
+        fE = 6;
+    }
+
+    const NFs = fE - fS;
+    const sGap = 40, fH = 40, padT = 26, padR = 18, padB = 8, padL = 8;
+    const W = padL + NS * sGap + padR;
+    const H = padT + (NFs + 1) * fH + padB;
+    const sx = i => padL + (i + 1) * sGap;
+    const cy = f => padT + (f - fS + 0.5) * fH;
+    const TH = ['2.5', '2.0', '1.6', '1.2', '0.9', '0.7'];
+    const INLAY = new Set([3, 5, 7, 9, 12]);
+    const SNAMES = ['E', 'A', 'D', 'G', 'B', 'e'];
+
+    // Set attributes directly on the existing SVG element
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('width', '100%');
+    svg.style.display = 'block';
+    svg.style.borderRadius = '8px';
+
+    let s = `<rect width="${W}" height="${H}" fill="#1a120a" rx="8"/>`;
+
+    SNAMES.forEach((n, i) => s += `<text x="${sx(i)}" y="18" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#c8a96e">${n}</text>`);
+
+    for (let i = 0; i < NS; i++)
+        s += `<line x1="${sx(i)}" y1="${padT}" x2="${sx(i)}" y2="${padT + (NFs + 1) * fH}" stroke="#c8b87a" stroke-width="${TH[i]}" opacity="0.45"/>`;
+
+    if (fS === 0)
+        s += `<rect x="${sx(0)}" y="${padT + fH - 2}" width="${sx(NS - 1) - sx(0)}" height="5" fill="#ccc" rx="1"/>`;
+
+    for (let f = fS + 1; f <= fE + 1; f++)
+        s += `<line x1="${sx(0)}" y1="${padT + (f - fS) * fH}" x2="${sx(NS - 1)}" y2="${padT + (f - fS) * fH}" stroke="#8899aa" stroke-width="1.2" opacity="0.6"/>`;
+
+    for (let f = fS; f <= fE; f++) {
+        const lbl = f === 0 ? '0' : f;
+        s += `<text x="${padL + sGap * 0.3}" y="${cy(f) + 4}" text-anchor="middle" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">${lbl}</text>`;
+    }
+
+    INLAY.forEach(f => {
+        if (f < fS || f > fE) return;
+        if (f === 12) {
+            s += `<circle cx="${sx(1) + sGap / 2}" cy="${cy(f)}" r="4" fill="rgba(255,255,255,0.12)"/>`;
+            s += `<circle cx="${sx(3) + sGap / 2}" cy="${cy(f)}" r="4" fill="rgba(255,255,255,0.12)"/>`;
+        } else {
+            s += `<circle cx="${(sx(0) + sx(NS - 1)) / 2}" cy="${cy(f)}" r="4" fill="rgba(255,255,255,0.12)"/>`;
+        }
+    });
+
+    marks.forEach(({ string: str, fret: f, color: col }) => {
+        if (f < fS || f > fE) return;
+        const x = sx(str), y = cy(f);
+        s += `<circle cx="${x}" cy="${y}" r="14" fill="${col}" opacity="0.9"/>`;
+    });
+
+    svg.innerHTML = s;
+}
+
+function drawExampleFretboard1() {
+    // Large third from C to E on E string: Band 8 (C) to Band 12 (E)
+    // Also show same E on A string at band 7
+    drawFretboard('example1-fret', [
+        { string: 0, fret: 8, color: '#ffffff' },    // C (root) on E string
+        { string: 0, fret: 12, color: '#FFDD00' },   // E (major third) on E string
+        { string: 1, fret: 7, color: '#FFDD00' }     // E (same tone) on A string
+    ]);
+}
+
+// ===== EXAMPLE INTERVAL LINE (SVG - Horizontal for explanation) =====
+function drawExampleIntervalLine(svgId, highlightInterval = null) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    
+    const W = 800;
+    const H = 120;
+    const padL = 40, padR = 40, padT = 40, padB = 40;
+    const lineY = H / 2;
+    const usableW = W - padL - padR;
+    
+    let s = `<svg width="100%" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<rect width="${W}" height="${H}" fill="#1a120a" rx="8"/>`;
+    
+    // Center horizontal line - extends to octave
+    s += `<line x1="${padL}" y1="${lineY}" x2="${W - padR}" y2="${lineY}" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>`;
+    
+    // Draw interval markers along the line (including octave)
+    const intervalKeys = Object.keys(INTERVALS);
+    let highlightedColor = null;
+    
+    intervalKeys.forEach((key) => {
+        const iv = INTERVALS[key];
+        if (iv.alias) return;
+        // Position along the line proportional to semitones (0-12)
+        const x = padL + (iv.semi / 12) * usableW;
+        
+        // Highlight R1 (root) and the selected interval
+        const isR1 = iv.semi === 0;
+        const isOctave = iv.semi === 12;
+        if (isOctave) return; // skip — same position as root
+        const isHighlighted = highlightInterval && iv.semi === INTERVALS[highlightInterval].semi;
+        const shouldHighlight = isR1 || isHighlighted;
+        
+        const r = shouldHighlight ? 13 : 8;
+        const alpha = shouldHighlight ? 1.0 : 0.6;
+        
+        // Use R1 color for octave as well (both are the root note)
+        const color = isOctave ? INTERVALS['1'].color : iv.color;
+        
+        // Draw circle
+        s += `<circle cx="${x}" cy="${lineY}" r="${r}" fill="${color}" opacity="${alpha}"/>`;
+        
+        // Highlight ring
+        if (shouldHighlight) {
+            s += `<circle cx="${x}" cy="${lineY}" r="${r}" fill="none" stroke="#ffffff" stroke-width="2"/>`;
+        }
+        
+        // Label below
+        const labelY = shouldHighlight ? lineY + 35 : lineY + 28;
+        // Build SVG text with superscript prefix
+        const _pre = key.startsWith('maj') ? 'maj' : key.startsWith('b') ? 'b' : key.startsWith('#') ? '#' : '';
+        const _rest = _pre ? key.slice(_pre.length) : key;
+        const _fs = shouldHighlight ? 17 : 12;
+        const _supfs = Math.round(_fs * 0.6);
+        const _dy = shouldHighlight ? '-4' : '-3';
+        const _label = _pre
+            ? `<tspan font-size="${_supfs}" dy="${_dy}">${_pre}</tspan><tspan dy="${Math.round(_fs*0.4)}">${_rest}</tspan>`
+            : key;
+        s += `<text x="${x}" y="${labelY}" text-anchor="middle" font-family="monospace" font-size="${_fs}" font-weight="${shouldHighlight ? 'bold' : 'normal'}" fill="${shouldHighlight ? '#ffffff' : '#999999'}">${_label}</text>`;
+        
+        if (isHighlighted) {
+            highlightedColor = iv.color;
+        }
+    });
+    
+    // Interval name above the line
+    if (highlightInterval && INTERVALS[highlightInterval] && highlightedColor && highlightInterval !== '8') {
+        s += `<text x="${W / 2}" y="20" text-anchor="middle" font-family="monospace" font-size="16" font-weight="bold" fill="${highlightedColor}">${highlightInterval}</text>`;
+    }
+    
+    s += '</svg>';
+    svg.innerHTML = s;
+}
+
+
+// ===== INTERVAL CIRCLE (CANVAS) =====
+function drawIntervalCircle(canvasId, highlightInterval = null) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    
+    // Sync canvas resolution to its CSS display size
+    const size = canvas.offsetWidth || 280;
+    canvas.width = size;
+    canvas.height = size;
+
+    const ctx = canvas.getContext('2d');
+    const CX = size / 2;
+    const CY = size / 2;
+    const OR = size * 0.42; // orbit radius scales with size
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Background
+    ctx.fillStyle = '#05060f';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Orbit circle
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 9]);
+    ctx.beginPath();
+    ctx.arc(CX, CY, OR, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // Draw intervals positioned by their semitones (0-12 around the circle)
+    // R1 (0 st) at 12 o'clock, then clockwise 1 st per "clock hour"
+    let highlightedData = null;
+    
+    Object.entries(INTERVALS).forEach((entry) => {
+        const [key, iv] = entry;
+        if (iv.alias) return;
+        
+        // Position based on semitones: 0st = 12 o'clock, 1st = 1 o'clock, etc.
+        const angle = -Math.PI / 2 + (iv.semi / 12) * Math.PI * 2;
+        const px = CX + Math.cos(angle) * OR;
+        const py = CY + Math.sin(angle) * OR;
+        
+        // Highlight R1 (root) at top or the selected interval
+        const isR1 = iv.semi === 0;
+        const isOctave = iv.semi === 12;
+        if (isOctave) return; // skip — same position as root
+        const isHighlighted = highlightInterval && iv.semi === INTERVALS[highlightInterval].semi;
+        const shouldHighlight = isR1 || isHighlighted;
+        
+        const r = shouldHighlight ? size * 0.072 : size * 0.052;
+        const alpha = shouldHighlight ? 1.0 : 0.6;
+        
+        // Use R1 color for octave as well (both are the root note)
+        const color = isOctave ? INTERVALS['1'].color : iv.color;
+        
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Highlight stroke
+        if (shouldHighlight) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1.0;
+        
+        // Label inside dot
+        if (!(key === '1' && isHighlighted)) {
+            drawIntervalKey(ctx, key, px, py, shouldHighlight ? size * 0.068 : size * 0.054, '#000000', false);
+        }
+        
+        if (isHighlighted && !isOctave) {
+            highlightedData = { px, py, angle, color: iv.color, name: key };
+        }
+    });
+    
+    // Draw connecting lines from R1 to highlighted interval
+    if (highlightedData && highlightedData.name !== '1' && highlightedData.name !== '8'
+        && highlightInterval !== '1' && highlightInterval !== '8') {
+        const r1Angle = -Math.PI / 2;
+        const r1X = CX + Math.cos(r1Angle) * OR;
+        const r1Y = CY + Math.sin(r1Angle) * OR;
+        const r1r = size * 0.054; // approx dot radius at this scale
+        const gap = r1r + size * 0.013;
+        const r1StartX = r1X + Math.cos(r1Angle + Math.PI) * gap;
+        const r1StartY = r1Y + Math.sin(r1Angle + Math.PI) * gap;
+
+        // Line from R1 (with gap) to near center (with gap)
+        const toCenter = Math.atan2(CY - r1StartY, CX - r1StartX);
+        const centerGapX = CX - Math.cos(toCenter) * gap;
+        const centerGapY = CY - Math.sin(toCenter) * gap;
+
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(r1StartX, r1StartY);
+        ctx.lineTo(centerGapX, centerGapY);
+        ctx.stroke();
+
+        // Line from center (with gap) to highlighted interval (with gap)
+        const toIv = Math.atan2(highlightedData.py - CY, highlightedData.px - CX);
+        const ivGapX = highlightedData.px - Math.cos(toIv) * gap;
+        const ivGapY = highlightedData.py - Math.sin(toIv) * gap;
+        ctx.beginPath();
+        ctx.moveTo(CX + Math.cos(toIv) * gap, CY + Math.sin(toIv) * gap);
+        ctx.lineTo(ivGapX, ivGapY);
+        ctx.stroke();
+        
+        // Arrow head at end of line (touching the gap, not the dot center)
+        const headSize = 12;
+        const angle = toIv;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.moveTo(ivGapX, ivGapY);
+        ctx.lineTo(
+            ivGapX - headSize * Math.cos(angle - Math.PI / 6),
+            ivGapY - headSize * Math.sin(angle - Math.PI / 6)
+        );
+        ctx.lineTo(
+            ivGapX - headSize * Math.cos(angle + Math.PI / 6),
+            ivGapY - headSize * Math.sin(angle + Math.PI / 6)
+        );
+        ctx.closePath();
+        ctx.fill();
+    }
+    
+    // Background box for interval name (drawn after lines so it covers them)
+    if (highlightInterval && INTERVALS[highlightInterval] && highlightInterval !== '8' && highlightInterval !== '1') {
+        const boxWidth = 55;
+        const boxHeight = 45;
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#05060f';
+        ctx.fillRect(CX - boxWidth / 2, CY - boxHeight / 2, boxWidth, boxHeight);
+    }
+    
+    // Interval name in center
+    if (highlightInterval && INTERVALS[highlightInterval] && highlightInterval !== '8' && highlightInterval !== '1') {
+        const iv = INTERVALS[highlightInterval];
+        ctx.globalAlpha = 1;
+        drawIntervalKey(ctx, highlightInterval, CX, CY, 18, iv.color);
+    }
+}
+
+function drawExampleCircle() {
+    drawIntervalCircle('example-circle', '3'); // Highlight large third
+}
+
+// ===== INITIALIZATION: PAGE 2 - EXPERIMENT =====
+// ===== INTERVAL SELECTOR CIRCLE =====
+const SELECTOR_POSITIONS = [
+    { options: ['1', '8'] },
+    { options: ['b2'] },
+    { options: ['2'] },
+    { options: ['b3', '#9'] },
+    { options: ['3', 'b4'] },
+    { options: ['4'] },
+    { options: ['b5', '#4'] },
+    { options: ['5'] },
+    { options: ['b6', '#5'] },
+    { options: ['6'] },
+    { options: ['7'] },
+    { options: ['maj7'] },
+];
+
+let selectorDots = []; // stores {x, y, r, key} for hit testing
+
+
+// Draw interval key with superscript b, # and maj
+function drawIntervalKey(ctx, key, x, y, mainSize, color, bold = true) {
+    ctx.fillStyle = color;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    const weight = bold ? 'bold ' : '';
+
+    let prefix = '', rest = key;
+    if (key.startsWith('maj')) { prefix = 'maj'; rest = key.slice(3); }
+    else if (key.startsWith('b')) { prefix = 'b'; rest = key.slice(1); }
+    else if (key.startsWith('#')) { prefix = '#'; rest = key.slice(1); }
+
+    if (!prefix) {
+        ctx.font = `${weight}${mainSize}px DM Mono`;
+        ctx.fillText(rest, x, y);
+        return;
+    }
+
+    const supSize = mainSize * 0.58;
+    ctx.font = `${weight}${mainSize}px DM Mono`;
+    const restW = ctx.measureText(rest).width;
+    ctx.font = `${weight}${supSize}px DM Mono`;
+    const preW = ctx.measureText(prefix).width;
+    const totalW = preW + restW;
+    const startX = x - totalW / 2;
+
+    ctx.font = `${weight}${supSize}px DM Mono`;
+    ctx.fillText(prefix, startX + preW / 2, y - mainSize * 0.22);
+
+    ctx.font = `${weight}${mainSize}px DM Mono`;
+    ctx.fillText(rest, startX + preW + restW / 2, y);
+}
+
+function drawIntervalSelector() {
+    const canvas = document.getElementById('interval-selector-canvas');
+    if (!canvas) return;
+    const size = canvas.offsetWidth || 300;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    const CX = size / 2, CY = size / 2;
+    const OR  = size * 0.36;  // outer orbit (primary)
+    const IR  = size * 0.22;  // inner orbit (enharmonic alternatives)
+    const N = SELECTOR_POSITIONS.length;
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = '#05060f';
+    ctx.fillRect(0, 0, size, size);
+
+    // Outer orbit ring
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 9]);
+    ctx.beginPath();
+    ctx.arc(CX, CY, OR, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Inner orbit ring
+    ctx.beginPath();
+    ctx.arc(CX, CY, IR, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Center: show selected interval name (drawn first so lines/dots render on top)
+    const selIv = INTERVALS[currentInterval];
+    if (selIv) {
+        drawIntervalKey(ctx, currentInterval, CX, CY - size * 0.04, size * 0.07, selIv.color);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = `${size * 0.032}px DM Sans`;
+        ctx.fillText(selIv.name, CX, CY + size * 0.045);
+    }
+
+    selectorDots = [];
+
+    // ── Line from root to selected interval ──
+    const rootAngle = -Math.PI / 2; // position 0 = root = 12 o'clock
+    const rootX = CX + Math.cos(rootAngle) * OR;
+    const rootY = CY + Math.sin(rootAngle) * OR;
+
+    // Find angle of selected interval
+    let selAngle = null;
+    let selOnInner = false;
+    SELECTOR_POSITIONS.forEach((pos, i) => {
+        const a = -Math.PI / 2 + (i / N) * Math.PI * 2;
+        if (pos.options[0] === currentInterval) { selAngle = a; selOnInner = false; }
+        if (pos.options.length > 1 && pos.options[1] === currentInterval) { selAngle = a; selOnInner = true; }
+    });
+
+    if (selAngle !== null && currentInterval !== '1') {
+        const selR = selOnInner ? IR : OR;
+        const selX = CX + Math.cos(selAngle) * selR;
+        const selY = CY + Math.sin(selAngle) * selR;
+        const dotR = selOnInner ? size * 0.038 : size * 0.072;
+        const gap = size * 0.018;
+        const rootGap = size * 0.072 + gap;
+        const selGap = dotR + size * 0.012;
+
+        // Direction from root → sel (through center)
+        const toSelDist = Math.hypot(selX - rootX, selY - rootY);
+        const dxN = (selX - rootX) / toSelDist;
+        const dyN = (selY - rootY) / toSelDist;
+
+        const headSize = size * 0.022;
+        const centerGap = size * 0.10; // bigger gap so seg1 stops before center label
+
+        // Direction from center → sel
+        const toSelDist2 = Math.hypot(selX - CX, selY - CY);
+        const dxC = (selX - CX) / toSelDist2;
+        const dyC = (selY - CY) / toSelDist2;
+
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,255,255,0.65)';
+        ctx.lineWidth = 2.5;
+
+        // Segment 1: root edge → center (always vertical, root is at 12 o'clock)
+        const centerInX = CX;
+        const centerInY = CY - centerGap;
+        ctx.beginPath();
+        ctx.moveTo(rootX, rootY + rootGap);
+        ctx.lineTo(centerInX, centerInY);
+        ctx.stroke();
+
+        // Segment 2: same gap from center as seg1, → sel dot edge
+        const innerSkip = centerGap;
+        const centerOutX = CX + dxC * innerSkip;
+        const centerOutY = CY + dyC * innerSkip;
+        const lineEndX = selX - dxC * selGap;
+        const lineEndY = selY - dyC * selGap;
+        ctx.beginPath();
+        ctx.moveTo(centerOutX, centerOutY);
+        ctx.lineTo(lineEndX, lineEndY);
+        ctx.stroke();
+
+        // Arrowhead at lineEnd
+        const arrowAngle = Math.atan2(selY - CY, selX - CX);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.beginPath();
+        ctx.moveTo(lineEndX, lineEndY);
+        ctx.lineTo(lineEndX - headSize * Math.cos(arrowAngle - Math.PI / 6),
+                   lineEndY - headSize * Math.sin(arrowAngle - Math.PI / 6));
+        ctx.lineTo(lineEndX - headSize * Math.cos(arrowAngle + Math.PI / 6),
+                   lineEndY - headSize * Math.sin(arrowAngle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    SELECTOR_POSITIONS.forEach((pos, i) => {
+        const angle = -Math.PI / 2 + (i / N) * Math.PI * 2;
+
+        // ── PRIMARY dot on outer orbit ──
+        const primaryKey = pos.options[0];
+        const px = CX + Math.cos(angle) * OR;
+        const py = CY + Math.sin(angle) * OR;
+        const iv = INTERVALS[primaryKey];
+        const isSelected = primaryKey === currentInterval;
+        const isRoot = primaryKey === '1';
+        const rOuter = (isSelected || isRoot) ? size * 0.072 : size * 0.052;
+
+        ctx.globalAlpha = (isSelected || isRoot) ? 1.0 : 0.6;
+        ctx.fillStyle = iv.color;
+        ctx.beginPath();
+        ctx.arc(px, py, rOuter, 0, Math.PI * 2);
+        ctx.fill();
+        if (isSelected || isRoot) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = isRoot && !isSelected ? 1.5 : 2;
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1.0;
+
+        // Label inside outer dot
+        drawIntervalKey(ctx, primaryKey, px, py, size * 0.030, '#000000');
+        selectorDots.push({ x: px, y: py, r: rOuter + size * 0.02, key: primaryKey });
+
+        // ── ENHARMONIC dot on inner orbit ──
+        if (pos.options.length > 1) {
+            const altKey = pos.options[1];
+            const ax = CX + Math.cos(angle) * IR;
+            const ay = CY + Math.sin(angle) * IR;
+            const ivAlt = INTERVALS[altKey];
+            const isAltSelected = altKey === currentInterval;
+            const rInner = isAltSelected ? size * 0.038 : size * 0.028;
+
+            ctx.globalAlpha = isAltSelected ? 1.0 : 0.5;
+            ctx.fillStyle = ivAlt.color;
+            ctx.beginPath();
+            ctx.arc(ax, ay, rInner, 0, Math.PI * 2);
+            ctx.fill();
+            if (isAltSelected) {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1.0;
+
+            // Label inside inner dot
+            drawIntervalKey(ctx, altKey, ax, ay, size * 0.022, '#000000');
+            selectorDots.push({ x: ax, y: ay, r: rInner + size * 0.015, key: altKey });
+        }
+    });
+
+}
+
+function initIntervalSelector() {
+    const canvas = document.getElementById('interval-selector-canvas');
+    if (!canvas) return;
+    canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mx = (e.clientX - rect.left) * scaleX;
+        const my = (e.clientY - rect.top) * scaleY;
+        for (const dot of selectorDots) {
+            const dist = Math.hypot(mx - dot.x, my - dot.y);
+            if (dist <= dot.r) {
+                currentInterval = dot.key;
+                drawIntervalSelector();
+                updateExperiment();
+                break;
+            }
+        }
+    });
+    const ro = new ResizeObserver(() => drawIntervalSelector());
+    ro.observe(canvas);
+}
+
+function initExperiment() {
+    buildRootSelectors();
+    initIntervalSelector();
+    drawIntervalSelector();
+    updateExperiment();
+}
+
+function buildRootSelectors() {
+    const sharpContainer = document.getElementById('root-selector-sharp');
+    const flatContainer = document.getElementById('root-selector-flat');
+    
+    sharpContainer.innerHTML = '';
+    flatContainer.innerHTML = '';
+    
+    // Top row: all 12 chromatic notes as sharps
+    NOTES_SHARP.forEach((note, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'key-btn' + (idx === currentRoot && currentRootNote === note ? ' active' : '');
+        btn.innerHTML = noteHtml(note);
+        btn.onclick = () => { currentRoot = idx; currentRootNote = note; buildRootSelectors(); updateExperiment(); };
+        sharpContainer.appendChild(btn);
+    });
+    
+    // Bottom row: only flats (Db, Eb, Gb, Ab, Bb), spacers for naturals
+    NOTES_FLAT.forEach((note, idx) => {
+        const isFlat = note.includes('b');
+        const cell = document.createElement(isFlat ? 'button' : 'div');
+        if (isFlat) {
+            cell.className = 'key-btn' + (idx === currentRoot && currentRootNote === note ? ' active' : '');
+            cell.innerHTML = noteHtml(note);
+            cell.onclick = () => { currentRoot = idx; currentRootNote = note; buildRootSelectors(); updateExperiment(); };
+        } else {
+            cell.className = 'key-btn';
+            cell.style.visibility = 'hidden';
+        }
+        flatContainer.appendChild(cell);
+    });
+}
+
+function updateExperiment() {
+    drawIntervalSelector();
+    // Fretboard
+    const iv = INTERVALS[currentInterval];
+    // String open notes (chromatic, C=0)
+    const STRING_OPEN = [4, 9, 2, 7, 11, 4]; // E A D G B e
+
+    // Root fret on low E string (never open)
+    const rootFretOnE = ((currentRoot - STRING_OPEN[0]) % 12 + 12) % 12 || 12;
+
+    // Target note chromatic
+    const targetNote = (currentRoot + iv.semi) % 12;
+
+    // Which string for interval dot?
+    let ivString, ivFret;
+    const semi = iv.semi;
+    if (semi <= 4) {
+        // Same string (E): same string, higher fret
+        ivString = 0;
+        ivFret = rootFretOnE + semi;
+    } else if (semi <= 9) {
+        // A string
+        ivString = 1;
+        ivFret = ((targetNote - STRING_OPEN[1]) % 12 + 12) % 12 || 12;
+    } else {
+        // D string (7, maj7, oktav)
+        ivString = 2;
+        ivFret = ((targetNote - STRING_OPEN[2]) % 12 + 12) % 12 || 12;
+    }
+
+    drawFretboard('experiment-fret', [
+        { string: 0, fret: rootFretOnE, color: '#ffffff' },
+        { string: ivString, fret: ivFret, color: iv.color }
+    ]);
+    
+    // Circle
+    drawIntervalCircle('experiment-circle', currentInterval);
+    
+    // Line
+    drawIntervalLine('experiment-line', currentInterval);
+    
+    // Table
+    buildExperimentTable();
+}
+
+function drawIntervalLine(svgId, highlightInterval = null) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    
+    const W = 700, H = 100;
+    const startX = 30, endX = W - 30;
+    const y = H / 2;
+    const padT = 25, padB = 25;
+    
+    let s = `<svg width="100%" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="display:block;">`;
+    s += `<rect width="${W}" height="${H}" fill="#1a120a" rx="8"/>`;
+    
+    // Center horizontal line - extends to octave
+    s += `<line x1="${startX}" y1="${y}" x2="${endX}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>`;
+    
+    // Draw all interval points along the line (including octave)
+    const intervalKeys = Object.keys(INTERVALS);
+    
+    let highlightedColor = null;
+    
+    intervalKeys.forEach((key) => {
+        const iv = INTERVALS[key];
+        if (iv.alias) return;
+        const x = startX + (iv.semi / 12) * (endX - startX);
+        const toHighlight = highlightInterval || currentInterval;
+        
+        // Highlight R1 (root) and the selected interval
+        const isR1 = iv.semi === 0;
+        const isOctave = iv.semi === 12;
+        const isHighlighted = toHighlight === key || (iv.semi === INTERVALS[toHighlight].semi);
+        const shouldHighlight = isR1 || isHighlighted;
+        
+        const r = shouldHighlight ? 12 : 7;
+        const alpha = shouldHighlight ? 1.0 : 0.6;
+        
+        // Use R1 color for octave as well (both are the root note)
+        const color = isOctave ? INTERVALS['1'].color : iv.color;
+        
+        // Draw circle
+        s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${color}" opacity="${alpha}"/>`;
+        
+        // Highlight ring
+        if (shouldHighlight) {
+            s += `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#ffffff" stroke-width="2"/>`;
+        }
+        
+        // Label below
+        const labelY = shouldHighlight ? y + 30 : y + 24;
+        const _pre2 = key.startsWith('maj') ? 'maj' : key.startsWith('b') ? 'b' : key.startsWith('#') ? '#' : '';
+        const _rest2 = _pre2 ? key.slice(_pre2.length) : key;
+        const _fs2 = shouldHighlight ? 15 : 12;
+        const _supfs2 = Math.round(_fs2 * 0.6);
+        const _label2 = _pre2
+            ? `<tspan font-size="${_supfs2}" dy="-3">${_pre2}</tspan><tspan dy="${Math.round(_fs2*0.4)}">${_rest2}</tspan>`
+            : key;
+        s += `<text x="${x}" y="${labelY}" text-anchor="middle" font-family="monospace" font-size="${_fs2}" font-weight="${shouldHighlight ? 'bold' : 'normal'}" fill="${shouldHighlight ? '#ffffff' : '#999999'}">${_label2}</text>`;
+        
+        if (isHighlighted) {
+            highlightedColor = iv.color;
+        }
+    });
+    
+    // Interval name above the line
+    if ((highlightInterval || currentInterval) && highlightedColor && (highlightInterval || currentInterval) !== '8') {
+        const intervalName = highlightInterval || currentInterval;
+        s += `<text x="${W / 2}" y="18" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="${highlightedColor}">${intervalName}</text>`;
+    }
+    
+    s += '</svg>';
+    svg.innerHTML = s;
+}
+
+function buildExperimentTable() {
+    const tbody = document.getElementById('experiment-table');
+    tbody.innerHTML = '';
+    
+    const iv = INTERVALS[currentInterval];
+    const label = document.getElementById('experiment-table-label');
+    if (label) label.textContent = intervalKeyHtml
+        ? currentInterval + ' — ' + iv.name
+        : iv.name;
+    if (label) label.innerHTML = intervalKeyHtml(currentInterval) + ' — ' + iv.name;
+
+    // Rows: +5 at top → 0 (root) in middle → -5 at bottom
+    for (let offset = 5; offset >= -5; offset--) {
+        const rootSemi = currentRoot;
+        const noteSemi = (rootSemi + offset + 120) % 12;
+        const note = noteNamesForSemi(noteSemi).join('/');
+        
+        const downNote = spellColumn(noteSemi, currentInterval, -1);
+        const upNote   = spellColumn(noteSemi, currentInterval, +1);
+        
+        const isRoot = offset === 0;
+        const row = document.createElement('tr');
+        if (isRoot) row.style.background = 'rgba(200,169,110,0.08)';
+        row.innerHTML = `
+            <td style="text-align:center;font-weight:600;">${noteHtml(downNote)}</td>
+            <td style="text-align:center;font-weight:600;color:${isRoot ? '#c8a96e' : 'var(--text)'};">${noteHtml(note)}</td>
+            <td style="text-align:center;font-weight:600;">${noteHtml(upNote)}</td>
+        `;
+        tbody.appendChild(row);
+    }
+}
+
+// ===== PAGE 3: QUIZ =====
+let quizTimerInterval = null;
+let quizQuestionStart = null;
+
+function startQuiz() {
+    quizCorrect = 0; quizWrong = 0; quizStreak = 0;
+    document.getElementById('quiz-correct').textContent = '0';
+    document.getElementById('quiz-wrong').textContent = '0';
+    document.getElementById('quiz-streak').textContent = '0';
+    document.getElementById('quiz-start').style.display = 'none';
+    document.getElementById('quiz-active').style.display = 'block';
+    generateQuizQuestion();
+}
+
+function stopQuiz() {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    quizCorrect = 0; quizWrong = 0; quizStreak = 0;
+    document.getElementById('quiz-active').style.display = 'none';
+    document.getElementById('quiz-start').style.display = 'block';
+}
+
+function startQuizTimer() {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    quizQuestionStart = Date.now();
+    const timerEl = document.getElementById('quiz-timer');
+    if (timerEl) timerEl.textContent = '0.0';
+    quizTimerInterval = setInterval(() => {
+        const el = document.getElementById('quiz-timer');
+        if (el) el.textContent = ((Date.now() - quizQuestionStart) / 1000).toFixed(1);
+    }, 100);
+}
+
+function stopQuizTimer() {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    return quizQuestionStart ? (Date.now() - quizQuestionStart) / 1000 : 0;
+}
+
+function stopQuiz() {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    quizCorrect = 0; quizWrong = 0; quizStreak = 0;
+    document.getElementById('quiz-active').style.display = 'none';
+    document.getElementById('quiz-start').style.display = 'block';
+}
+
+function generateQuizQuestion() {
+    quizAnswered = false;
+    
+    // Only real intervals, no aliases, no prim (trivial), no oktav (always 12 frets = too easy to see)
+    const quizIntervalKeys = Object.keys(INTERVALS).filter(k => 
+        !INTERVALS[k].alias && 
+        INTERVALS[k].semi > 0 && 
+        INTERVALS[k].semi < 12
+    );
+    const quizInterval = quizIntervalKeys[Math.floor(Math.random() * quizIntervalKeys.length)];
+    const semi = INTERVALS[quizInterval].semi;
+
+    // Pick random string and a root fret that leaves room for the interval going UP (never wrap)
+    const quizString = Math.floor(Math.random() * 6);
+    const maxRootFret = 12 - semi;
+    // Also never use open string (fret 0) as root — min fret 1
+    const quizFret = 1 + Math.floor(Math.random() * maxRootFret);
+    const targetFret = quizFret + semi; // always higher, never wraps
+
+    window.currentQuestion = { quizString, quizFret, quizInterval, targetFret };
+    startQuizTimer();
+    
+    // If interval > major third (4 semitones), move to next thinner string
+    const STRING_OPEN_MIDI = [40, 45, 50, 55, 59, 64];
+    let rootStr = quizString, rootFret = quizFret;
+    let tgtStr = quizString, tgtFret = targetFret;
+
+    if (semi > 4 && quizString < 5) {
+        tgtStr = quizString + 1;
+        const strDiff = STRING_OPEN_MIDI[tgtStr] - STRING_OPEN_MIDI[rootStr];
+        tgtFret = quizFret + semi - strDiff;
+        // If tgtFret goes negative or > 12, fall back to same string
+        if (tgtFret < 0 || tgtFret > 12) {
+            tgtStr = quizString;
+            tgtFret = targetFret;
+        }
+    }
+
+    window.currentQuestion = { ...window.currentQuestion, tgtStr, tgtFret };
+
+    // White = root, Red = target
+    drawFretboard('quiz-fret', [
+        { string: rootStr, fret: rootFret, color: '#ffffff' },
+        { string: tgtStr, fret: tgtFret, color: '#e04040' }
+    ]);
+    
+    // Generate answer buttons — wrong answers from same pool
+    const answers = [quizInterval];
+    while (answers.length < 4) {
+        const wrongKey = quizIntervalKeys[Math.floor(Math.random() * quizIntervalKeys.length)];
+        if (!answers.includes(wrongKey)) answers.push(wrongKey);
+    }
+    answers.sort(() => Math.random() - 0.5);
+    
+    const buttonsContainer = document.getElementById('quiz-buttons');
+    buttonsContainer.innerHTML = '';
+    
+    answers.forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-btn';
+        btn.innerHTML = intervalKeyHtml(key);
+        btn.dataset.key = key;
+        btn.onclick = () => checkQuizAnswer(key, quizInterval);
+        buttonsContainer.appendChild(btn);
+    });
+}
+
+function checkQuizAnswer(chosen, correct) {
+    if (quizAnswered) return;
+    quizAnswered = true;
+    const elapsed = stopQuizTimer();
+    
+    const buttons = document.querySelectorAll('#quiz-buttons .quiz-btn');
+    buttons.forEach(btn => {
+        if (btn.dataset.key === correct) {
+            btn.classList.add('correct');
+        } else if (btn.dataset.key === chosen && chosen !== correct) {
+            btn.classList.add('wrong');
+        }
+        btn.disabled = true;
+    });
+    
+    if (chosen === correct) {
+        quizCorrect++;
+        quizStreak++;
+    } else {
+        quizWrong++;
+        quizStreak = 0;
+    }
+    
+    document.getElementById('quiz-correct').textContent = quizCorrect;
+    document.getElementById('quiz-wrong').textContent = quizWrong;
+    document.getElementById('quiz-streak').textContent = quizStreak;
+}
+
+// ===== INIT ON LOAD =====
+document.addEventListener('DOMContentLoaded', () => {
+    initExplanation();
+
+    // Redraw canvases on resize
+    const ro = new ResizeObserver(() => {
+        drawExampleCircle();
+        if (document.getElementById('page-experiment').classList.contains('active')) {
+            drawIntervalCircle('experiment-circle', currentInterval);
+        }
+    });
+    const ec = document.getElementById('example-circle');
+    const xc = document.getElementById('experiment-circle');
+    if (ec) ro.observe(ec);
+    if (xc) ro.observe(xc);
+});
+</script>
+
+</body>
+</html>
