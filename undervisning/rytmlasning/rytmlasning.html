@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rytmläsning – HAUER</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital@0;1&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vexflow@3.0.9/releases/vexflow-min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0f;
+  --gold: #c8a96e;
+  --gold-dim: rgba(200,169,110,0.2);
+  --text: #e8e4dc;
+  --dim: #555;
+  --paper: #f5f1e9;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding: 16px 8px 100px 4px;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  color: var(--gold);
+  text-align: right;
+  letter-spacing: 0.06em;
+  margin-bottom: 20px;
+  padding-right: 4px;
+}
+
+/* ─── Controls ─── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+.ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ctrl-label {
+  font-size: 0.65rem;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* Bar count */
+.bar-btns { display: flex; gap: 4px; }
+.bar-btn {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid var(--dim);
+  color: var(--text);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+.bar-btn:hover { border-color: var(--gold); color: var(--gold); }
+.bar-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+/* Tempo */
+.tempo-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+input[type=range] {
+  width: 110px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+.tempo-val {
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn {
+  padding: 7px 18px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-gen {
+  background: var(--gold);
+  color: var(--bg);
+  border-color: var(--gold);
+}
+.btn-gen:hover { filter: brightness(1.12); }
+.btn-play {
+  background: transparent;
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.btn-play.playing {
+  background: var(--gold);
+  color: var(--bg);
+}
+.btn-toggle {
+  background: transparent;
+  border-color: var(--dim);
+  color: var(--dim);
+}
+.btn-toggle.on {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ─── Beat strip ─── */
+.beat-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  height: 32px;
+}
+.beat-dots {
+  display: flex;
+  gap: 8px;
+}
+.beat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dim);
+  transition: background 0.04s, box-shadow 0.04s;
+}
+.beat-dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 10px var(--gold);
+}
+.bar-progress {
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-left: 6px;
+}
+.count-in-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  min-width: 30px;
+  text-align: center;
+  display: none;
+}
+
+/* ─── Notation area ─── */
+.notation-wrap {
+  position: relative;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 10px 8px 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.bar-highlight {
+  position: absolute;
+  background: rgba(200,169,110,0.15);
+  border: 1.5px solid rgba(200,169,110,0.55);
+  border-radius: 4px;
+  pointer-events: none;
+  display: none;
+  z-index: 1;
+  transition: left 0.04s;
+}
+#notation {
+  position: relative;
+  z-index: 0;
+  line-height: 0;
+}
+#notation svg {
+  display: block;
+}
+
+/* ─── Empty state ─── */
+.empty-msg {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--dim);
+  font-size: 0.9rem;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 580px) {
+  h1 { font-size: 2rem; }
+  input[type=range] { width: 80px; }
+  .btn { padding: 7px 12px; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<h1>Rytmläsning</h1>
+<p style="text-align:right; font-family:'Crimson Pro',serif; font-style:italic; color:#c8a96e; opacity:0.6; font-size:0.95rem; margin-top:-12px; margin-bottom:20px; padding-right:4px;">Skapad av Richard Hauer och Claude</p>
+
+<!-- Controls -->
+<div class="controls">
+
+  <!-- Number of bars -->
+  <div class="ctrl-group">
+    <span class="ctrl-label">Takter</span>
+    <div class="bar-btns" id="barBtns"></div>
+  </div>
+
+  <!-- Tempo -->
+  <div class="ctrl-group">
+    <span class="ctrl-label">Tempo</span>
+    <div class="tempo-row">
+      <input type="range" id="tempoSlider" min="40" max="200" value="80">
+      <span class="tempo-val" id="tempoVal">80 bpm</span>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="ctrl-group">
+    <span class="ctrl-label">&nbsp;</span>
+    <div class="actions">
+      <button class="btn btn-gen" id="btnGen">↻ Generera</button>
+      <button class="btn btn-play" id="btnPlay">▶ Spela</button>
+      <button class="btn btn-toggle" id="btnLoop" title="Loopa">↺ Loopa</button>
+      <button class="btn btn-toggle on" id="btnAlong" title="Medspel på/av">♩ Medspel</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Beat indicator -->
+<div class="beat-strip">
+  <div class="beat-dots">
+    <div class="beat-dot" id="bd0"></div>
+    <div class="beat-dot" id="bd1"></div>
+    <div class="beat-dot" id="bd2"></div>
+    <div class="beat-dot" id="bd3"></div>
+  </div>
+  <span class="count-in-num" id="countInNum"></span>
+  <span class="bar-progress" id="barProgress"></span>
+</div>
+
+<!-- Notation -->
+<div class="notation-wrap" id="notationWrap">
+  <div class="bar-highlight" id="barHighlight"></div>
+  <div id="notation">
+    <div class="empty-msg">Tryck på <strong>Generera</strong> för att skapa en ny rytm.</div>
+  </div>
+</div>
+
+<script>
+"use strict";
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const VF = Vex.Flow;
+
+let numBars     = 4;
+let tempo       = 80;
+let isPlaying   = false;
+let isLooping   = false;
+let playAlong   = true;
+let bars        = [];   // Array<Array<NoteObj>>
+let barPos      = [];   // {x,y,w,h} per bar (SVG-relative)
+let audioCtx    = null;
+let schedTimer  = null;
+let allEvents   = [];   // flat sorted list of events
+let evIdx       = 0;
+let startTime   = 0;    // absolute audioCtx time when bar 0 beat 0 plays
+let currentBar  = -1;
+
+// ═══════════════════════════════════════════════════════════
+//  RHYTHM GENERATION
+// ═══════════════════════════════════════════════════════════
+// Each note: { dur, isRest, dotted, units }
+// units = length in 16th-note ticks (quarter=4, eighth=2, 16th=1, half=8)
+
+const ONE_BEAT = [                                         // 4 units
+  [{ dur:'q',  isRest:false, dotted:false, units:4 }],    // quarter note
+  [{ dur:'q',  isRest:true,  dotted:false, units:4 }],    // quarter rest
+  [{ dur:'8',  isRest:false, dotted:false, units:2 },
+   { dur:'8',  isRest:false, dotted:false, units:2 }],    // 2 eighths
+  [{ dur:'8',  isRest:false, dotted:false, units:2 },
+   { dur:'8',  isRest:true,  dotted:false, units:2 }],    // eighth + rest
+  [{ dur:'8',  isRest:true,  dotted:false, units:2 },
+   { dur:'8',  isRest:false, dotted:false, units:2 }],    // rest + eighth
+  [{ dur:'8',  isRest:false, dotted:true,  units:3 },
+   { dur:'16', isRest:false, dotted:false, units:1 }],    // dotted 8th + 16th
+];
+
+const TWO_BEAT = [                                         // 8 units
+  [{ dur:'h',  isRest:false, dotted:false, units:8 }],    // half note
+  [{ dur:'h',  isRest:true,  dotted:false, units:8 }],    // half rest
+  [{ dur:'q',  isRest:false, dotted:true,  units:6 },
+   { dur:'8',  isRest:false, dotted:false, units:2 }],    // dotted quarter + 8th
+];
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateBar() {
+  const notes = [];
+  let left = 16;
+  while (left > 0) {
+    const consumed = 16 - left;
+    // Only use half-note/rest patterns at beat 1 (consumed=0) or beat 3 (consumed=8)
+    const atHalfBoundary = consumed % 8 === 0;
+    if (left >= 8 && atHalfBoundary && Math.random() < 0.2) {
+      pick(TWO_BEAT).forEach(n => notes.push({...n}));
+      left -= 8;
+    } else {
+      pick(ONE_BEAT).forEach(n => notes.push({...n}));
+      left -= 4;
+    }
+  }
+  return notes;
+}
+
+function generateRhythm() {
+  bars = Array.from({ length: numBars }, generateBar);
+  renderNotation();
+  stopPlayback();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VEXFLOW RENDERING
+// ═══════════════════════════════════════════════════════════
+
+function renderNotation() {
+  const container = document.getElementById('notation');
+  container.innerHTML = '';
+  barPos = [];
+
+  if (!bars.length) {
+    container.innerHTML = '<div class="empty-msg">Tryck på <strong>Generera</strong> för att skapa en ny rytm.</div>';
+    return;
+  }
+
+  const wrap = document.getElementById('notationWrap');
+  const W = wrap.clientWidth - 18;               // available px
+  const mobile = W < 560;
+  const bpr = 2;                    // bars per row
+  const rows = Math.ceil(bars.length / bpr);
+  const ROW_H = 110;                              // px per row
+  const TOP_PAD = 20;
+  const SVG_H = rows * ROW_H + TOP_PAD;
+
+  const renderer = new VF.Renderer(container, VF.Renderer.Backends.SVG);
+  renderer.resize(W, SVG_H);
+  const ctx = renderer.getContext();
+
+  // Bar 0 gets extra width for clef+timesig; total must equal W
+  const firstExtra = 34;
+  const barW0 = Math.floor(W / bpr) + firstExtra;
+  const barWn = bpr > 1 ? Math.floor((W - barW0) / (bpr - 1)) : barW0;
+  const barW  = Math.floor(W / bpr);              // fallback
+
+  bars.forEach((barNotes, bi) => {
+    const row = Math.floor(bi / bpr);
+    const col = bi % bpr;
+    // First bar in first row is wider to fit clef+timesig
+    // Every row's first bar gets clef → barW0 wide; rest → barWn
+    const isFirstInRow2 = col === 0;
+    const thisBarW = isFirstInRow2 ? barW0 : barWn;
+    const x = col === 0 ? 0 : barW0 + (col - 1) * barWn;
+    const y   = row * ROW_H + TOP_PAD;
+
+    const isFirstInRow = col === 0;
+    const isVeryFirst  = bi === 0;
+    const isLastInRow  = (col === bpr - 1) || (bi === bars.length - 1);
+
+    const staveW = isLastInRow ? thisBarW - 14 : thisBarW;
+    const stave = new VF.Stave(x, y, staveW);
+    if (isFirstInRow) stave.addClef('treble');
+    if (isVeryFirst)  stave.addTimeSignature('4/4');
+    stave.setContext(ctx).draw();
+
+    // Save position for highlight overlay
+    barPos.push({ x, y: y - TOP_PAD / 2, w: thisBarW, h: ROW_H - 4 });
+
+    // Build VexFlow notes
+    const vfNotes = barNotes.map(n => {
+      const dur = n.isRest ? n.dur + 'r' : n.dur;
+      const vfn = new VF.StaveNote({
+        clef: 'treble',
+        keys: ['b/4'],
+        duration: dur,
+        stem_direction: 1,
+      });
+      if (n.dotted) vfn.addDot(0);
+      return vfn;
+    });
+
+    // ── Build beat groups ──────────────────────────────────────
+    const beatGroups = [[], [], [], []];
+    let cumUnits = 0;
+    barNotes.forEach((n, i) => {
+      const beat = Math.floor(cumUnits / 4);
+      if (beat < 4) beatGroups[beat].push({ n, vfn: vfNotes[i] });
+      cumUnits += n.units;
+    });
+
+    // ── Create beams BEFORE voice.draw() so flags are suppressed ──
+    const beams = [];
+    beatGroups.forEach(group => {
+      // Special case: dotted 8th + 16th → beam together
+      if (group.length === 2) {
+        const [a, b] = group;
+        if (!a.n.isRest && !b.n.isRest && a.n.dotted && a.n.dur === '8' && b.n.dur === '16') {
+          try { beams.push(new VF.Beam([a.vfn, b.vfn])); } catch(e) {}
+          return;
+        }
+      }
+      // Regular: non-rest, non-dotted 8ths/16ths
+      const eligible = group.filter(({ n }) =>
+        !n.isRest && !n.dotted && (n.dur === '8' || n.dur === '16')
+      ).map(({ vfn }) => vfn);
+      if (eligible.length >= 2) {
+        try { beams.push(new VF.Beam(eligible)); } catch(e) {}
+      }
+    });
+
+    // ── Format & draw voice (flags suppressed by beams above) ──
+    const voice = new VF.Voice({ num_beats: 4, beat_value: 4 }).setStrict(false);
+    voice.addTickables(vfNotes);
+    const noteW = stave.getNoteEndX() - stave.getNoteStartX() - 20;
+    new VF.Formatter().joinVoices([voice]).format([voice], noteW);
+    voice.draw(ctx, stave);
+
+    // ── Draw beams ──────────────────────────────────────────────
+    beams.forEach(b => { try { b.setContext(ctx).draw(); } catch(e) {} });
+  });
+
+  // Hide old highlight
+  document.getElementById('barHighlight').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  AUDIO
+// ═══════════════════════════════════════════════════════════
+
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function click(time, down) {
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = down ? 1100 : 880;
+  osc.type = 'sine';
+  gain.gain.setValueAtTime(0.28, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+  osc.start(time);
+  osc.stop(time + 0.05);
+}
+
+function woodblock(time) {
+  // Short filtered noise burst = woodblock-ish
+  const sr  = audioCtx.sampleRate;
+  const len = Math.floor(sr * 0.07);
+  const buf = audioCtx.createBuffer(1, len, sr);
+  const d   = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) {
+    d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 5);
+  }
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+
+  const bpf = audioCtx.createBiquadFilter();
+  bpf.type = 'bandpass';
+  bpf.frequency.value = 750;
+  bpf.Q.value = 2.5;
+
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0.7, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.07);
+
+  src.connect(bpf);
+  bpf.connect(gain);
+  gain.connect(audioCtx.destination);
+  src.start(time);
+}
+
+// Build flat event list from current bars & tempo
+function buildEvents() {
+  allEvents = [];
+  const spb  = 60 / tempo;  // seconds per beat
+  const sp16 = spb / 4;     // seconds per 16th
+
+  let t = 0;
+  bars.forEach((bar, bi) => {
+    // Beat click events
+    for (let b = 0; b < 4; b++) {
+      allEvents.push({ time: t + b * spb, type: 'beat', bi, beat: b });
+    }
+    // Note events
+    let off = 0;
+    bar.forEach((n, ni) => {
+      allEvents.push({ time: t + off * sp16, type: 'note', bi, ni, isRest: n.isRest });
+      off += n.units;
+    });
+    t += 16 * sp16;
+  });
+
+  allEvents.sort((a, b) => a.time - b.time);
+}
+
+const LOOK = 0.12; // lookahead seconds
+
+function scheduleAhead() {
+  if (!isPlaying) return;
+  const now = audioCtx.currentTime;
+
+  while (evIdx < allEvents.length) {
+    const ev  = allEvents[evIdx];
+    const abs = startTime + ev.time;
+    if (abs > now + LOOK) break;
+
+    if (ev.type === 'beat') {
+      click(abs, ev.beat === 0);
+      schedVis(abs, () => {
+        highlightBar(ev.bi);
+        lightBeat(ev.beat);
+        showProgress(ev.bi);
+      });
+    } else if (ev.type === 'note' && !ev.isRest && playAlong) {
+      woodblock(abs);
+    }
+
+    evIdx++;
+  }
+
+  // End-of-sequence handling
+  if (evIdx >= allEvents.length) {
+    const totalSec = bars.length * (60 / tempo) * 4;
+    if (now > startTime + totalSec + 0.15) {
+      if (isLooping) {
+        evIdx = 0;
+        startTime += totalSec;
+      } else {
+        stopPlayback();
+      }
+    }
+  }
+}
+
+function schedVis(audioTime, fn) {
+  const ms = Math.max(0, (audioTime - audioCtx.currentTime) * 1000);
+  setTimeout(fn, ms);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VISUAL FEEDBACK
+// ═══════════════════════════════════════════════════════════
+
+function highlightBar(bi) {
+  if (!barPos.length || bi >= barPos.length) return;
+  const p  = barPos[bi];
+  const hl = document.getElementById('barHighlight');
+  hl.style.left   = (p.x + 10) + 'px';          // matches notation-wrap padding
+  hl.style.top    = (p.y + 10 + 4) + 'px';
+  hl.style.width  = p.w + 'px';
+  hl.style.height = p.h + 'px';
+  hl.style.display = 'block';
+}
+
+function lightBeat(b) {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('bd' + i).classList.toggle('active', i === b);
+  }
+}
+
+function clearBeats() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('bd' + i).classList.remove('active');
+  }
+}
+
+function showProgress(bi) {
+  document.getElementById('barProgress').textContent = `Takt ${bi + 1} / ${bars.length}`;
+}
+
+function clearProgress() {
+  document.getElementById('barProgress').textContent = '';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PLAYBACK CONTROL
+// ═══════════════════════════════════════════════════════════
+
+function startPlayback() {
+  if (!bars.length) generateRhythm();
+  ensureAudio();
+  buildEvents();
+  evIdx = 0;
+
+  const spb = 60 / tempo;
+  const countStart = audioCtx.currentTime + 0.1;
+
+  // Schedule count-in (1 bar)
+  for (let i = 0; i < 4; i++) click(countStart + i * spb, i === 0);
+
+  // Visual count-in numbers
+  const numEl = document.getElementById('countInNum');
+  numEl.style.display = 'inline';
+  for (let i = 0; i < 4; i++) {
+    schedVis(countStart + i * spb, () => {
+      numEl.textContent = (([1,2,3,4])[
+        Math.round((audioCtx.currentTime - countStart) / spb)
+      ] ?? '') + '';
+      lightBeat(i);
+    });
+  }
+  schedVis(countStart + 4 * spb - 0.01, () => {
+    numEl.style.display = 'none';
+    numEl.textContent = '';
+  });
+
+  startTime = countStart + 4 * spb;
+  isPlaying = true;
+
+  document.getElementById('btnPlay').textContent = '■ Stopp';
+  document.getElementById('btnPlay').classList.add('playing');
+
+  schedTimer = setInterval(scheduleAhead, 20);
+}
+
+function stopPlayback() {
+  isPlaying = false;
+  if (schedTimer) { clearInterval(schedTimer); schedTimer = null; }
+
+  document.getElementById('btnPlay').textContent = '▶ Spela';
+  document.getElementById('btnPlay').classList.remove('playing');
+  document.getElementById('barHighlight').style.display = 'none';
+  document.getElementById('countInNum').style.display = 'none';
+  clearBeats();
+  clearProgress();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  UI INIT
+// ═══════════════════════════════════════════════════════════
+
+function initUI() {
+  // Bar-count buttons
+  const bbEl = document.getElementById('barBtns');
+  [2, 3, 4, 5, 6, 7, 8].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'bar-btn' + (n === numBars ? ' active' : '');
+    btn.textContent = n;
+    btn.onclick = () => {
+      numBars = n;
+      document.querySelectorAll('.bar-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    bbEl.appendChild(btn);
+  });
+
+  // Tempo
+  const slider = document.getElementById('tempoSlider');
+  const valEl  = document.getElementById('tempoVal');
+  slider.oninput = () => {
+    tempo = +slider.value;
+    valEl.textContent = tempo + ' bpm';
+  };
+
+  // Generate
+  document.getElementById('btnGen').onclick = generateRhythm;
+
+  // Play / Stop
+  document.getElementById('btnPlay').onclick = () => {
+    if (isPlaying) stopPlayback();
+    else           startPlayback();
+  };
+
+  // Loop toggle
+  document.getElementById('btnLoop').onclick = () => {
+    isLooping = !isLooping;
+    document.getElementById('btnLoop').classList.toggle('on', isLooping);
+  };
+
+  // Play-along toggle
+  document.getElementById('btnAlong').onclick = () => {
+    playAlong = !playAlong;
+    document.getElementById('btnAlong').classList.toggle('on', playAlong);
+  };
+
+  // Responsive re-render on resize
+  let resizeDebounce;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeDebounce);
+    resizeDebounce = setTimeout(() => {
+      if (bars.length) renderNotation();
+    }, 200);
+  });
+
+  // Kick off with a first rhythm
+  generateRhythm();
+}
+
+window.addEventListener('load', initUI);
+</script>
+</body>
+</html>
