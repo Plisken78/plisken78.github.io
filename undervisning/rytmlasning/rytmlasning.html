@@ -38,12 +38,11 @@ h1 {
 /* ─── Controls ─── */
 .controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 18px;
 }
-.ctrl-group {
+.ctrl-row {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -58,8 +57,8 @@ h1 {
 /* Bar count */
 .bar-btns { display: flex; gap: 4px; }
 .bar-btn {
-  width: 30px;
-  height: 30px;
+  flex: 1;
+  height: 34px;
   background: transparent;
   border: 1px solid var(--dim);
   color: var(--text);
@@ -84,7 +83,7 @@ h1 {
   gap: 8px;
 }
 input[type=range] {
-  width: 110px;
+  flex: 1;
   accent-color: var(--gold);
   cursor: pointer;
 }
@@ -99,11 +98,12 @@ input[type=range] {
 .actions {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
   align-items: center;
+  width: 100%;
 }
 .btn {
-  padding: 7px 18px;
+  flex: 1;
+  padding: 7px 4px;
   border-radius: 5px;
   border: 1px solid transparent;
   cursor: pointer;
@@ -112,6 +112,7 @@ input[type=range] {
   font-size: 0.85rem;
   transition: all 0.15s;
   white-space: nowrap;
+  text-align: center;
 }
 .btn-gen {
   background: var(--gold);
@@ -227,14 +228,14 @@ input[type=range] {
 <!-- Controls -->
 <div class="controls">
 
-  <!-- Number of bars -->
-  <div class="ctrl-group">
+  <!-- Row 1: Number of bars -->
+  <div class="ctrl-row">
     <span class="ctrl-label">Takter</span>
     <div class="bar-btns" id="barBtns"></div>
   </div>
 
-  <!-- Tempo -->
-  <div class="ctrl-group">
+  <!-- Row 2: Tempo -->
+  <div class="ctrl-row">
     <span class="ctrl-label">Tempo</span>
     <div class="tempo-row">
       <input type="range" id="tempoSlider" min="40" max="200" value="80">
@@ -242,8 +243,8 @@ input[type=range] {
     </div>
   </div>
 
-  <!-- Action buttons -->
-  <div class="ctrl-group">
+  <!-- Row 3: Action buttons -->
+  <div class="ctrl-row">
     <span class="ctrl-label">&nbsp;</span>
     <div class="actions">
       <button class="btn btn-gen" id="btnGen">↻ Generera</button>
@@ -376,7 +377,7 @@ function renderNotation() {
   const ctx = renderer.getContext();
 
   // Bar 0 gets extra width for clef+timesig; total must equal W
-  const firstExtra = 34;
+  const firstExtra = 8;
   const barW0 = Math.floor(W / bpr) + firstExtra;
   const barWn = bpr > 1 ? Math.floor((W - barW0) / (bpr - 1)) : barW0;
   const barW  = Math.floor(W / bpr);              // fallback
@@ -449,7 +450,7 @@ function renderNotation() {
     // ── Format & draw voice (flags suppressed by beams above) ──
     const voice = new VF.Voice({ num_beats: 4, beat_value: 4 }).setStrict(false);
     voice.addTickables(vfNotes);
-    const noteW = stave.getNoteEndX() - stave.getNoteStartX() - 20;
+    const noteW = stave.getNoteEndX() - stave.getNoteStartX() - (isVeryFirst ? 8 : 20);
     new VF.Formatter().joinVoices([voice]).format([voice], noteW);
     voice.draw(ctx, stave);
 
