@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intervallquiz</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --panel-bg: #1e1e1e;
+            --gold: #D4AF37;
+            --gold-hover: #F3E5AB;
+            --text-color: #E0E0E0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--gold);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .container {
+            background-color: var(--panel-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--gold);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        button {
+            background-color: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 12px 24px;
+            margin: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--gold);
+            color: var(--bg-color);
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            border-top: 1px dashed var(--gold);
+            border-bottom: 1px dashed var(--gold);
+        }
+
+        #stop-btn {
+            border-color: #c0392b;
+            color: #e74c3c;
+        }
+        
+        #stop-btn:hover {
+            background-color: #c0392b;
+            color: white;
+            box-shadow: 0 0 10px #c0392b;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        #feedback {
+            font-size: 1.2em;
+            margin-top: 20px;
+            min-height: 30px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Intervallquiz</h1>
+
+        <div id="level-screen">
+            <h2>Välj svårighetsgrad</h2>
+            <button onclick="startQuiz('beginner')">Nybörjare (upp till kvint)</button>
+            <button onclick="startQuiz('intermediate')">På gång (upp till oktav)</button>
+            <button onclick="startQuiz('advanced')">Avancerad (upp & ner, till oktav)</button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <h2 id="level-title"></h2>
+            
+            <div class="controls">
+                <button id="play-btn" onclick="playCurrentInterval()">Spela Intervall</button>
+                <button id="stop-btn" onclick="stopAudio()">Stopp 🛑</button>
+            </div>
+
+            <p>Vilket intervall hörde du?</p>
+            <div class="options-grid" id="options-container">
+                </div>
+
+            <p id="feedback"></p>
+
+            <button onclick="nextQuestion()" id="next-btn" class="hidden">Nästa Intervall</button>
+            <button onclick="resetQuiz()" style="margin-top: 30px; font-size: 0.9em;">Byt svårighetsgrad</button>
+        </div>
+    </div>
+
+    <script>
+        const intervals = [
+            { semitones: 1, name: "Liten sekund" },
+            { semitones: 2, name: "Stor sekund" },
+            { semitones: 3, name: "Liten ters" },
+            { semitones: 4, name: "Stor ters" },
+            { semitones: 5, name: "Ren kvart" },
+            { semitones: 6, name: "Tritonus" },
+            { semitones: 7, name: "Ren kvint" },
+            { semitones: 8, name: "Liten sext" },
+            { semitones: 9, name: "Stor sext" },
+            { semitones: 10, name: "Liten septima" },
+            { semitones: 11, name: "Stor septima" },
+            { semitones: 12, name: "Ren oktav" }
+        ];
+
+        let audioCtx;
+        let oscillators = [];
+        let currentLevel = '';
+        let currentInterval = null;
+        let currentDirection = 'up';
+        
+        // Initiera ljudkontext (måste göras efter användarinteraktion i webbläsare)
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function startQuiz(level) {
+            initAudio();
+            currentLevel = level;
+            document.getElementById('level-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            
+            const titles = {
+                'beginner': 'Nybörjare',
+                'intermediate': 'På gång',
+                'advanced': 'Avancerad'
+            };
+            document.getElementById('level-title').innerText = titles[level];
+            
+            nextQuestion();
+        }
+
+        function resetQuiz() {
+            stopAudio();
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('level-screen').classList.remove('hidden');
+            document.getElementById('feedback').innerText = '';
+        }
+
+        function nextQuestion() {
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('next-btn').classList.add('hidden');
+            
+            let maxSemitones = 12;
+            let availableIntervals = [...intervals];
+
+            if (currentLevel === 'beginner') {
+                availableIntervals = availableIntervals.filter(i => i.semitones <= 7);
+                currentDirection = 'up';
+            } else if (currentLevel === 'intermediate') {
+                currentDirection = 'up';
+            } else if (currentLevel === 'advanced') {
+                currentDirection = Math.random() > 0.5 ? 'up' : 'down';
+            }
+
+            // Välj ett slumpmässigt intervall för frågan
+            currentInterval = availableIntervals[Math.floor(Math.random() * availableIntervals.length)];
+            
+            generateOptions(availableIntervals);
+            playCurrentInterval();
+        }
+
+        function generateOptions(availableIntervals) {
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            // Hämta 3 felaktiga svar och det rätta svaret
+            let options = [currentInterval];
+            let pool = availableIntervals.filter(i => i.semitones !== currentInterval.semitones);
+            
+            // Blanda poolen av felaktiga svar
+            pool.sort(() => 0.5 - Math.random());
+            options.push(pool[0], pool[1], pool[2]);
+
+            // Blanda svarsalternativen (alltid 4 st)
+            options.sort(() => 0.5 - Math.random());
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.innerText = opt.name;
+                btn.onclick = () => checkAnswer(opt.semitones, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedSemitones, btnElement) {
+            const feedback = document.getElementById('feedback');
+            const allButtons = document.getElementById('options-container').querySelectorAll('button');
+            
+            // Inaktivera knapparna när ett svar valts
+            allButtons.forEach(b => b.disabled = true);
+
+            if (selectedSemitones === currentInterval.semitones) {
+                feedback.innerHTML = '<span style="color: #2ecc71;">Rätt svar! 🎉</span>';
+                btnElement.style.backgroundColor = '#2ecc71';
+                btnElement.style.color = '#121212';
+            } else {
+                feedback.innerHTML = `<span style="color: #e74c3c;">Tyvärr fel. Rätt svar var: ${currentInterval.name}</span>`;
+                btnElement.style.backgroundColor = '#e74c3c';
+                btnElement.style.color = '#121212';
+                
+                // Markera det rätta svaret
+                allButtons.forEach(b => {
+                    if (b.innerText === currentInterval.name) {
+                        b.style.border = '2px solid #2ecc71';
+                    }
+                });
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function playTone(frequency, startTime, duration) {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            // En blandning av triangel och sinus för en tydligare men mjuk ton (elpiano-känsla)
+            osc.type = 'triangle'; 
+            osc.frequency.value = frequency;
+
+            // Attack & Release (Envelope) för att undvika knäppningar
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.05); // Attack
+            gainNode.gain.setValueAtTime(0.4, startTime + duration - 0.1); // Sustain
+            gainNode.gain.linearRampToValueAtTime(0, startTime + duration); // Release
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+            
+            oscillators.push(osc);
+        }
+
+        function playCurrentInterval() {
+            stopAudio(); // Stoppa eventuellt pågående ljud
+            initAudio();
+
+            // Slumpa en grundton mellan C3 (Midi 48) och C4 (Midi 60)
+            const baseMidi = Math.floor(Math.random() * 13) + 48; 
+            const secondMidi = currentDirection === 'up' 
+                ? baseMidi + currentInterval.semitones 
+                : baseMidi - currentInterval.semitones;
+
+            // Omvandla Midi-nummer till frekvens (Hz)
+            const freq1 = 440 * Math.pow(2, (baseMidi - 69) / 12);
+            const freq2 = 440 * Math.pow(2, (secondMidi - 69) / 12);
+
+            const now = audioCtx.currentTime;
+            const noteDuration = 1.0;
+            const gap = 0.2; // Tystnad mellan tonerna
+
+            // Spela ton 1, sen ton 2
+            playTone(freq1, now, noteDuration);
+            playTone(freq2, now + noteDuration + gap, noteDuration);
+        }
+
+        function stopAudio() {
+            if (oscillators.length > 0) {
+                oscillators.forEach(osc => {
+                    try {
+                        osc.stop();
+                        osc.disconnect();
+                    } catch (e) {
+                        // Ignorera fel om oscillatorn redan stannat
+                    }
+                });
+                oscillators = [];
+            }
+        }
+    </script>
+</body>
+</html>

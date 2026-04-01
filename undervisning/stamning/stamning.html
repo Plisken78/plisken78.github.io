@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stämma Gitarren – Frettio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;1,400;1,600&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: #0a0a0f;
+    color: #e8e0d0;
+    font-family: 'DM Sans', sans-serif;
+    padding: 16px 8px 100px 4px;
+    max-width: 480px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .lesson-meta {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .lesson-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #c8a96e;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 46px;
+    color: #c8a96e;
+    text-align: right;
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .tagline {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: #8a7a60;
+    text-align: right;
+    margin-bottom: 28px;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 32px; }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: #c8a96e;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #1e1e2e;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #b0a090;
+    margin-bottom: 10px;
+  }
+  p strong { color: #e0d0b8; font-weight: 600; }
+
+  /* ── STRING LIST ── */
+  .string-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 16px 0;
+  }
+  .string-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    background: #0f0f1a;
+    border-radius: 8px;
+    border: 1px solid #1e1e2e;
+  }
+  .s-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1e1e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #555;
+    flex-shrink: 0;
+  }
+  .s-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: #c8a96e;
+    width: 26px;
+    flex-shrink: 0;
+  }
+  .s-line {
+    flex: 1;
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(to right, #555, #333);
+  }
+  .s-line.thick { height: 3px; background: linear-gradient(to right, #777, #444); }
+  .s-line.med   { height: 2px; background: linear-gradient(to right, #666, #444); }
+  .s-line.thin  { height: 1px; background: linear-gradient(to right, #555, #333); }
+  .s-desc {
+    font-size: 12px;
+    color: #5a5060;
+    flex: 2;
+    text-align: right;
+  }
+  .s-hz {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #3a3050;
+    flex-shrink: 0;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* ── MNEMONIC BOX ── */
+  .mnemonic {
+    background: #0f0f1a;
+    border: 1px solid #2a2040;
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .mnemonic-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #4a4060;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .mnemonic-text {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: #c8a96e;
+    letter-spacing: 0.5px;
+  }
+  .mnemonic-notes {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .mnemonic-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: #6a5a40;
+    background: #1a1428;
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+
+  /* ── INTERACTIVE STRINGS ── */
+  .strings-container {
+    margin: 20px 0;
+    padding: 20px 12px 24px;
+    background: #0c0c16;
+    border-radius: 12px;
+    border: 1px solid #1e1e2e;
+  }
+  .strings-hint {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #4a4060;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .strings-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .str-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 52px;
+    padding: 12px 6px;
+    background: #13131f;
+    border: 1.5px solid #2a2a3a;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .str-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, #c8a96e18, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .str-btn.active::before { opacity: 1; }
+  .str-btn.active {
+    border-color: #c8a96e;
+    background: #1a1610;
+    transform: scale(0.95);
+    box-shadow: 0 0 18px #c8a96e33, 0 0 6px #c8a96e22;
+  }
+  .str-btn:active { transform: scale(0.93); }
+  .str-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: #c8c0b0;
+    line-height: 1;
+    transition: color 0.12s;
+  }
+  .str-btn.active .str-note { color: #c8a96e; }
+  .str-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #3a3a5a;
+    letter-spacing: 0.5px;
+  }
+  .str-wire {
+    width: 100%;
+    margin-top: 4px;
+    border-radius: 1px;
+    background: #3a3a5a;
+    transition: background 0.12s;
+  }
+  .str-btn.active .str-wire { background: #c8a96e88; }
+
+  /* Wire thicknesses */
+  .w1 { height: 1px; }
+  .w2 { height: 1.5px; }
+  .w3 { height: 2px; }
+  .w4 { height: 2.5px; }
+  .w5 { height: 3px; }
+  .w6 { height: 3.5px; }
+
+  /* Waveform visualizer */
+  .waveform-wrap {
+    margin-top: 14px;
+    height: 32px;
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .waveform-wrap.visible { opacity: 1; }
+  #waveCanvas {
+    width: 100%;
+    height: 32px;
+    display: block;
+  }
+
+  /* ── FRETBOARD DIAGRAM ── */
+  .fretboard-section {
+    margin: 20px 0;
+  }
+  .fretboard-svg-wrap {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .fb-legend {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .fb-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #6a5a40;
+  }
+  .fb-dot-gold { width: 12px; height: 12px; border-radius: 50%; background: #c8a96e33; border: 1.5px solid #c8a96e; }
+  .fb-dot-purple { width: 12px; height: 12px; border-radius: 50%; background: #c4a8f033; border: 1.5px solid #c4a8f0; }
+
+  /* ── TUNING STEPS ── */
+  .tuning-steps { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+  .t-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #0f0f1a;
+    border-radius: 8px;
+    border: 1px solid #1e1e2e;
+  }
+  .t-step.exception { border-color: #c4a8f033; }
+  .t-pair {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    min-width: 72px;
+  }
+  .t-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    color: #c8a96e;
+    width: 16px;
+    text-align: center;
+  }
+  .t-note.exc { color: #c4a8f0; }
+  .t-arrow { color: #3a3a5a; font-size: 14px; }
+  .t-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: #c8a96e18;
+    color: #c8a96e;
+    border: 1px solid #c8a96e44;
+    flex-shrink: 0;
+  }
+  .t-badge.exc {
+    background: #c4a8f018;
+    color: #c4a8f0;
+    border-color: #c4a8f044;
+  }
+  .t-desc {
+    font-size: 12px;
+    color: #5a5070;
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  /* ── TIP BOXES ── */
+  .tip {
+    background: #0f0f1a;
+    border-left: 2px solid #c8a96e55;
+    padding: 12px 14px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 10px;
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #8a7a60;
+    line-height: 1.6;
+  }
+  .tip strong { color: #c8a96e; font-style: normal; }
+
+  /* ── CREDIT ── */
+  .credit {
+    text-align: center;
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: #2a2030;
+    margin-top: 48px;
+  }
+</style>
+</head>
+<body>
+
+<div class="lesson-meta">
+  <span class="lesson-tag">Lektion 1 · Grunderna</span>
+</div>
+<h1>Stämma Gitarren</h1>
+<p class="tagline">Innan du kan spela måste gitarren låta rätt</p>
+
+<!-- ── STRÄNGNAMNEN ── -->
+<div class="section">
+  <h2>Strängarna och deras namn</h2>
+  <p>En gitarr har sex strängar, och varje sträng har ett namn – en bokstav som berättar vilken ton strängen ska ha. Det absolut första du lär dig som gitarrist är dessa sex bokstäver utantill.</p>
+  <p>Strängarna numreras från den <strong>tunnaste (1:an)</strong> till den <strong>tjockaste (6:an)</strong>. Tjockare sträng = djupare ton.</p>
+
+  <div class="string-list">
+    <div class="string-row">
+      <div class="s-num">1</div>
+      <div class="s-note">E</div>
+      <div class="s-line thin"></div>
+      <div class="s-desc">Tunnast – ljusast</div>
+      <div class="s-hz">330 Hz</div>
+    </div>
+    <div class="string-row">
+      <div class="s-num">2</div>
+      <div class="s-note">B</div>
+      <div class="s-line thin"></div>
+      <div class="s-desc"></div>
+      <div class="s-hz">247 Hz</div>
+    </div>
+    <div class="string-row">
+      <div class="s-num">3</div>
+      <div class="s-note">G</div>
+      <div class="s-line med"></div>
+      <div class="s-desc"></div>
+      <div class="s-hz">196 Hz</div>
+    </div>
+    <div class="string-row">
+      <div class="s-num">4</div>
+      <div class="s-note">D</div>
+      <div class="s-line med"></div>
+      <div class="s-desc"></div>
+      <div class="s-hz">147 Hz</div>
+    </div>
+    <div class="string-row">
+      <div class="s-num">5</div>
+      <div class="s-note">A</div>
+      <div class="s-line thick"></div>
+      <div class="s-desc">Referens vid stämning</div>
+      <div class="s-hz">110 Hz</div>
+    </div>
+    <div class="string-row">
+      <div class="s-num">6</div>
+      <div class="s-note">E</div>
+      <div class="s-line thick"></div>
+      <div class="s-desc">Tjockast – djupast</div>
+      <div class="s-hz">82 Hz</div>
+    </div>
+  </div>
+
+  <div class="mnemonic">
+    <div class="mnemonic-label">Minnesmening · tjockast → tunnast</div>
+    <div class="mnemonic-text">Eddie Ate Dynamite – Good Bye Eddie</div>
+    <div class="mnemonic-notes">
+      <span class="mnemonic-note">E</span>
+      <span class="mnemonic-note">A</span>
+      <span class="mnemonic-note">D</span>
+      <span class="mnemonic-note">G</span>
+      <span class="mnemonic-note">B</span>
+      <span class="mnemonic-note">E</span>
+    </div>
+  </div>
+
+  <div class="mnemonic" style="margin-top: 8px;">
+    <div class="mnemonic-label">Minnesmening · tunnast → tjockast</div>
+    <div class="mnemonic-text">En Ball Groda Dansar Aldrig Ensam</div>
+    <div class="mnemonic-notes">
+      <span class="mnemonic-note">E</span>
+      <span class="mnemonic-note">B</span>
+      <span class="mnemonic-note">G</span>
+      <span class="mnemonic-note">D</span>
+      <span class="mnemonic-note">A</span>
+      <span class="mnemonic-note">E</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── INTERAKTIVA STRÄNGAR ── -->
+<div class="section">
+  <h2>Lyssna på strängarna</h2>
+  <p>Tryck på en <strong>knapp</strong> för att höra hur den strängen ska låta när den är rätt stämd. Jämför tonen med din gitarr och vrid försiktigt på stämskruven tills de låter likadant.</p>
+
+  <div class="strings-container">
+    <div class="strings-hint">Tryck för att lyssna</div>
+    <div class="strings-row">
+      <button class="str-btn" id="btn-0" onclick="playString(0)">
+        <span class="str-note">E</span>
+        <span class="str-num">6:an</span>
+        <div class="str-wire w6"></div>
+      </button>
+      <button class="str-btn" id="btn-1" onclick="playString(1)">
+        <span class="str-note">A</span>
+        <span class="str-num">5:an</span>
+        <div class="str-wire w5"></div>
+      </button>
+      <button class="str-btn" id="btn-2" onclick="playString(2)">
+        <span class="str-note">D</span>
+        <span class="str-num">4:an</span>
+        <div class="str-wire w4"></div>
+      </button>
+      <button class="str-btn" id="btn-3" onclick="playString(3)">
+        <span class="str-note">G</span>
+        <span class="str-num">3:an</span>
+        <div class="str-wire w3"></div>
+      </button>
+      <button class="str-btn" id="btn-4" onclick="playString(4)">
+        <span class="str-note">B</span>
+        <span class="str-num">2:an</span>
+        <div class="str-wire w2"></div>
+      </button>
+      <button class="str-btn" id="btn-5" onclick="playString(5)">
+        <span class="str-note">E</span>
+        <span class="str-num">1:an</span>
+        <div class="str-wire w1"></div>
+      </button>
+    </div>
+    <div class="waveform-wrap" id="waveWrap">
+      <canvas id="waveCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ── HUR STÄMMER MAN ── -->
+<div class="section">
+  <h2>Hur stämmer man?</h2>
+  <p>Det enklaste sättet är en <strong>stämningsapp</strong> på telefonen – sök på "guitar tuner" i App Store eller Google Play. Appen lyssnar via mikrofonen och visar om strängen är för hög, för låg, eller precis rätt.</p>
+  <p>Utan app kan du använda <strong>relativ stämning</strong> – det vill säga stämma strängarna mot varandra. Förutsättningen är att minst en sträng redan stämmer. Standardreferensen är <strong>A-strängen = 440 Hz</strong> (5:e strängen).</p>
+  <p>Lär dig gärna båda metoderna – proffs använder tuner-app på scen, men ett tränat gehör är ovärderligt i längden.</p>
+</div>
+
+<!-- ── 5:E BANDS-METODEN ── -->
+<div class="section">
+  <h2>Relativ stämning – 5:e bands-metoden</h2>
+  <p>Varje sträng har samma ton som nästa strängs <strong>5:e band</strong> – med ett undantag. Tryck ner strängen på rätt band och jämför med nästa lösa sträng. De ska låta exakt likadant.</p>
+  <p>Börja alltid med A-strängen som referens, och arbeta sedan nedåt (från tjock till tunn).</p>
+
+  <div class="tuning-steps">
+    <div class="t-step">
+      <div class="t-pair">
+        <span class="t-note">E</span>
+        <span class="t-arrow">→</span>
+        <span class="t-note">A</span>
+      </div>
+      <span class="t-badge">Band 5</span>
+      <span class="t-desc">E-strängens 5:e band låter som lösa A-strängen</span>
+    </div>
+    <div class="t-step">
+      <div class="t-pair">
+        <span class="t-note">A</span>
+        <span class="t-arrow">→</span>
+        <span class="t-note">D</span>
+      </div>
+      <span class="t-badge">Band 5</span>
+      <span class="t-desc">A-strängens 5:e band låter som lösa D-strängen</span>
+    </div>
+    <div class="t-step">
+      <div class="t-pair">
+        <span class="t-note">D</span>
+        <span class="t-arrow">→</span>
+        <span class="t-note">G</span>
+      </div>
+      <span class="t-badge">Band 5</span>
+      <span class="t-desc">D-strängens 5:e band låter som lösa G-strängen</span>
+    </div>
+    <div class="t-step exception">
+      <div class="t-pair">
+        <span class="t-note exc">G</span>
+        <span class="t-arrow">→</span>
+        <span class="t-note exc">B</span>
+      </div>
+      <span class="t-badge exc">Band 4 !</span>
+      <span class="t-desc" style="color:#c4a8f088">OBS – undantaget! G-strängens <strong style="color:#c4a8f0">4:e</strong> band = lösa B-strängen</span>
+    </div>
+    <div class="t-step">
+      <div class="t-pair">
+        <span class="t-note">B</span>
+        <span class="t-arrow">→</span>
+        <span class="t-note">E</span>
+      </div>
+      <span class="t-badge">Band 5</span>
+      <span class="t-desc">B-strängens 5:e band låter som lösa E-strängen (1:an)</span>
+    </div>
+  </div>
+
+  <!-- Fretboard diagram -->
+  <div class="fretboard-section">
+    <div class="fretboard-svg-wrap">
+      <svg viewBox="0 0 340 170" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect x="0" y="0" width="340" height="170" fill="#0c0c16" rx="8"/>
+
+        <!-- Fretboard wood -->
+        <rect x="38" y="14" width="288" height="146" fill="#130e08" rx="3"/>
+
+        <!-- Fret lines -->
+        <!-- Nut -->
+        <rect x="38" y="14" width="4" height="146" fill="#c8a96e" rx="1"/>
+        <!-- Frets 1-6 -->
+        <line x1="90" y1="14" x2="90" y2="160" stroke="#3a3028" stroke-width="1.5"/>
+        <line x1="138" y1="14" x2="138" y2="160" stroke="#3a3028" stroke-width="1.5"/>
+        <line x1="186" y1="14" x2="186" y2="160" stroke="#3a3028" stroke-width="1.5"/>
+        <line x1="234" y1="14" x2="234" y2="160" stroke="#3a3028" stroke-width="1.5"/>
+        <line x1="282" y1="14" x2="282" y2="160" stroke="#3a3028" stroke-width="1.5"/>
+        <line x1="326" y1="14" x2="326" y2="160" stroke="#2a2020" stroke-width="1"/>
+
+        <!-- Fret numbers -->
+        <text x="65" y="12" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#3a3040">1</text>
+        <text x="113" y="12" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#3a3040">2</text>
+        <text x="161" y="12" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#3a3040">3</text>
+        <text x="209" y="12" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#3a3040">4</text>
+        <text x="257" y="12" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#4a4050">5</text>
+
+        <!-- Fret 3 inlay dot -->
+        <circle cx="161" cy="87" r="4" fill="#1a1814" opacity="0.8"/>
+
+        <!-- String lines (e1 at top, E6 at bottom – TAB convention) -->
+        <line x1="42" y1="32" x2="326" y2="32" stroke="#bab0a0" stroke-width="0.8"/>
+        <line x1="42" y1="56" x2="326" y2="56" stroke="#aaa090" stroke-width="1.1"/>
+        <line x1="42" y1="80" x2="326" y2="80" stroke="#9a9080" stroke-width="1.4"/>
+        <line x1="42" y1="104" x2="326" y2="104" stroke="#8a8070" stroke-width="1.8"/>
+        <line x1="42" y1="128" x2="326" y2="128" stroke="#7a7060" stroke-width="2.2"/>
+        <line x1="42" y1="152" x2="326" y2="152" stroke="#7a6a5a" stroke-width="2.8"/>
+
+        <!-- String labels (left of nut) -->
+        <text x="28" y="36" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#c8a96e">e</text>
+        <text x="28" y="60" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#c8a96e">B</text>
+        <text x="28" y="84" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#c8a96e">G</text>
+        <text x="28" y="108" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#c8a96e">D</text>
+        <text x="28" y="132" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#c8a96e">A</text>
+        <text x="28" y="156" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#c8a96e">E</text>
+
+        <!-- Reference dots: fret 5 (x midpoint between 234 and 282 = 258) -->
+        <!-- B→e: B string (y=56), fret 5 -->
+        <circle cx="258" cy="56" r="9" fill="#c8a96e22" stroke="#c8a96e" stroke-width="1.5"/>
+        <text x="258" y="60" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#c8a96e">E</text>
+
+        <!-- G→B: G string (y=80), fret 4 – EXCEPTION -->
+        <circle cx="210" cy="80" r="9" fill="#c4a8f022" stroke="#c4a8f0" stroke-width="1.5"/>
+        <text x="210" y="84" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#c4a8f0">B</text>
+        <text x="210" y="95" text-anchor="middle" font-family="DM Mono" font-size="7" fill="#c4a8f077">4!</text>
+
+        <!-- D→G: D string (y=104), fret 5 -->
+        <circle cx="258" cy="104" r="9" fill="#c8a96e22" stroke="#c8a96e" stroke-width="1.5"/>
+        <text x="258" y="108" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#c8a96e">G</text>
+
+        <!-- A→D: A string (y=128), fret 5 -->
+        <circle cx="258" cy="128" r="9" fill="#c8a96e22" stroke="#c8a96e" stroke-width="1.5"/>
+        <text x="258" y="132" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#c8a96e">D</text>
+
+        <!-- E→A: E string (y=152), fret 5 -->
+        <circle cx="258" cy="152" r="9" fill="#c8a96e22" stroke="#c8a96e" stroke-width="1.5"/>
+        <text x="258" y="156" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#c8a96e">A</text>
+
+        <!-- Connector lines: exit from ~10 o'clock on each circle, diagonal to string label -->
+        <!-- E(cy=152) → A label(y=132) -->
+        <line x1="250" y1="147" x2="36" y2="132" stroke="#c8a96e88" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- A(cy=128) → D label(y=108) -->
+        <line x1="250" y1="123" x2="36" y2="108" stroke="#c8a96e88" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- D(cy=104) → G label(y=84) -->
+        <line x1="250" y1="99" x2="36" y2="84" stroke="#c8a96e88" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- G(cy=80, cx=210) → B label(y=60) – exception -->
+        <line x1="202" y1="75" x2="36" y2="60" stroke="#c4a8f088" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- B(cy=56) → e label(y=36) -->
+        <line x1="250" y1="51" x2="36" y2="36" stroke="#c8a96e88" stroke-width="1" stroke-dasharray="3,3"/>
+      </svg>
+    </div>
+    <div class="fb-legend">
+      <div class="fb-legend-item">
+        <div class="fb-dot-gold"></div>
+        <span>Band 5 – referenston</span>
+      </div>
+      <div class="fb-legend-item">
+        <div class="fb-dot-purple"></div>
+        <span>Band 4 – undantaget (G→B)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TIPS ── -->
+<div class="section">
+  <h2>Tips</h2>
+  <div class="tip">
+    🎯 Börja alltid med att stämma <strong>A-strängen (5:an)</strong> mot en extern referens – piano, stämgaffel, eller tuner-app. Sedan stämmer du resten mot den.
+  </div>
+  <div class="tip">
+    👂 Träna ditt gehör! Lyssna efter om de två tonerna <strong>"slår" mot varandra</strong> – ett pulsande sus. Ju närmre stämning, desto långsammare puls tills det försvinner helt.
+  </div>
+  <div class="tip">
+    🔧 Vrider du stämskruven <strong>medurs</strong> höjer du tonen, <strong>moturs</strong> sänker du den – men det kan variera beroende på gitarrens mekanik. Lyssna och känn efter!
+  </div>
+  <div class="tip">
+    📱 Är du osäker? Använd tuner-app. Det är inget fusk – <strong>proffs stämmer alltid med tuner på scen</strong>.
+  </div>
+</div>
+
+<p class="credit">Skapad av Richard Hauer och Claude</p>
+
+<script>
+  // ─── AUDIO ENGINE ───────────────────────────────────────────
+  let audioCtx = null;
+  let currentNodes = [];
+  let animFrame = null;
+  let activeIdx = -1;
+  let gainRef = null;
+
+  function getCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+  }
+
+  // Open string frequencies (E2, A2, D3, G3, B3, E4)
+  const FREQS = [82.41, 110.00, 146.83, 196.00, 246.94, 329.63];
+
+  // Lowpass cutoff per string (thicker = darker)
+  const CUTOFFS = [700, 900, 1100, 1400, 1800, 2400];
+
+  // Duration of each pluck in seconds
+  const DURATION = 3.0;
+
+  function stopAll() {
+    currentNodes.forEach(n => { try { n.stop(0); } catch(e){} });
+    currentNodes = [];
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+  }
+
+  function playString(idx) {
+    const ctx = getCtx();
+
+    // Resume context if suspended (iOS requires user gesture)
+    if (ctx.state === 'suspended') ctx.resume();
+
+    stopAll();
+
+    // Deactivate previous button
+    if (activeIdx >= 0) {
+      const prev = document.getElementById(`btn-${activeIdx}`);
+      if (prev) prev.classList.remove('active');
+    }
+    activeIdx = idx;
+    const btn = document.getElementById(`btn-${idx}`);
+    if (btn) btn.classList.add('active');
+
+    const freq   = FREQS[idx];
+    const cutoff = CUTOFFS[idx];
+    const now    = ctx.currentTime;
+
+    // ── Oscillators ──
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const osc3 = ctx.createOscillator(); // octave above (harmonic)
+
+    osc1.type = 'sawtooth';  osc1.frequency.value = freq;
+    osc2.type = 'sawtooth';  osc2.frequency.value = freq;
+    osc2.detune.value = 4;   // slight chorus
+
+    osc3.type = 'triangle';  osc3.frequency.value = freq * 2;
+
+    // ── Filter ──
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = cutoff;
+    filt.Q.value = 0.8;
+
+    // Also filter sweeps down quickly (plucked string brightness decay)
+    filt.frequency.setValueAtTime(cutoff * 3, now);
+    filt.frequency.exponentialRampToValueAtTime(cutoff * 0.4, now + 0.8);
+
+    // ── Gain / envelope ──
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0, now);
+    masterGain.gain.linearRampToValueAtTime(0.22, now + 0.006);
+    masterGain.gain.exponentialRampToValueAtTime(0.001, now + DURATION);
+    gainRef = masterGain;
+
+    const harmGain = ctx.createGain();
+    harmGain.gain.value = 0.15;
+
+    // ── Connect ──
+    osc1.connect(filt);
+    osc2.connect(filt);
+    osc3.connect(harmGain);
+    harmGain.connect(filt);
+    filt.connect(masterGain);
+    masterGain.connect(ctx.destination);
+
+    // ── Start / Stop ──
+    osc1.start(now); osc1.stop(now + DURATION);
+    osc2.start(now); osc2.stop(now + DURATION);
+    osc3.start(now); osc3.stop(now + DURATION);
+
+    currentNodes = [osc1, osc2, osc3];
+
+    // ── Waveform visualizer ──
+    showWaveform(masterGain, ctx);
+
+    // ── Deactivate button after duration ──
+    setTimeout(() => {
+      if (activeIdx === idx) {
+        if (btn) btn.classList.remove('active');
+        activeIdx = -1;
+        hideWaveform();
+      }
+    }, DURATION * 1000);
+  }
+
+  // ─── WAVEFORM VISUALIZER ────────────────────────────────────
+  function showWaveform(gainNode, ctx) {
+    const wrap = document.getElementById('waveWrap');
+    const canvas = document.getElementById('waveCanvas');
+    if (!wrap || !canvas) return;
+
+    wrap.classList.add('visible');
+
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    gainNode.connect(analyser);
+
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    const W = canvas.offsetWidth || 300;
+    const H = 32;
+    canvas.width  = W * window.devicePixelRatio;
+    canvas.height = H * window.devicePixelRatio;
+    const cCtx = canvas.getContext('2d');
+    cCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    function draw() {
+      animFrame = requestAnimationFrame(draw);
+      analyser.getByteTimeDomainData(buf);
+
+      cCtx.clearRect(0, 0, W, H);
+
+      cCtx.beginPath();
+      cCtx.strokeStyle = '#c8a96e88';
+      cCtx.lineWidth = 1.5;
+
+      const sliceW = W / buf.length;
+      let x = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const v = buf[i] / 128.0;
+        const y = (v * H) / 2;
+        if (i === 0) cCtx.moveTo(x, y);
+        else cCtx.lineTo(x, y);
+        x += sliceW;
+      }
+      cCtx.stroke();
+    }
+    draw();
+  }
+
+  function hideWaveform() {
+    const wrap = document.getElementById('waveWrap');
+    if (wrap) wrap.classList.remove('visible');
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+  }
+</script>
+
+</body>
+</html>

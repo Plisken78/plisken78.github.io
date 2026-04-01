@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notläsning – HAUER</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital@0;1&family=DM+Sans:wght@300;400;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vexflow@3.0.9/releases/vexflow-min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #0a0a0f;
+  --gold:     #c8a96e;
+  --gold-dim: rgba(200,169,110,0.2);
+  --text:     #e8e4dc;
+  --dim:      #555;
+  --paper:    #f5f1e9;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding: 16px 8px 100px 4px;
+}
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  color: var(--gold);
+  text-align: right;
+  letter-spacing: 0.06em;
+  margin-bottom: 20px;
+  padding-right: 4px;
+}
+/* ─── Controls ─── */
+.controls { display:flex; flex-direction:column; gap:10px; margin-bottom:18px; }
+.ctrl-row  { display:flex; flex-direction:column; gap:5px; }
+.ctrl-label {
+  font-size: 0.65rem;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* shared button row */
+.key-btns, .ts-btns, .bar-btns { display:flex; gap:4px; flex-wrap:wrap; }
+
+.key-btn, .ts-btn {
+  height: 34px;
+  min-width: 40px;
+  padding: 0 9px;
+  background: transparent;
+  border: 1px solid var(--dim);
+  color: var(--text);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.88rem;
+  transition: all 0.15s;
+}
+.key-btn:hover, .ts-btn:hover { border-color:var(--gold); color:var(--gold); }
+.key-btn.active, .ts-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+/* Bar-count */
+.bar-btn {
+  flex: 1;
+  height: 34px;
+  background: transparent;
+  border: 1px solid var(--dim);
+  color: var(--text);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+.bar-btn:hover { border-color:var(--gold); color:var(--gold); }
+.bar-btn.active { background:var(--gold); border-color:var(--gold); color:var(--bg); font-weight:700; }
+
+/* Tempo */
+.tempo-row { display:flex; align-items:center; gap:8px; }
+input[type=range] { flex:1; accent-color:var(--gold); cursor:pointer; }
+.tempo-val { color:var(--gold); font-size:0.9rem; font-variant-numeric:tabular-nums; min-width:48px; }
+
+/* Action buttons */
+.actions { display:flex; gap:8px; align-items:center; width:100%; }
+.btn {
+  flex: 1;
+  padding: 7px 4px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-align: center;
+}
+.btn-gen  { background:var(--gold); color:var(--bg); border-color:var(--gold); }
+.btn-gen:hover { filter:brightness(1.12); }
+.btn-play { background:transparent; border-color:var(--gold); color:var(--gold); }
+.btn-play.playing { background:var(--gold); color:var(--bg); }
+.btn-toggle { background:transparent; border-color:var(--dim); color:var(--dim); }
+.btn-toggle.on { border-color:var(--gold); color:var(--gold); }
+
+/* ─── Beat strip ─── */
+.beat-strip { display:flex; align-items:center; gap:10px; margin-bottom:14px; height:32px; }
+.beat-dots  { display:flex; gap:8px; }
+.beat-dot {
+  width:10px; height:10px;
+  border-radius:50%;
+  background: var(--dim);
+  transition: background 0.04s, box-shadow 0.04s;
+}
+.beat-dot.active { background:var(--gold); box-shadow:0 0 10px var(--gold); }
+.bar-progress  { font-size:0.75rem; color:var(--dim); margin-left:6px; }
+.count-in-num  {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  min-width: 30px;
+  text-align: center;
+  display: none;
+}
+
+/* ─── Notation area ─── */
+.notation-wrap {
+  position: relative;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 10px 8px 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.bar-highlight {
+  position: absolute;
+  background: rgba(200,169,110,0.15);
+  border: 1.5px solid rgba(200,169,110,0.55);
+  border-radius: 4px;
+  pointer-events: none;
+  display: none;
+  z-index: 1;
+  transition: left 0.04s;
+}
+#notation { position:relative; z-index:0; line-height:0; }
+#notation svg { display:block; }
+.empty-msg { text-align:center; padding:40px 0; color:var(--dim); font-size:0.9rem; }
+
+@media (max-width:580px) {
+  h1 { font-size:2rem; }
+  .btn { font-size:0.78rem; }
+}
+</style>
+</head>
+<body>
+
+<h1>Notläsning</h1>
+<p style="text-align:right;font-family:'Crimson Pro',serif;font-style:italic;color:#c8a96e;opacity:0.6;font-size:0.95rem;margin-top:-12px;margin-bottom:20px;padding-right:4px;">Skapad av Richard Hauer och Claude</p>
+
+<div class="controls">
+
+  <!-- Tonart -->
+  <div class="ctrl-row">
+    <span class="ctrl-label">Tonart</span>
+    <div class="key-btns" id="keyBtns"></div>
+  </div>
+
+  <!-- Taktart -->
+  <div class="ctrl-row">
+    <span class="ctrl-label">Taktart</span>
+    <div class="ts-btns" id="tsBtns"></div>
+  </div>
+
+  <!-- Takter -->
+  <div class="ctrl-row">
+    <span class="ctrl-label">Takter</span>
+    <div class="bar-btns" id="barBtns"></div>
+  </div>
+
+  <!-- Tempo -->
+  <div class="ctrl-row">
+    <span class="ctrl-label">Tempo</span>
+    <div class="tempo-row">
+      <input type="range" id="tempoSlider" min="40" max="200" value="70">
+      <span class="tempo-val" id="tempoVal">70 bpm</span>
+    </div>
+  </div>
+
+  <!-- Knappar -->
+  <div class="ctrl-row">
+    <span class="ctrl-label">&nbsp;</span>
+    <div class="actions">
+      <button class="btn btn-gen"    id="btnGen">↻ Generera</button>
+      <button class="btn btn-play"   id="btnPlay">▶ Spela</button>
+      <button class="btn btn-toggle" id="btnLoop">↺ Loopa</button>
+      <button class="btn btn-toggle on" id="btnAlong">♩ Medspel</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Beat indicator -->
+<div class="beat-strip">
+  <div class="beat-dots" id="beatDots"></div>
+  <span class="count-in-num" id="countInNum"></span>
+  <span class="bar-progress"  id="barProgress"></span>
+</div>
+
+<!-- Notation -->
+<div class="notation-wrap" id="notationWrap">
+  <div class="bar-highlight" id="barHighlight"></div>
+  <div id="notation">
+    <div class="empty-msg">Tryck på <strong>Generera</strong> för att skapa en ny övning.</div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const VF = Vex.Flow;
+
+// ══════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════
+let selectedKey = 'C';
+let timeSig     = '4/4';
+let beatsPerBar = 4;
+let numBars     = 4;
+let tempo       = 70;
+let isPlaying   = false;
+let isLooping   = false;
+let playAlong   = true;
+let bars        = [];
+let barPos      = [];
+let audioCtx    = null;
+let schedTimer  = null;
+let allEvents   = [];
+let evIdx       = 0;
+let startTime   = 0;
+
+// ══════════════════════════════════════════════════════════
+//  KEY DATA
+// Diatonic note pools in comfortable treble-clef range (C4–G5)
+// ══════════════════════════════════════════════════════════
+const KEY_DATA = {
+  'C':  { sig:'C',  notes:['c/4','d/4','e/4','f/4','g/4','a/4','b/4','c/5','d/5','e/5','f/5','g/5'] },
+  'G':  { sig:'G',  notes:['d/4','e/4','f#/4','g/4','a/4','b/4','c/5','d/5','e/5','g/5'] },
+  'D':  { sig:'D',  notes:['d/4','e/4','f#/4','g/4','a/4','b/4','c#/5','d/5','e/5'] },
+  'A':  { sig:'A',  notes:['e/4','f#/4','g#/4','a/4','b/4','c#/5','d/5','e/5'] },
+  'E':  { sig:'E',  notes:['e/4','f#/4','g#/4','a/4','b/4','c#/5','d#/5','e/5'] },
+  'F':  { sig:'F',  notes:['c/4','d/4','e/4','f/4','g/4','a/4','bb/4','c/5','d/5','e/5','f/5','g/5'] },
+  'Bb': { sig:'Bb', notes:['d/4','eb/4','f/4','g/4','a/4','bb/4','c/5','d/5','eb/5','f/5','g/5'] },
+  'Eb': { sig:'Eb', notes:['eb/4','f/4','g/4','ab/4','bb/4','c/5','d/5','eb/5','f/5','g/5'] },
+};
+
+// Approximate number of key-sig accidentals (for stave width calc)
+const KEY_ACC = { C:0, G:1, D:2, A:3, E:4, F:1, Bb:2, Eb:3 };
+
+// ══════════════════════════════════════════════════════════
+//  FREQUENCY TABLE  (C4 – G5)
+// ══════════════════════════════════════════════════════════
+const FREQ = {
+  'c/4':261.63,'c#/4':277.18,'db/4':277.18,
+  'd/4':293.66,'d#/4':311.13,'eb/4':311.13,
+  'e/4':329.63,'f/4':349.23,
+  'f#/4':369.99,'gb/4':369.99,
+  'g/4':392.00,'g#/4':415.30,'ab/4':415.30,
+  'a/4':440.00,'a#/4':466.16,'bb/4':466.16,
+  'b/4':493.88,
+  'c/5':523.25,'c#/5':554.37,'db/5':554.37,
+  'd/5':587.33,'d#/5':622.25,'eb/5':622.25,
+  'e/5':659.25,'f/5':698.46,
+  'f#/5':739.99,'gb/5':739.99,
+  'g/5':783.99,'g#/5':830.61,'ab/5':830.61,
+};
+
+// ══════════════════════════════════════════════════════════
+//  RHYTHM GENERATION
+// ══════════════════════════════════════════════════════════
+const ONE_BEAT = [
+  [{ dur:'q',  isRest:false, dotted:false, units:4 }],
+  [{ dur:'q',  isRest:true,  dotted:false, units:4 }],
+  [{ dur:'8',  isRest:false, dotted:false, units:2 },
+   { dur:'8',  isRest:false, dotted:false, units:2 }],
+  [{ dur:'8',  isRest:false, dotted:false, units:2 },
+   { dur:'8',  isRest:true,  dotted:false, units:2 }],
+  [{ dur:'8',  isRest:true,  dotted:false, units:2 },
+   { dur:'8',  isRest:false, dotted:false, units:2 }],
+  [{ dur:'8',  isRest:false, dotted:true,  units:3 },
+   { dur:'16', isRest:false, dotted:false, units:1 }],
+];
+const TWO_BEAT = [
+  [{ dur:'h', isRest:false, dotted:false, units:8 }],
+  [{ dur:'h', isRest:true,  dotted:false, units:8 }],
+  [{ dur:'q', isRest:false, dotted:true,  units:6 },
+   { dur:'8', isRest:false, dotted:false, units:2 }],
+];
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateBar() {
+  const total = beatsPerBar * 4;
+  const notes = [];
+  let left = total;
+
+  while (left > 0) {
+    const consumed = total - left;
+    const atHalf   = consumed % 8 === 0;
+    if (left >= 8 && atHalf && Math.random() < 0.2) {
+      pick(TWO_BEAT).forEach(n => notes.push({...n}));
+      left -= 8;
+    } else if (left >= 4) {
+      pick(ONE_BEAT).forEach(n => notes.push({...n}));
+      left -= 4;
+    } else {
+      // shouldn't happen with quarter-beat time sigs, safety fallback
+      notes.push({ dur:'8', isRest:false, dotted:false, units:2 });
+      left -= 2;
+    }
+  }
+
+  // Assign random diatonic pitches to non-rest notes
+  const pool = KEY_DATA[selectedKey].notes;
+  let lastPitch = null;
+  notes.forEach(n => {
+    if (!n.isRest) {
+      const avail = pool.length > 1 ? pool.filter(p => p !== lastPitch) : pool;
+      n.pitch = avail[Math.floor(Math.random() * avail.length)];
+      lastPitch = n.pitch;
+    }
+  });
+
+  return notes;
+}
+
+function generateRhythm() {
+  bars = Array.from({ length: numBars }, generateBar);
+  renderNotation();
+  stopPlayback();
+}
+
+// ══════════════════════════════════════════════════════════
+//  VEXFLOW RENDERING
+// ══════════════════════════════════════════════════════════
+function renderNotation() {
+  const container = document.getElementById('notation');
+  container.innerHTML = '';
+  barPos = [];
+
+  if (!bars.length) {
+    container.innerHTML = '<div class="empty-msg">Tryck på <strong>Generera</strong> för att skapa en ny övning.</div>';
+    return;
+  }
+
+  const wrap = document.getElementById('notationWrap');
+  const W    = wrap.clientWidth - 18;
+  const bpr  = 2;
+  const rows = Math.ceil(bars.length / bpr);
+  const ROW_H   = 115;
+  const TOP_PAD = 20;
+  const SVG_H   = rows * ROW_H + TOP_PAD;
+
+  const renderer = new VF.Renderer(container, VF.Renderer.Backends.SVG);
+  renderer.resize(W, SVG_H);
+  const ctx = renderer.getContext();
+
+  // Extra width for first bar in row: clef + key sig + (time sig on bar 0)
+  const nAcc       = KEY_ACC[selectedKey] || 0;
+  const firstExtra = 48 + nAcc * 12;         // ~12 px per accidental glyph
+
+  const barW0 = Math.floor(W / bpr) + firstExtra;
+  const barWn = bpr > 1 ? Math.floor((W - barW0) / (bpr - 1)) : barW0;
+
+  const keySig = KEY_DATA[selectedKey].sig;
+
+  bars.forEach((barNotes, bi) => {
+    const row  = Math.floor(bi / bpr);
+    const col  = bi % bpr;
+    const isFirstInRow = col === 0;
+    const isVeryFirst  = bi === 0;
+    const isLastInRow  = (col === bpr - 1) || (bi === bars.length - 1);
+
+    const thisBarW = isFirstInRow ? barW0 : barWn;
+    const x = col === 0 ? 0 : barW0 + (col - 1) * barWn;
+    const y = row * ROW_H + TOP_PAD;
+
+    const staveW = isLastInRow ? thisBarW - 14 : thisBarW;
+    const stave  = new VF.Stave(x, y, staveW);
+    if (isFirstInRow) {
+      stave.addClef('treble');
+      stave.addKeySignature(keySig);
+    }
+    if (isVeryFirst) stave.addTimeSignature(timeSig);
+    stave.setContext(ctx).draw();
+
+    barPos.push({ x, y: y - TOP_PAD / 2, w: thisBarW, h: ROW_H - 4 });
+
+    // Build VexFlow notes
+    const vfNotes = barNotes.map(n => {
+      const dur  = n.isRest ? n.dur + 'r' : n.dur;
+      const keys = n.isRest ? ['b/4'] : [n.pitch];
+      const vfn  = new VF.StaveNote({ clef:'treble', keys, duration:dur });
+      if (n.dotted) vfn.addDot(0);
+      return vfn;
+    });
+
+    // Beat groups for beaming
+    const beatGroups = Array.from({ length: beatsPerBar }, () => []);
+    let cumUnits = 0;
+    barNotes.forEach((n, i) => {
+      const beat = Math.floor(cumUnits / 4);
+      if (beat < beatsPerBar) beatGroups[beat].push({ n, vfn: vfNotes[i] });
+      cumUnits += n.units;
+    });
+
+    // Create beams
+    const beams = [];
+    beatGroups.forEach(group => {
+      if (group.length === 2) {
+        const [a, b] = group;
+        if (!a.n.isRest && !b.n.isRest && a.n.dotted && a.n.dur === '8' && b.n.dur === '16') {
+          try { beams.push(new VF.Beam([a.vfn, b.vfn])); } catch(e) {}
+          return;
+        }
+      }
+      const eligible = group
+        .filter(({ n }) => !n.isRest && !n.dotted && (n.dur === '8' || n.dur === '16'))
+        .map(({ vfn }) => vfn);
+      if (eligible.length >= 2) {
+        try { beams.push(new VF.Beam(eligible)); } catch(e) {}
+      }
+    });
+
+    // Format & draw voice
+    const voice = new VF.Voice({ num_beats: beatsPerBar, beat_value: 4 }).setStrict(false);
+    voice.addTickables(vfNotes);
+    const noteW = stave.getNoteEndX() - stave.getNoteStartX() - (isVeryFirst ? 8 : 20);
+    new VF.Formatter().joinVoices([voice]).format([voice], noteW);
+    voice.draw(ctx, stave);
+    beams.forEach(b => { try { b.setContext(ctx).draw(); } catch(e) {} });
+  });
+
+  document.getElementById('barHighlight').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════════════
+//  AUDIO
+// ══════════════════════════════════════════════════════════
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+// Metronome click
+function click(time, down) {
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = down ? 1100 : 880;
+  osc.type = 'sine';
+  gain.gain.setValueAtTime(0.28, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+  osc.start(time); osc.stop(time + 0.05);
+}
+
+// Pitched note (triangle wave, guitar-ish envelope)
+function playPitch(time, pitch, durationSec) {
+  const freq = FREQ[pitch] || 440;
+  const dur  = Math.min(durationSec * 0.85, 0.65);
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.type = 'triangle';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0,    time);
+  gain.gain.linearRampToValueAtTime(0.28, time + 0.008);
+  gain.gain.setValueAtTime(0.18, time + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+  osc.start(time); osc.stop(time + dur + 0.01);
+}
+
+// ══════════════════════════════════════════════════════════
+//  EVENT SCHEDULING
+// ══════════════════════════════════════════════════════════
+function buildEvents() {
+  allEvents = [];
+  const spb  = 60 / tempo;
+  const sp16 = spb / 4;
+
+  let t = 0;
+  bars.forEach((bar, bi) => {
+    for (let b = 0; b < beatsPerBar; b++) {
+      allEvents.push({ time: t + b * spb, type:'beat', bi, beat:b });
+    }
+    let off = 0;
+    bar.forEach((n, ni) => {
+      allEvents.push({
+        time: t + off * sp16,
+        type:'note', bi, ni,
+        isRest: n.isRest,
+        pitch:  n.pitch,
+        durationSec: n.units * sp16,
+      });
+      off += n.units;
+    });
+    t += beatsPerBar * spb;
+  });
+
+  allEvents.sort((a, b) => a.time - b.time);
+}
+
+const LOOK = 0.12;
+
+function scheduleAhead() {
+  if (!isPlaying) return;
+  const now = audioCtx.currentTime;
+
+  while (evIdx < allEvents.length) {
+    const ev  = allEvents[evIdx];
+    const abs = startTime + ev.time;
+    if (abs > now + LOOK) break;
+
+    if (ev.type === 'beat') {
+      click(abs, ev.beat === 0);
+      schedVis(abs, () => {
+        highlightBar(ev.bi);
+        lightBeat(ev.beat);
+        showProgress(ev.bi);
+      });
+    } else if (ev.type === 'note' && !ev.isRest && playAlong) {
+      playPitch(abs, ev.pitch, ev.durationSec);
+    }
+    evIdx++;
+  }
+
+  if (evIdx >= allEvents.length) {
+    const totalSec = bars.length * beatsPerBar * (60 / tempo);
+    if (now > startTime + totalSec + 0.15) {
+      if (isLooping) { evIdx = 0; startTime += totalSec; }
+      else            stopPlayback();
+    }
+  }
+}
+
+function schedVis(audioTime, fn) {
+  const ms = Math.max(0, (audioTime - audioCtx.currentTime) * 1000);
+  setTimeout(fn, ms);
+}
+
+// ══════════════════════════════════════════════════════════
+//  VISUAL FEEDBACK
+// ══════════════════════════════════════════════════════════
+function highlightBar(bi) {
+  if (!barPos.length || bi >= barPos.length) return;
+  const p  = barPos[bi];
+  const hl = document.getElementById('barHighlight');
+  hl.style.left    = (p.x + 10) + 'px';
+  hl.style.top     = (p.y + 10 + 4) + 'px';
+  hl.style.width   = p.w + 'px';
+  hl.style.height  = p.h + 'px';
+  hl.style.display = 'block';
+}
+
+function lightBeat(b) {
+  document.querySelectorAll('.beat-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === b);
+  });
+}
+function clearBeats() {
+  document.querySelectorAll('.beat-dot').forEach(d => d.classList.remove('active'));
+}
+
+function showProgress(bi) {
+  document.getElementById('barProgress').textContent = `Takt ${bi + 1} / ${bars.length}`;
+}
+function clearProgress() {
+  document.getElementById('barProgress').textContent = '';
+}
+
+// ══════════════════════════════════════════════════════════
+//  PLAYBACK CONTROL
+// ══════════════════════════════════════════════════════════
+function startPlayback() {
+  if (!bars.length) generateRhythm();
+  ensureAudio();
+  buildEvents();
+  evIdx = 0;
+
+  const spb        = 60 / tempo;
+  const countStart = audioCtx.currentTime + 0.1;
+
+  // Count-in clicks
+  for (let i = 0; i < beatsPerBar; i++) click(countStart + i * spb, i === 0);
+
+  // Count-in visuals
+  const numEl = document.getElementById('countInNum');
+  numEl.style.display = 'inline';
+  for (let i = 0; i < beatsPerBar; i++) {
+    const beat = i;
+    schedVis(countStart + beat * spb, () => {
+      numEl.textContent = (beat + 1) + '';
+      lightBeat(beat);
+    });
+  }
+  schedVis(countStart + beatsPerBar * spb - 0.01, () => {
+    numEl.style.display = 'none';
+    numEl.textContent = '';
+  });
+
+  startTime = countStart + beatsPerBar * spb;
+  isPlaying = true;
+  document.getElementById('btnPlay').textContent = '■ Stopp';
+  document.getElementById('btnPlay').classList.add('playing');
+  schedTimer = setInterval(scheduleAhead, 20);
+}
+
+function stopPlayback() {
+  isPlaying = false;
+  if (schedTimer) { clearInterval(schedTimer); schedTimer = null; }
+  document.getElementById('btnPlay').textContent = '▶ Spela';
+  document.getElementById('btnPlay').classList.remove('playing');
+  document.getElementById('barHighlight').style.display = 'none';
+  document.getElementById('countInNum').style.display = 'none';
+  clearBeats();
+  clearProgress();
+}
+
+// ══════════════════════════════════════════════════════════
+//  BEAT DOTS (dynamic)
+// ══════════════════════════════════════════════════════════
+function buildBeatDots() {
+  const container = document.getElementById('beatDots');
+  container.innerHTML = '';
+  for (let i = 0; i < beatsPerBar; i++) {
+    const d = document.createElement('div');
+    d.className = 'beat-dot';
+    container.appendChild(d);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  UI INIT
+// ══════════════════════════════════════════════════════════
+function initUI() {
+
+  // ── Key buttons ──────────────────────────────────────────
+  const keyEl = document.getElementById('keyBtns');
+  ['C','G','D','A','E','F','Bb','Eb'].forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = 'key-btn' + (k === selectedKey ? ' active' : '');
+    btn.textContent = k;
+    btn.onclick = () => {
+      selectedKey = k;
+      document.querySelectorAll('.key-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    keyEl.appendChild(btn);
+  });
+
+  // ── Time-sig buttons ─────────────────────────────────────
+  const tsEl = document.getElementById('tsBtns');
+  [['2/4', 2], ['3/4', 3], ['4/4', 4]].forEach(([ts, bpb]) => {
+    const btn = document.createElement('button');
+    btn.className = 'ts-btn' + (ts === timeSig ? ' active' : '');
+    btn.textContent = ts;
+    btn.onclick = () => {
+      timeSig     = ts;
+      beatsPerBar = bpb;
+      document.querySelectorAll('.ts-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      buildBeatDots();
+    };
+    tsEl.appendChild(btn);
+  });
+
+  // ── Bar-count buttons ─────────────────────────────────────
+  const bbEl = document.getElementById('barBtns');
+  [2,3,4,5,6,7,8].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'bar-btn' + (n === numBars ? ' active' : '');
+    btn.textContent = n;
+    btn.onclick = () => {
+      numBars = n;
+      document.querySelectorAll('.bar-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    bbEl.appendChild(btn);
+  });
+
+  // ── Tempo ─────────────────────────────────────────────────
+  const slider = document.getElementById('tempoSlider');
+  const valEl  = document.getElementById('tempoVal');
+  slider.oninput = () => { tempo = +slider.value; valEl.textContent = tempo + ' bpm'; };
+
+  // ── Action buttons ────────────────────────────────────────
+  document.getElementById('btnGen').onclick  = generateRhythm;
+  document.getElementById('btnPlay').onclick = () => {
+    if (isPlaying) stopPlayback(); else startPlayback();
+  };
+  document.getElementById('btnLoop').onclick = () => {
+    isLooping = !isLooping;
+    document.getElementById('btnLoop').classList.toggle('on', isLooping);
+  };
+  document.getElementById('btnAlong').onclick = () => {
+    playAlong = !playAlong;
+    document.getElementById('btnAlong').classList.toggle('on', playAlong);
+  };
+
+  // ── Resize ────────────────────────────────────────────────
+  let resizeDebounce;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeDebounce);
+    resizeDebounce = setTimeout(() => { if (bars.length) renderNotation(); }, 200);
+  });
+
+  buildBeatDots();
+  generateRhythm();
+}
+
+window.addEventListener('load', initUI);
+</script>
+</body>
+</html>
