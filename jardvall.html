@@ -130,6 +130,34 @@
       padding: .7rem 1.6rem; text-decoration: none; transition: border-color .2s, color .2s; white-space: nowrap;
     }
     .ticket-btn-outline:hover { border-color: var(--gold-dim); color: var(--text); }
+    .ticket-btn-tba {
+      display: inline-block; background: transparent; color: var(--muted); border: 1px dashed var(--border);
+      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 500;
+      padding: .7rem 1.6rem; white-space: nowrap;
+    }
+
+    /* ── Past shows ── */
+    .past-shows-divider {
+      margin-top: 3.5rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+    }
+    .past-shows-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .past-shows-grid { display: flex; flex-direction: column; gap: 0; }
+    .show-card-past {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(201,165,90,.07);
+      opacity: .5;
+    }
+    .show-card-past:first-child { border-top: 1px solid rgba(201,165,90,.07); }
+    .past-day { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; color: var(--muted); line-height: 1; }
+    .past-month { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); opacity: .7; margin-top: .15rem; }
+    .past-info h4 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--muted); margin-bottom: .1rem; }
+    .past-info .past-location { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); opacity: .7; }
 
     /* ── Artist photo band ── */
     .artist-photo-band { max-width: 100%; overflow: hidden; }
@@ -260,41 +288,6 @@
       <h2 class="section-title">Boka din biljett</h2>
       <div class="shows-grid">
 
-        <!-- 20 mars: Klockargården -->
-        <div class="show-card">
-          <div class="show-date-block">
-            <div class="show-day">20.3</div>
-            <div class="show-month">Mars 2026</div>
-          </div>
-          <div class="show-info">
-            <h3>Klockargården</h3>
-            <div class="show-location">Leksand</div>
-            <p><strong style="color:var(--text); font-weight:500;">Boendepaket:</strong> Välkomstfika · Fördrink · Trerättersmiddag med show · Övernattning · Frukostbuffé</p>
-            <p>Bokning: <a href="https://www.boka.klockargarden.com" target="_blank" rel="noopener">boka.klockargarden.com</a> eller ring <a href="tel:024750260">0247-502 60</a></p>
-          </div>
-          <div class="show-links">
-            <a href="https://nortic.se/ticket/event/76537" target="_blank" rel="noopener" class="ticket-btn">Konsertbiljett</a>
-            <a href="https://www.boka.klockargarden.com" target="_blank" rel="noopener" class="ticket-btn-outline">Boendepaket</a>
-          </div>
-        </div>
-
-        <!-- 21 mars: Clarion Musikhotellet -->
-        <div class="show-card">
-          <div class="show-date-block">
-            <div class="show-day">21.3</div>
-            <div class="show-month">Mars 2026</div>
-          </div>
-          <div class="show-info">
-            <h3>Clarion Musikhotellet</h3>
-            <div class="show-location">Örebro</div>
-            <p><strong style="color:var(--text); font-weight:500;">Boendepaket eller konsertpaket</strong> med möjlighet till middag direkt på hotellet.</p>
-            <p>Bordsbokning med middag: <a href="tel:01967067007">019-670 67 07</a></p>
-          </div>
-          <div class="show-links">
-            <a href="https://secure.tickster.com/sv/pauup9utrjd0hnj/products" target="_blank" rel="noopener" class="ticket-btn">Biljetter</a>
-          </div>
-        </div>
-
         <!-- 10 april: Kooperativet -->
         <div class="show-card">
           <div class="show-date-block">
@@ -308,6 +301,50 @@
           </div>
           <div class="show-links">
             <a href="https://secure.tickster.com/sv/pultknud61013xt/products" target="_blank" rel="noopener" class="ticket-btn">Biljetter</a>
+          </div>
+        </div>
+
+        <!-- 3 september: Viking Line -->
+        <div class="show-card">
+          <div class="show-date-block">
+            <div class="show-day">3.9</div>
+            <div class="show-month">September 2026</div>
+          </div>
+          <div class="show-info">
+            <h3>Viking Line</h3>
+            <div class="show-location">Stockholm</div>
+            <p>Mer information om biljetter och program kommer inom kort.</p>
+          </div>
+          <div class="show-links">
+            <span class="ticket-btn-tba">Info kommer</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tidigare spelningar -->
+      <div class="past-shows-divider">Tidigare spelningar</div>
+      <div class="past-shows-grid">
+
+        <div class="show-card-past">
+          <div class="show-date-block">
+            <div class="past-day">21.3</div>
+            <div class="past-month">Mars 2026</div>
+          </div>
+          <div class="past-info">
+            <h4>Clarion Musikhotellet</h4>
+            <div class="past-location">Örebro</div>
+          </div>
+        </div>
+
+        <div class="show-card-past">
+          <div class="show-date-block">
+            <div class="past-day">20.3</div>
+            <div class="past-month">Mars 2026</div>
+          </div>
+          <div class="past-info">
+            <h4>Klockargården</h4>
+            <div class="past-location">Leksand</div>
           </div>
         </div>
 
