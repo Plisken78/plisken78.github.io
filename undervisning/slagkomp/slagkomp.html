@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Slagkomp — Frettio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0a0a0f;
+  --panel:   #13131a;
+  --panel2:  #1a1a24;
+  --border:  #2a2a3a;
+  --accent:  #c8a96e;
+  --purple:  #c4a8f0;
+  --text:    #f0f0f8;
+  --muted:   rgba(240,240,248,0.55);
+  --down-c:  #5b9bd5;
+  --up-c:    #e87a4a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding: 16px 8px 100px 4px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-align: right;
+  margin-bottom: 2px;
+}
+
+.subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  color: var(--muted);
+  text-align: right;
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin: 24px 0 8px;
+}
+
+p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+p strong { color: var(--text); }
+
+/* ── LEGEND ──────────────────────────────── */
+.legend {
+  background: var(--panel);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin: 14px 0;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.legend-row:last-child { border-bottom: none; }
+.legend-sym {
+  font-size: 1.5rem;
+  width: 30px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.legend-label { color: var(--text); font-weight: 500; font-size: 0.88rem; }
+.legend-desc  { color: var(--muted); font-size: 0.78rem; margin-top: 1px; }
+
+/* ── BEAT ROW (notation preview) ─────────── */
+.beat-row-preview {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 10px 8px 8px;
+  margin: 14px 0;
+  border: 1px solid var(--border);
+}
+.bpr-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.bpr-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+.bpr-num.and { color: var(--muted); }
+.bpr-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ── KOMPMASKIN ───────────────────────────── */
+.kompmaskin {
+  background: var(--panel);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 16px 12px 18px;
+  margin: 6px 0 20px;
+}
+
+.km-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Beat grid */
+.beat-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.beat-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.beat-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  text-align: center;
+  color: var(--accent);
+  font-weight: 500;
+}
+.beat-num.and { color: rgba(200,169,110,0.4); }
+
+.beat-btn {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 9px;
+  border: 2px solid var(--border);
+  background: var(--panel2);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  position: relative;
+}
+
+.beat-btn .dir-sym {
+  font-size: 1.2rem;
+  line-height: 1;
+  opacity: 0.18;
+  transition: opacity 0.12s;
+  pointer-events: none;
+}
+
+/* Active DOWN */
+.beat-btn.is-down.active {
+  background: rgba(91,155,213,0.18);
+  border-color: var(--down-c);
+  box-shadow: 0 0 10px rgba(91,155,213,0.25);
+}
+.beat-btn.is-down.active .dir-sym { opacity: 1; color: var(--down-c); }
+
+/* Active UP */
+.beat-btn.is-up.active {
+  background: rgba(232,122,74,0.18);
+  border-color: var(--up-c);
+  box-shadow: 0 0 10px rgba(232,122,74,0.25);
+}
+.beat-btn.is-up.active .dir-sym { opacity: 1; color: var(--up-c); }
+
+/* Playing pulse */
+.beat-btn.playing {
+  transform: scale(0.88);
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 18px rgba(200,169,110,0.5) !important;
+}
+.beat-btn.playing .dir-sym { opacity: 1 !important; color: var(--accent) !important; }
+
+/* Inactive but visible direction hint */
+.beat-btn.is-down:not(.active) .dir-sym { color: var(--down-c); }
+.beat-btn.is-up:not(.active)   .dir-sym { color: var(--up-c); }
+
+/* Quarter dot — lives inside beat-cell on downstroke columns */
+.qdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--panel2);
+  border: 1px solid #333;
+  transition: background 0.08s, box-shadow 0.08s;
+  margin-top: 3px;
+}
+.qdot.lit {
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(200,169,110,0.7);
+}
+/* Invisible spacer keeps upstroke column height equal */
+.qdot-spacer {
+  width: 7px; height: 7px;
+  margin-top: 3px;
+  visibility: hidden;
+}
+
+/* BPM row */
+.bpm-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.bpm-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+  min-width: 42px;
+}
+.bpm-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.05rem;
+  color: var(--accent);
+  min-width: 38px;
+  text-align: right;
+}
+input[type=range] {
+  flex: 1;
+  height: 3px;
+  -webkit-appearance: none;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* Action buttons */
+.btn-row {
+  display: flex;
+  gap: 7px;
+}
+.btn {
+  flex: 1;
+  padding: 11px 4px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: opacity 0.1s, transform 0.08s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.95); }
+
+.btn-play {
+  background: var(--accent);
+  color: #0a0a0f;
+  flex: 1.4;
+}
+.btn-play.playing { background: #e87a4a; color: #fff; }
+
+.btn-metro {
+  background: var(--panel2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-metro.on {
+  background: rgba(196,168,240,0.15);
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.btn-random {
+  background: var(--panel2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-random:hover { color: var(--text); }
+
+/* Tips */
+.tip-box {
+  background: var(--panel);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.tip-box strong { color: var(--text); }
+
+.footer {
+  text-align: center;
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: rgba(240,240,248,0.25);
+  margin-top: 36px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<h1>SLAGKOMP</h1>
+<p class="subtitle">Rytmkomp för nybörjare</p>
+
+<!-- ── LEKTION ─────────────────────────── -->
+<h2>Vad är slagkomp?</h2>
+<p>Slagkomp är ett av de viktigaste verktygen för en gitarrist. Istället för att plocka enstaka strängar sveper man plektrum eller fingrar över alla strängar i ett ackord — upp eller ner.</p>
+<p>Nyckeln till bra slagkomp är att <strong>höger hand aldrig stannar</strong>. Den håller en konstant pendelrörelse: ner–upp–ner–upp. Vilka slag som faktiskt träffar strängarna bestäms av rytmmönstret — resten är luftslag.</p>
+
+<h2>Nerslag &amp; uppslag</h2>
+<div class="legend">
+  <div class="legend-row">
+    <div class="legend-sym" style="color:var(--down-c)">↓</div>
+    <div>
+      <div class="legend-label">Nerslag</div>
+      <div class="legend-desc">Handen rör sig ner. Plektrumet sveper strängarna uppifrån mot golvet.</div>
+    </div>
+  </div>
+  <div class="legend-row">
+    <div class="legend-sym" style="color:var(--up-c)">↑</div>
+    <div>
+      <div class="legend-label">Uppslag</div>
+      <div class="legend-desc">Handen rör sig upp. Plektrumet sveper strängarna underifrån mot taket.</div>
+    </div>
+  </div>
+  <div class="legend-row">
+    <div class="legend-sym" style="color:var(--muted)">○</div>
+    <div>
+      <div class="legend-label">Luftslag</div>
+      <div class="legend-desc">Handen gör rörelsen men rör <em>inte</em> strängarna. Pendelrörelsen fortsätter!</div>
+    </div>
+  </div>
+</div>
+
+<h2>Räkna i åttondelar</h2>
+<p>I 4/4-takt räknar vi fyra slag. Delar vi varje slag i hälften får vi 8 åttondelar per takt:</p>
+
+<div class="beat-row-preview">
+  <div class="bpr-cell"><div class="bpr-num">1</div><div class="bpr-arrow" style="color:var(--down-c)">↓</div></div>
+  <div class="bpr-cell"><div class="bpr-num and">&amp;</div><div class="bpr-arrow" style="color:var(--muted); opacity:0.4">↑</div></div>
+  <div class="bpr-cell"><div class="bpr-num">2</div><div class="bpr-arrow" style="color:var(--down-c)">↓</div></div>
+  <div class="bpr-cell"><div class="bpr-num and">&amp;</div><div class="bpr-arrow" style="color:var(--up-c)">↑</div></div>
+  <div class="bpr-cell"><div class="bpr-num">3</div><div class="bpr-arrow" style="color:var(--down-c)">↓</div></div>
+  <div class="bpr-cell"><div class="bpr-num and">&amp;</div><div class="bpr-arrow" style="color:var(--up-c)">↑</div></div>
+  <div class="bpr-cell"><div class="bpr-num">4</div><div class="bpr-arrow" style="color:var(--down-c)">↓</div></div>
+  <div class="bpr-cell"><div class="bpr-num and">&amp;</div><div class="bpr-arrow" style="color:var(--up-c)">↑</div></div>
+</div>
+
+<p>Slagen 1, 2, 3 och 4 är alltid <strong style="color:var(--down-c)">nerslag</strong>. Slagen &amp; (och) emellan är alltid <strong style="color:var(--up-c)">uppslag</strong>. Pendelrörelsen bestämmer riktningen — du väljer bara vilka slag som faktiskt träffar strängarna.</p>
+
+<!-- ── KOMPMASKIN ─────────────────────── -->
+<h2>Kompmaskin</h2>
+<p>Tryck på en ruta för att slå på eller av den åttondelen. Lyssna på hur ditt eget mönster låter!</p>
+
+<div class="kompmaskin">
+
+  <div class="km-header">
+    KOMPMASKIN
+    <span style="font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted); letter-spacing:1px">4/4</span>
+  </div>
+
+  <div class="beat-grid" id="beatGrid"></div>
+
+
+  <div class="bpm-row">
+    <span class="bpm-lbl">TEMPO</span>
+    <input type="range" id="bpmSlider" min="50" max="120" value="72">
+    <span class="bpm-val" id="bpmVal">72</span>
+    <span class="bpm-lbl">BPM</span>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-play" id="playBtn"   onclick="togglePlay()">▶ SPELA</button>
+    <button class="btn btn-metro on" id="metroBtn" onclick="toggleMetro()">METRO</button>
+    <button class="btn btn-random"               onclick="randomize()">SLUMPA</button>
+  </div>
+
+</div>
+
+<h2>Tips</h2>
+<div class="tip-box">🦶 <strong>Stampa foten</strong> på slagen 1, 2, 3 och 4 medan du spelar. Foten är din inbyggda metronom!</div>
+<div class="tip-box">✋ <strong>Låt handen röra sig hela tiden</strong> — även när du gör luftslag. Om handen stannar tappar du pendelrörelsen och tempot.</div>
+<div class="tip-box">💡 <strong>Klassiker:</strong> Stäng av "&amp; av 1" (den ljusare rutan efter 1:an) — det är ett av de vanligaste slagkompsmönstren i popmusik!</div>
+
+<p class="footer">Skapad av Richard Hauer och Claude</p>
+
+<script>
+// ════════════════════════════════════════════════
+// PATTERN STATE
+// pos:  0    1    2    3    4    5    6    7
+// beat: 1    1&   2    2&   3    3&   4    4&
+// dir:  D    U    D    U    D    U    D    U
+// Default from PDF: all active except 1& (pos 1)
+// ════════════════════════════════════════════════
+const LABELS   = ['1','&','2','&','3','&','4','&'];
+const IS_DOWN  = [true,false,true,false,true,false,true,false];
+let pattern    = [true,false,true,true,true,true,true,true];
+
+// ════════════════════════════════════════════════
+// BUILD GRID
+// ════════════════════════════════════════════════
+function buildGrid() {
+  const grid = document.getElementById('beatGrid');
+  grid.innerHTML = '';
+  pattern.forEach((active, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'beat-cell';
+
+    const num = document.createElement('div');
+    num.className = 'beat-num' + (IS_DOWN[i] ? '' : ' and');
+    num.textContent = LABELS[i];
+
+    const btn = document.createElement('button');
+    btn.id = `bb${i}`;
+    btn.className = `beat-btn ${IS_DOWN[i]?'is-down':'is-up'} ${active?'active':''}`;
+    btn.innerHTML = `<span class="dir-sym">${IS_DOWN[i]?'↓':'↑'}</span>`;
+    btn.addEventListener('click', () => tapBeat(i));
+    btn.addEventListener('touchstart', e => e.preventDefault(), {passive:false});
+
+    cell.appendChild(num);
+    cell.appendChild(btn);
+
+    // Dot: visible under downstrokes, invisible spacer under upstrokes
+    const dot = document.createElement('div');
+    if (IS_DOWN[i]) {
+      dot.className = 'qdot';
+      dot.id = `qdot-${i}`;
+    } else {
+      dot.className = 'qdot-spacer';
+    }
+    cell.appendChild(dot);
+
+    grid.appendChild(cell);
+  });
+}
+
+function tapBeat(i) {
+  // Don't allow fewer than 3 active
+  const active = pattern.filter(Boolean).length;
+  if (pattern[i] && active <= 3) {
+    flashMin(); return;
+  }
+  pattern[i] = !pattern[i];
+  const btn = document.getElementById(`bb${i}`);
+  btn.classList.toggle('active', pattern[i]);
+
+  // Wake audio context on first interaction
+  ensureAudio();
+}
+
+function flashMin() {
+  // Brief red flash on all active buttons as feedback
+  document.querySelectorAll('.beat-btn.active').forEach(b => {
+    b.style.borderColor = '#e87a4a';
+    setTimeout(() => b.style.borderColor = '', 300);
+  });
+}
+
+// ════════════════════════════════════════════════
+// AUDIO ENGINE
+// ════════════════════════════════════════════════
+let actx = null;
+
+function ensureAudio() {
+  if (!actx) {
+    actx = new (window.AudioContext||window.webkitAudioContext)();
+    _noiseBuf = null; // will be built fresh with correct sampleRate
+  }
+  if (actx.state === 'suspended') actx.resume();
+}
+
+// ── Noise buffer (created once after actx exists) ──
+let _noiseBuf = null;
+function noiseBuffer() {
+  if (_noiseBuf) return _noiseBuf;
+  const sr  = actx.sampleRate;
+  const len = Math.ceil(sr * 0.12);
+  _noiseBuf = actx.createBuffer(1, len, sr);
+  const d   = _noiseBuf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  return _noiseBuf;
+}
+
+// ── Chunk sound: noise bandpass + pitch-drop sine ──
+// Instant attack at exactly t — no stagger, no spread
+function scheduleChunk(down, t) {
+  const ctx = actx;
+
+  // Component 1: filtered noise snap (the "plektrum mot strängarna")
+  const src  = ctx.createBufferSource();
+  src.buffer = noiseBuffer();
+  const bp   = ctx.createBiquadFilter();
+  bp.type    = 'bandpass';
+  bp.frequency.value = down ? 230 : 370;
+  bp.Q.value = 3.5;
+  const gN   = ctx.createGain();
+  src.connect(bp); bp.connect(gN); gN.connect(ctx.destination);
+  gN.gain.setValueAtTime(down ? 1.3 : 0.85, t);
+  gN.gain.exponentialRampToValueAtTime(0.001, t + 0.048);
+  src.start(t); src.stop(t + 0.07);
+
+  // Component 2: short pitch-drop sine (body thud)
+  const osc  = ctx.createOscillator();
+  const gS   = ctx.createGain();
+  osc.connect(gS); gS.connect(ctx.destination);
+  osc.type   = 'sine';
+  osc.frequency.setValueAtTime(down ? 150 : 210, t);
+  osc.frequency.exponentialRampToValueAtTime(down ? 55 : 80, t + 0.035);
+  gS.gain.setValueAtTime(down ? 0.55 : 0.32, t);
+  gS.gain.exponentialRampToValueAtTime(0.001, t + 0.038);
+  osc.start(t); osc.stop(t + 0.05);
+}
+
+// ── Metronome woodblock — clearly different from chunk ──
+function scheduleClick(t, accent) {
+  const ctx  = actx;
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.type   = 'sine';
+  // High-pitched woodblock: beat 1 = 1300 Hz, others = 950 Hz
+  osc.frequency.value = accent ? 1300 : 950;
+  gain.gain.setValueAtTime(accent ? 0.38 : 0.18, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+  osc.start(t); osc.stop(t + 0.045);
+}
+
+// ════════════════════════════════════════════════
+// LOOKAHEAD SCHEDULER
+// ════════════════════════════════════════════════
+let playing       = false;
+let metroOn       = true;
+let step          = 0;
+let nextTime      = 0;
+let schedTimer    = null;
+const LOOKAHEAD   = 0.1;
+const TICK_MS     = 25;
+let drawQ         = [];
+
+function stepDur() {
+  return 60 / parseInt(document.getElementById('bpmSlider').value) / 2;
+}
+
+function scheduleLoop() {
+  const ctx = actx;
+  while (nextTime < ctx.currentTime + LOOKAHEAD) {
+    const s = step;
+    const t = nextTime;
+    if (pattern[s])             scheduleChunk(IS_DOWN[s], t);
+    if (metroOn && s % 2 === 0) scheduleClick(t, s === 0);
+    drawQ.push({s, t});
+    step = (step + 1) % 8;
+    nextTime += stepDur();
+  }
+}
+
+// Fire visual slightly ahead of audio clock to compensate for rAF latency
+// (~1 frame @ 60fps = 16ms — without this the highlight visually lags the click)
+const DISPLAY_OFFSET = 0.016;
+
+function drawLoop() {
+  if (!playing) return;
+  const now = actx.currentTime;
+  while (drawQ.length && drawQ[0].t <= now + DISPLAY_OFFSET) {
+    const {s} = drawQ.shift();
+    setPlayHead(s);
+  }
+  requestAnimationFrame(drawLoop);
+}
+
+function setPlayHead(s) {
+  for (let i=0; i<8; i++) {
+    const b = document.getElementById(`bb${i}`);
+    if (b) b.classList.toggle('playing', i === s);
+  }
+  // Quarter dots: only downstroke positions have visible dots (0,2,4,6)
+  [0,2,4,6].forEach(pos => {
+    const d = document.getElementById(`qdot-${pos}`);
+    if (d) d.classList.toggle('lit', pos === s);
+  });
+}
+
+// ════════════════════════════════════════════════
+// CONTROLS
+// ════════════════════════════════════════════════
+function togglePlay() {
+  if (playing) stopPlay(); else startPlay();
+}
+
+function startPlay() {
+  ensureAudio();
+  playing   = true;
+  step      = 0;
+  nextTime  = actx.currentTime + 0.06;
+  drawQ     = [];
+  schedTimer = setInterval(scheduleLoop, TICK_MS);
+  requestAnimationFrame(drawLoop);
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '■ STOPP';
+  btn.classList.add('playing');
+}
+
+function stopPlay() {
+  playing = false;
+  clearInterval(schedTimer);
+  drawQ = [];
+  setPlayHead(-1); // clears all
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '▶ SPELA';
+  btn.classList.remove('playing');
+}
+
+function toggleMetro() {
+  metroOn = !metroOn;
+  document.getElementById('metroBtn').classList.toggle('on', metroOn);
+}
+
+function randomize() {
+  let tries = 0;
+  let np;
+  do {
+    np = Array.from({length:8}, () => Math.random() < 0.6);
+    tries++;
+  } while (np.filter(Boolean).length < 3 && tries < 200);
+
+  pattern = np;
+  buildGrid();
+  ensureAudio();
+}
+
+document.getElementById('bpmSlider').addEventListener('input', function() {
+  document.getElementById('bpmVal').textContent = this.value;
+});
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+buildGrid();
+</script>
+</body>
+</html>

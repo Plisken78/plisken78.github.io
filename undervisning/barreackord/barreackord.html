@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Barréackord – Frettio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;1,400;1,600&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #0a0a0f; --panel: #13131a; --border: #2a2a3a;
+  --accent: #c8a96e; --purple: #c4a8f0; --text: #e8e0d0; --muted: #8a7a60; --dim: #4a4060;
+}
+body {
+  background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif;
+  padding: 16px 8px 100px 4px; max-width: 480px; margin: 0 auto; overflow-x: hidden;
+}
+.lesson-meta { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 4px; }
+.lesson-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; }
+h1 { font-family: 'Bebas Neue', sans-serif; font-size: 46px; color: var(--accent); text-align: right; line-height: 1; letter-spacing: 1px; margin-bottom: 6px; }
+.tagline { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 15px; color: var(--muted); text-align: right; margin-bottom: 28px; }
+h2 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #1e1e2e; }
+p { font-size: 14px; line-height: 1.7; color: #b0a090; margin-bottom: 10px; }
+p strong { color: var(--text); }
+.section { margin-bottom: 32px; }
+</style>
+<style>
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.nav-pill {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; background: #1a1a24; border: 1px solid rgba(200,169,110,.3);
+  border-radius: 999px; padding: 4px; gap: 4px; z-index: 2000;
+  box-shadow: 0 4px 24px rgba(0,0,0,.6);
+}
+.nav-btn {
+  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: 1px;
+  padding: 8px 16px; border-radius: 999px; border: none; cursor: pointer;
+  background: transparent; color: var(--text); transition: all .15s; white-space: nowrap;
+}
+.nav-btn.active { background: var(--accent); color: #0a0a0f; }
+
+.tip { background: #0f0f1a; border-left: 2px solid #c8a96e55; padding: 12px 14px; border-radius: 0 8px 8px 0; margin-bottom: 10px; font-family: 'Crimson Pro', serif; font-style: italic; font-size: 14px; color: var(--muted); line-height: 1.6; }
+.tip strong { color: var(--accent); font-style: normal; }
+.info-box { background: #0f0f1a; border: 1px solid #2a2040; border-radius: 10px; padding: 14px 16px; margin: 16px 0; }
+.func-row { display: flex; justify-content: center; gap: 28px; }
+.func-item { text-align: center; }
+.func-num { font-family: 'DM Mono', monospace; font-size: 32px; line-height: 1; }
+.func-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dim); margin-top: 4px; }
+.func-desc { font-size: 11px; color: #6a5a40; margin-top: 2px; }
+
+.diagram-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.diagram-item { background: #0f0f1a; border: 1px solid #2a2a3a; border-radius: 10px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+.fret-guide { background: #0c0c16; border: 1px solid #1e1e2e; border-radius: 10px; overflow: hidden; margin: 16px 0; }
+.fret-guide-hdr { display: grid; grid-template-columns: 32px 1fr 1fr; background: #131320; padding: 8px 12px; border-bottom: 1px solid #1e1e2e; }
+.fret-guide-hdr span { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dim); text-align: center; letter-spacing: 1px; }
+.fg-row { display: grid; grid-template-columns: 32px 1fr 1fr; padding: 5px 12px; border-bottom: 1px solid #0f0f1a; }
+.fg-row:last-child { border-bottom: none; }
+.fg-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim); text-align: center; }
+.fg-note { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--accent); text-align: center; }
+.fg-row.marker { background: #131320; }
+.fg-row.marker .fg-note { color: white; }
+</style>
+<style>
+.grip-selector { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+.grip-btn { font-family: 'DM Mono', monospace; font-size: 12px; padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 20px; background: var(--panel); color: var(--text); cursor: pointer; transition: all .15s; }
+.grip-btn.active { border-color: var(--accent); color: var(--accent); background: #1a1610; }
+
+.chord-display { text-align: center; margin: 16px 0 8px; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.chord-big { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--accent); letter-spacing: 2px; line-height: 1; }
+.chord-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim); }
+.fb-wrap { display: flex; justify-content: center; margin: 8px 0; }
+
+.score-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.sc-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.sc-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--accent); line-height: 1; }
+.sc-lbl { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; }
+
+.quiz-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px; }
+.quiz-q { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--accent); letter-spacing: 1px; text-align: center; margin-bottom: 6px; }
+.quiz-grip { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim); text-align: center; margin-bottom: 4px; }
+
+.quiz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.q-opt { font-family: 'DM Mono', monospace; font-size: 18px; padding: 14px 8px; border: 2px solid var(--border); border-radius: 10px; background: #0f0f1a; color: var(--text); cursor: pointer; text-align: center; transition: all .15s; -webkit-tap-highlight-color: transparent; }
+.q-opt.correct { border-color: #4ade80; background: #0a2010; color: #4ade80; }
+.q-opt.wrong   { border-color: #f87171; background: #200a0a; color: #f87171; }
+.q-opt.disabled { pointer-events: none; opacity: .7; }
+.q-opt:not(.disabled):active { transform: scale(.95); }
+
+.q-next { display: none; width: 100%; margin-top: 14px; padding: 14px; border-radius: 10px; border: none; background: var(--accent); color: #0a0a0f; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; cursor: pointer; }
+.q-next.show { display: block; }
+
+.example-row { background: #0f0f1a; border: 1px solid #2a2a3a; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+.ex-name { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); min-width: 52px; }
+.ex-info { flex: 1; }
+.ex-grip { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dim); margin-bottom: 4px; }
+.ex-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.credit { text-align: center; font-family: 'Crimson Pro', serif; font-style: italic; font-size: 11px; color: #2a2030; margin-top: 48px; }
+</style>
+</head>
+<body>
+
+<div class="lesson-meta">
+  <span class="lesson-tag">Lektion</span>
+  <span class="lesson-tag">Nybörjare</span>
+</div>
+<h1>BARRÉACKORD</h1>
+<p class="tagline">Flytta greppen – byt ackord</p>
+
+<!-- ═══════════ PAGE 1: FÖRKLARING ═══════════ -->
+<div class="page active" id="page-explain">
+
+<div class="section">
+  <h2>Pekfingret som ett capo</h2>
+  <p>Grundidén med barréackord är enkel: ditt <strong>pekfinger trycks ner över samtliga strängar</strong> på ett och samma band och agerar som ett rörligt capo. Med de övriga fingrarna formar du sedan ett välbekant grepp.</p>
+  <p>Det fantastiska är att <strong>ett och samma grepp</strong> kan ge dig alla 12 ackordnamn – du behöver bara flytta det uppåt eller nedåt på halsen.</p>
+  <div class="tip"><strong>Tänk så här:</strong> greppets form förändras aldrig. Det är var på halsen du placerar det som bestämmer ackordets namn.</div>
+</div>
+
+<div class="section">
+  <h2>Funktioner: 1 – 3 – 5</h2>
+  <p>Istället för att rabbla tonnamn räcker det att förstå <strong>funktionerna</strong> i ackordet:</p>
+  <div class="info-box">
+    <div class="func-row">
+      <div class="func-item">
+        <div class="func-num" style="color:#ffffff">1</div>
+        <div class="func-label" style="color:#ffffff88">Grundton</div>
+        <div class="func-desc">Namnger ackordet</div>
+      </div>
+      <div class="func-item">
+        <div class="func-num" style="color:#88ff00">3</div>
+        <div class="func-label" style="color:#88ff0088">Ters</div>
+        <div class="func-desc">Dur eller moll</div>
+      </div>
+      <div class="func-item">
+        <div class="func-num" style="color:#4a9aff">5</div>
+        <div class="func-label" style="color:#4a9aff88">Kvint</div>
+        <div class="func-desc">Samma i båda</div>
+      </div>
+    </div>
+  </div>
+  <p>Tersen avgör om ackordet är <strong>dur</strong> (ljust, glatt) eller <strong>moll</strong> (mörkt, vemodigt). Kvinten är identisk i bägge fallen.</p>
+</div>
+
+<div class="section">
+  <h2>De fyra grundgreppen</h2>
+  <p>De vanligaste barrégreppen bygger på öppna <strong>E-</strong> och <strong>A-ackord</strong>. Grundtonen – det som namnger ackordet – sitter på E-strängen vid E-greppen, och på A-strängen vid A-greppen. Den vita pricken med <strong>1</strong> markerar alltid grundtonens position.</p>
+  <div class="diagram-grid" id="diagram-grid"></div>
+</div>
+
+</div>
+<!-- page-explain continued: fret guide + examples + tips -->
+<div class="page" id="page-explain-2" style="display:block"><!-- injected by JS --></div>
+
+<script>
+// Inject remaining Förklaring sections into page-explain on load
+function buildExplainExtra() {
+  const EN = ['F','F#','G','Ab','A','Bb','B','C','C#','D','Eb','E'];
+  const AN = ['Bb','B','C','C#','D','Eb','E','F','F#','G','Ab','A'];
+  const MARKERS = [5,7,12];
+
+  let fgHTML = '';
+  for (let f = 1; f <= 12; f++) {
+    const mk = MARKERS.includes(f) ? ' marker' : '';
+    fgHTML += `<div class="fg-row${mk}"><span class="fg-num">${f}</span><span class="fg-note">${EN[f-1]}</span><span class="fg-note">${AN[f-1]}</span></div>`;
+  }
+
+  const extra = `
+  <div class="section">
+    <h2>Hitta rätt band</h2>
+    <p>Grundtonens position bestämmer ackordets namn. Lär dig halvtonstegen på E- och A-strängen – <strong>band 5, 7 och 12</strong> är bra referenspunkter att memorera.</p>
+    <div class="fret-guide">
+      <div class="fret-guide-hdr"><span>Band</span><span>E-sträng</span><span>A-sträng</span></div>
+      ${fgHTML}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Exempel: Fm i olika lägen</h2>
+    <p>F-moll kan spelas med helt olika grepp beroende på vilken sträng du väljer som grundton. Alla låter likadant – bara klangfärg och position skiljer sig.</p>
+    <div id="fm-examples"></div>
+  </div>
+
+  <div class="section">
+    <h2>Tips för barrén</h2>
+    <div class="tip"><strong>Håll pekfingret rakt</strong> och rulla det en aning mot headstocket – det hårda kanten på fingret ger bättre kontakt med strängarna.</div>
+    <div class="tip"><strong>Placera fingret nära järnet.</strong> Ju närmre bandet, desto mindre kraft krävs. F-dur på band 1 är ett bra startgrepp.</div>
+    <div class="tip"><strong>Bygg upp gradvis.</strong> Det är normalt att det tar veckor att bemästra. Korta, regelbundna övningspass ger snabbare resultat.</div>
+  </div>`;
+
+  document.getElementById('page-explain').insertAdjacentHTML('beforeend', extra);
+}
+</script>
+
+<!-- ═══════════ PAGE 2: EXPERIMENTERA ═══════════ -->
+<div class="page" id="page-exp">
+
+<div class="section">
+  <h2>Välj grepp</h2>
+  <div class="grip-selector">
+    <button class="grip-btn active" onclick="selectGrip('E-dur',this)">E-grepp dur</button>
+    <button class="grip-btn" onclick="selectGrip('A-dur',this)">A-grepp dur</button>
+    <button class="grip-btn" onclick="selectGrip('E-moll',this)">E-grepp moll</button>
+    <button class="grip-btn" onclick="selectGrip('A-moll',this)">A-grepp moll</button>
+  </div>
+  <p style="font-size:12px;color:var(--dim);text-align:center;">Tryck på ett band för att placera barréet</p>
+</div>
+
+<div class="chord-display">
+  <div class="chord-big" id="exp-name">—</div>
+  <div class="chord-sub" id="exp-sub">Välj ett band på halsen nedan</div>
+</div>
+
+<div class="fb-wrap">
+  <svg id="exp-svg" width="240" height="455" viewBox="0 0 240 455"></svg>
+</div>
+
+</div>
+
+<!-- ═══════════ PAGE 3: QUIZ ═══════════ -->
+<div class="page" id="page-quiz">
+
+<div class="score-bar">
+  <div class="sc-item"><div class="sc-val" id="q-right">0</div><div class="sc-lbl">Rätt</div></div>
+  <div class="sc-item"><div class="sc-val" id="q-streak">0</div><div class="sc-lbl">Streak</div></div>
+  <div class="sc-item"><div class="sc-val" id="q-total">0</div><div class="sc-lbl">Totalt</div></div>
+</div>
+
+<div class="quiz-card">
+  <div class="quiz-q">Vad heter ackordet?</div>
+  <div class="quiz-grip" id="q-grip-lbl"></div>
+  <div class="fb-wrap">
+    <svg id="quiz-svg" width="240" height="455" viewBox="0 0 240 455"></svg>
+  </div>
+  <div class="quiz-opts" id="q-opts"></div>
+  <button class="q-next" id="q-next-btn" onclick="nextQuestion()">NÄSTA →</button>
+</div>
+
+</div>
+
+<div class="credit">Skapad av Richard Hauer och Claude</div>
+
+<div class="nav-pill">
+  <button class="nav-btn active" id="nb-explain" onclick="showPage('explain')">Förklaring</button>
+  <button class="nav-btn" id="nb-exp" onclick="showPage('exp')">Experimentera</button>
+  <button class="nav-btn" id="nb-quiz" onclick="showPage('quiz')">Quiz</button>
+</div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════
+// MUSIC DATA
+// ═══════════════════════════════════
+const NOTES = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+const OPEN  = [4, 9, 2, 7, 11, 4]; // E A D G B E  (index in NOTES)
+const STR_LABELS = ['E','A','D','G','B','E'];
+
+// s = string index (0=low E), r = frets above barre
+const GRIPS = {
+  'E-dur':  { lbl:'E-grepp dur',  q:'dur',  root:0, barStr:[0,1,2,3,4,5], extra:[{s:3,r:1,fn:'3'},{s:1,r:2,fn:'5'},{s:2,r:2,fn:'1'}], barFuncs:[{s:4,fn:'5'},{s:5,fn:'1'}], mute:[] },
+  'A-dur':  { lbl:'A-grepp dur',  q:'dur',  root:1, barStr:[1,2,3,4,5],   extra:[{s:2,r:2,fn:'5'},{s:3,r:2,fn:'1'},{s:4,r:2,fn:'3'}], barFuncs:[{s:5,fn:'5'}],             mute:[0] },
+  'E-moll': { lbl:'E-grepp moll', q:'moll', root:0, barStr:[0,1,2,3,4,5], extra:[{s:1,r:2,fn:'5'},{s:2,r:2,fn:'1'}],                   barFuncs:[{s:3,fn:'b3'},{s:4,fn:'5'},{s:5,fn:'1'}], mute:[] },
+  'A-moll': { lbl:'A-grepp moll', q:'moll', root:1, barStr:[1,2,3,4,5],   extra:[{s:2,r:2,fn:'5'},{s:3,r:2,fn:'1'},{s:4,r:1,fn:'b3'}], barFuncs:[{s:5,fn:'5'}],             mute:[0] },
+};
+
+function fnColor(fn) {
+  if (fn === '1')  return '#ffffff';
+  if (fn === '3')  return '#88ff00';
+  if (fn === 'b3') return '#FFDD00';
+  if (fn === '5')  return '#4a9aff';
+  return '#c8a96e';
+}
+function fnTextColor(fn) { return (fn === '1' || fn === '3' || fn === 'b3') ? '#0a0a0f' : '#0a0a0f'; }
+
+function noteAt(si, fret) { return NOTES[(OPEN[si] + fret) % 12]; }
+function chordName(gk, fret) {
+  const g = GRIPS[gk];
+  return noteAt(g.root, fret) + (g.q === 'moll' ? 'm' : '');
+}
+
+// Enharmonic equivalents
+const ENHARM = {'C#':'D\u266d','D\u266d':'C#','E\u266d':'D#','D#':'E\u266d','F#':'G\u266d','G\u266d':'F#','A\u266d':'G#','G#':'A\u266d','B\u266d':'A#','A#':'B\u266d'};
+// Note: NOTES uses Eb/Ab/Bb so map those too
+const ENHARM2 = {'C#':'Db','Eb':'D#','F#':'Gb','Ab':'G#','Bb':'A#'};
+
+// Format chord string with superscript accidentals (DM Mono) + lowercase m (DM Sans)
+// Works on full chord strings like 'Fm', 'C#', 'Bbm', 'F#m'
+function fmtNote(n) {
+  return n
+    .replace(/([b#])/, '<sup style="font-family:\'DM Mono\',monospace;font-weight:500;font-size:0.65em;vertical-align:super">$1</sup>')
+    .replace(/m$/, '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.68em;font-weight:600;vertical-align:baseline">m</span>');
+}
+
+// Full chord name HTML with enharmonic on same line, same size
+function chordNameHTML(gk, fret) {
+  const root = noteAt(GRIPS[gk].root, fret);
+  const q = GRIPS[gk].q === 'moll' ? 'm' : '';
+  const alt = ENHARM2[root];
+  let html = fmtNote(root + q);
+  if (alt) html += `<span style="color:var(--dim);margin:0 6px">/</span>${fmtNote(alt + q)}`;
+  return html;
+}
+
+// ═══════════════════════════════════
+// FRETBOARD LAYOUT CONSTANTS
+// ═══════════════════════════════════
+const SX = [40, 74, 108, 142, 176, 210]; // string x (low E → high E)
+const NUT_Y = 45;
+const FH = 32; // fret height px
+const flY = f => NUT_Y + f * FH;          // fret LINE y
+const nY  = f => NUT_Y + (f - 0.5) * FH; // note MID y in fret f
+
+// ═══════════════════════════════════
+// FRETBOARD RENDERER
+// ═══════════════════════════════════
+function renderFB(svgId, selFret, gripKey, clickable) {
+  const el = document.getElementById(svgId);
+  let h = '';
+
+  // String lines (thickness: low E = thickest)
+  const sw = [2.8, 2.2, 1.7, 1.3, 0.9, 0.6];
+  for (let s = 0; s < 6; s++)
+    h += `<line x1="${SX[s]}" y1="${NUT_Y}" x2="${SX[s]}" y2="${flY(12)}" stroke="#2a2a40" stroke-width="${sw[s]}"/>`;
+
+  // Nut (gold)
+  h += `<line x1="${SX[0]}" y1="${NUT_Y}" x2="${SX[5]}" y2="${NUT_Y}" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>`;
+
+  // Fret lines
+  for (let f = 1; f <= 12; f++)
+    h += `<line x1="${SX[0]}" y1="${flY(f)}" x2="${SX[5]}" y2="${flY(f)}" stroke="#222232" stroke-width="1.5"/>`;
+
+  // Position markers (dots between strings 2-3)
+  const midX = (SX[2] + SX[3]) / 2;
+  [3, 5, 7, 9].forEach(f => h += `<circle cx="${midX}" cy="${nY(f)}" r="4" fill="#1a1a2a"/>`);
+  h += `<circle cx="${SX[1]+9}" cy="${nY(12)}" r="4" fill="#1a1a2a"/>`;
+  h += `<circle cx="${SX[4]-9}" cy="${nY(12)}" r="4" fill="#1a1a2a"/>`;
+
+  // String labels
+  STR_LABELS.forEach((l, i) =>
+    h += `<text x="${SX[i]}" y="26" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a4a30">${l}</text>`
+  );
+  // Fret number labels
+  for (let f = 1; f <= 12; f++)
+    h += `<text x="20" y="${nY(f)+4}" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#3a3060">${f}</text>`;
+
+  // Clickable rows
+  for (let f = 1; f <= 12; f++) {
+    const hi = f === selFret ? 'fill="#c8a96e0c"' : 'fill="transparent"';
+    const cl = clickable ? `onclick="handleFretTap(${f})" style="cursor:pointer"` : '';
+    h += `<rect x="${SX[0]-12}" y="${flY(f-1)}" width="${SX[5]-SX[0]+24}" height="${FH}" rx="2" ${hi} ${cl}/>`;
+  }
+
+  // Grip overlay
+  if (selFret && gripKey) {
+    const g = GRIPS[gripKey];
+    const bx1 = SX[g.barStr[0]], bx2 = SX[g.barStr[g.barStr.length-1]];
+    const by = nY(selFret);
+
+    // Barre bar
+    h += `<rect x="${bx1-10}" y="${by-11}" width="${bx2-bx1+20}" height="22" rx="11" fill="#c8a96e" opacity=".87"/>`;
+    // Root indicator (white circle with 1)
+    h += `<circle cx="${SX[g.root]}" cy="${by}" r="10" fill="white" opacity=".93"/>`;
+    h += `<text x="${SX[g.root]}" y="${by+4}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" fill="#0a0a0f">1</text>`;
+    // Barre function markers (strings not covered by extra fingers)
+    if (g.barFuncs) g.barFuncs.forEach(bf => {
+      const bc = fnColor(bf.fn);
+      h += `<circle cx="${SX[bf.s]}" cy="${by}" r="9" fill="${bc}" opacity=".92"/>`;
+      h += `<text x="${SX[bf.s]}" y="${by+3.5}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#0a0a0f">${bf.fn}</text>`;
+    });
+    // Extra finger dots colored by function
+    g.extra.forEach(e => {
+      const df = selFret + e.r;
+      if (df > 12) return;
+      const c = fnColor(e.fn);
+      h += `<circle cx="${SX[e.s]}" cy="${nY(df)}" r="11" fill="${c}"/>`;
+      h += `<text x="${SX[e.s]}" y="${nY(df)+4}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" fill="#0a0a0f">${e.fn}</text>`;
+    });
+    // Muted string markers
+    g.mute.forEach(s =>
+      h += `<text x="${SX[s]}" y="${NUT_Y-10}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="16" fill="#5a4060">×</text>`
+    );
+  }
+
+  el.innerHTML = h;
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+let expInit = false, quizInit = false;
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nb-' + id).classList.add('active');
+  if (id === 'exp'  && !expInit)  { initExp();  expInit  = true; }
+  if (id === 'quiz' && !quizInit) { initQuiz(); quizInit = true; }
+}
+
+// ═══════════════════════════════════
+// EXPERIMENT
+// ═══════════════════════════════════
+let curGrip = 'E-dur', curFret = null;
+
+function initExp() { renderFB('exp-svg', null, null, true); }
+
+function selectGrip(gk, el) {
+  curGrip = gk;
+  document.querySelectorAll('.grip-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  updateExp();
+}
+
+function handleFretTap(f) { curFret = f; updateExp(); }
+
+function updateExp() {
+  renderFB('exp-svg', curFret, curGrip, true);
+  const n = document.getElementById('exp-name');
+  const s = document.getElementById('exp-sub');
+  if (curFret) {
+    n.innerHTML = chordNameHTML(curGrip, curFret);
+    s.textContent = GRIPS[curGrip].lbl + ' • Band ' + curFret;
+  } else {
+    n.innerHTML = '—';
+    s.textContent = 'Välj ett band på halsen nedan';
+  }
+}
+
+// ═══════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════
+let qRight = 0, qStreak = 0, qTotal = 0, qQ = null;
+
+function initQuiz() { newQ(); }
+function nextQuestion() { newQ(); }
+
+function newQ() {
+  const keys = Object.keys(GRIPS);
+  const gk   = keys[Math.floor(Math.random() * keys.length)];
+  const fret  = 1 + Math.floor(Math.random() * 10);
+  const ans   = chordName(gk, fret);
+
+  const wrong = new Set(); let att = 0;
+  while (wrong.size < 3 && att < 60) {
+    att++;
+    const w = chordName(keys[Math.floor(Math.random() * keys.length)], 1 + Math.floor(Math.random() * 10));
+    if (w !== ans) wrong.add(w);
+  }
+  const opts = [ans, ...wrong].sort(() => Math.random() - .5);
+  qQ = { gk, fret, ans, opts };
+
+  document.getElementById('q-grip-lbl').textContent = GRIPS[gk].lbl;
+  renderFB('quiz-svg', fret, gk, false);
+  document.getElementById('q-next-btn').classList.remove('show');
+
+  const oc = document.getElementById('q-opts');
+  oc.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'q-opt';
+    b.dataset.name = o;
+    b.innerHTML = fmtNote(o);
+    b.onclick = () => handleAns(o);
+    oc.appendChild(b);
+  });
+}
+
+function handleAns(chosen) {
+  const { ans } = qQ;
+  qTotal++;
+  document.querySelectorAll('.q-opt').forEach(b => {
+    b.classList.add('disabled');
+    if (b.dataset.name === ans) b.classList.add('correct');
+    else if (b.dataset.name === chosen && chosen !== ans) b.classList.add('wrong');
+  });
+  if (chosen === ans) { qRight++; qStreak++; } else { qStreak = 0; }
+  document.getElementById('q-right').textContent  = qRight;
+  document.getElementById('q-streak').textContent = qStreak;
+  document.getElementById('q-total').textContent  = qTotal;
+  document.getElementById('q-next-btn').classList.add('show');
+}
+
+// ═══════════════════════════════════
+// STATIC CHORD DIAGRAMS (Förklaring)
+// ═══════════════════════════════════
+// cfg: { lbl, root, barStr:[fromIdx,toIdx], extra:[{s,r}], mute:[] }
+function chordDiagram(cfg) {
+  const sx  = [8, 23, 38, 53, 68, 83];     // string x
+  const fy  = f => 22 + f * 18;            // fret line y (fy(0)=22, fy(4)=94)
+  const nc  = f => (fy(f-1) + fy(f)) / 2; // note center in fret f
+  const thk = [2.0, 1.6, 1.3, 1.0, 0.7, 0.5];
+  let h = `<svg viewBox="0 0 92 112" width="92" height="112">`;
+
+  // String lines
+  for (let s = 0; s < 6; s++)
+    h += `<line x1="${sx[s]}" y1="${fy(0)}" x2="${sx[s]}" y2="${fy(4)}" stroke="#2a2a40" stroke-width="${thk[s]}"/>`;
+  // Fret lines
+  for (let f = 1; f <= 4; f++)
+    h += `<line x1="${sx[0]}" y1="${fy(f)}" x2="${sx[5]}" y2="${fy(f)}" stroke="#1c1c2c" stroke-width="1"/>`;
+
+  // Muted markers
+  cfg.mute.forEach(s =>
+    h += `<text x="${sx[s]}" y="${fy(0)-7}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" fill="#5a4060">×</text>`
+  );
+  // Barre bar
+  const bx1 = sx[cfg.barStr[0]], bx2 = sx[cfg.barStr[1]];
+  h += `<rect x="${bx1-7}" y="${fy(0)-5}" width="${bx2-bx1+14}" height="13" rx="6.5" fill="#c8a96e" opacity=".88"/>`;
+  // Root dot (white with 1)
+  h += `<circle cx="${sx[cfg.root]}" cy="${fy(0)+1.5}" r="5.5" fill="white" opacity=".92"/>`;
+  h += `<text x="${sx[cfg.root]}" y="${fy(0)+5.5}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6.5" font-weight="700" fill="#0a0a0f">1</text>`;
+  // Barre function markers
+  if (cfg.barFuncs) cfg.barFuncs.forEach(bf => {
+    const bc = fnColor(bf.fn);
+    h += `<circle cx="${sx[bf.s]}" cy="${fy(0)+1.5}" r="5.5" fill="${bc}" opacity=".92"/>`;
+    h += `<text x="${sx[bf.s]}" y="${fy(0)+5.5}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5.5" font-weight="700" fill="#0a0a0f">${bf.fn}</text>`;
+  });
+  // Finger dots colored by function
+  cfg.extra.forEach(e => {
+    if (e.r > 4) return;
+    const c = fnColor(e.fn);
+    h += `<circle cx="${sx[e.s]}" cy="${nc(e.r)}" r="7" fill="${c}"/>`;
+    h += `<text x="${sx[e.s]}" y="${nc(e.r)+3}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" font-weight="700" fill="#0a0a0f">${e.fn}</text>`;
+  });
+  // Label
+  h += `<text x="46" y="109" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#5a4a30">${cfg.lbl}</text>`;
+  h += `</svg>`;
+  return h;
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Build fret guide + tips sections into page-explain
+  buildExplainExtra();
+
+  // Chord diagrams
+  const dcfg = [
+    { lbl:'E-grepp dur',  root:0, barStr:[0,5], extra:[{s:3,r:1,fn:'3'},{s:1,r:2,fn:'5'},{s:2,r:2,fn:'1'}], barFuncs:[{s:4,fn:'5'},{s:5,fn:'1'}], mute:[] },
+    { lbl:'A-grepp dur',  root:1, barStr:[1,5], extra:[{s:2,r:2,fn:'5'},{s:3,r:2,fn:'1'},{s:4,r:2,fn:'3'}], barFuncs:[{s:5,fn:'5'}],             mute:[0] },
+    { lbl:'E-grepp moll', root:0, barStr:[0,5], extra:[{s:1,r:2,fn:'5'},{s:2,r:2,fn:'1'}],                   barFuncs:[{s:3,fn:'b3'},{s:4,fn:'5'},{s:5,fn:'1'}], mute:[] },
+    { lbl:'A-grepp moll', root:1, barStr:[1,5], extra:[{s:2,r:2,fn:'5'},{s:3,r:2,fn:'1'},{s:4,r:1,fn:'b3'}], barFuncs:[{s:5,fn:'5'}],             mute:[0] },
+  ];
+  document.getElementById('diagram-grid').innerHTML = dcfg.map(c =>
+    `<div class="diagram-item">${chordDiagram(c)}</div>`
+  ).join('');
+
+  // Fm examples
+  const fmEx = [
+    { gk:'E-moll', fret:1, desc:'E-strängen, band 1 – den klassiska Fm-positionen' },
+    { gk:'A-moll', fret:8, desc:'A-strängen, band 8 – samma ackord, högre upp' },
+  ];
+  document.getElementById('fm-examples').innerHTML = fmEx.map(e => `
+    <div class="example-row">
+      <div class="ex-name">${fmtNote(chordName(e.gk, e.fret))}</div>
+      <div class="ex-info">
+        <div class="ex-grip">${GRIPS[e.gk].lbl} • Band ${e.fret}</div>
+        <div class="ex-desc">${e.desc}</div>
+      </div>
+    </div>`
+  ).join('');
+
+});
+
+</script>
+</body>
+</html>
