@@ -36,10 +36,10 @@
       transition: opacity .2s;
     }
     .nav-book:hover { opacity: .85; }
-    .hero { position: relative; height: 90vh; min-height: 560px; display: flex; align-items: flex-start; justify-content: flex-start; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; background-image: url('img/waltz/first.jpeg'); background-color: #151820; background-size: cover; background-position: center 65%; }
-    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,11,12,.92) 0%, rgba(11,11,12,.5) 35%, rgba(11,11,12,.15) 60%, rgba(11,11,12,.6) 100%); }
-    .hero-content { position: relative; z-index: 1; padding: 8.5rem 3rem 2rem; max-width: 700px; }
+    .hero { position: relative; height: 90vh; min-height: 560px; display: flex; align-items: flex-end; justify-content: flex-start; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('img/waltz/first.jpeg'); background-color: #151820; background-size: cover; background-position: center 30%; }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,11,12,1) 0%, rgba(11,11,12,.98) 30%, rgba(11,11,12,.55) 50%, rgba(11,11,12,.05) 72%); }
+    .hero-content { position: relative; z-index: 1; padding: 0 3rem 4rem; max-width: 520px; }
     .hero-eyebrow { font-size: .75rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
     .hero-eyebrow a { color: var(--muted); text-decoration: none; transition: color .2s; font-size: .7rem; }
     .hero-eyebrow a:hover { color: var(--gold); }
