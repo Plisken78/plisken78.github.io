@@ -1,0 +1,5425 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Att jobba som musiker · Richard Hauer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ============ DEL I ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Aged paper background */
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  /* Subtle noise texture */
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* Coffee/age stains */
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  /* Decorative frame */
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+  .frame.bl { bottom: 24px; left: 32px; }
+  .frame.br { bottom: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  /* Slide counter */
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  /* Typography */
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .divider {
+    width: 80px;
+    height: 2px;
+    background: var(--ink);
+    margin: 2rem 0;
+    position: relative;
+  }
+  .divider::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--wine);
+    border-radius: 50%;
+    right: -4px;
+    top: -3px;
+  }
+
+  /* SLIDE 1: Title */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+  .title-slide .meta {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    margin-top: 4rem;
+  }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* SLIDE 2: Two paths split */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 3rem;
+    align-items: stretch;
+    margin-top: 2.5rem;
+  }
+
+  .split-col {
+    padding: 2rem;
+    background: rgba(255, 250, 235, 0.4);
+    border: 1.5px solid var(--ink);
+    position: relative;
+  }
+  .split-col::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--ink-soft);
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .split-num {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--wine);
+    margin-bottom: 1rem;
+  }
+
+  .split-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+
+  .split-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .split-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--wine);
+  }
+
+  /* Two-column path slides */
+  .path-slide .eyebrow { margin-bottom: 1.5rem; }
+
+  .path-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .path-text { }
+
+  .path-visual {
+    aspect-ratio: 1;
+    max-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .badge.easier { background: var(--ink); color: var(--paper); }
+  .badge.harder { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+
+  /* SLIDE 7: Matrix */
+  .matrix-wrap { margin-top: 2rem; }
+
+  .matrix {
+    display: grid;
+    grid-template-columns: 140px 1fr 1fr;
+    grid-template-rows: 60px 1fr 1fr;
+    gap: 0;
+    border: 2px solid var(--ink);
+    background: rgba(255, 250, 235, 0.5);
+    min-height: 50vh;
+  }
+
+  .matrix-cell {
+    padding: 1.4rem 1.6rem;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .matrix-cell:nth-child(3n) { border-right: none; }
+  .matrix-cell.last-row { border-bottom: none; }
+
+  .matrix-header {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-align: center;
+    background: var(--ink);
+    color: var(--paper);
+    align-items: center;
+  }
+
+  .matrix-axis {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    background: var(--ink-soft);
+    color: var(--paper);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .matrix-corner {
+    background: var(--ink);
+  }
+
+  .matrix-data {
+    background: rgba(241, 231, 208, 0.6);
+  }
+
+  .matrix-data h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+
+  .matrix-data p {
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+
+  .matrix-data.hot {
+    background: rgba(107, 31, 44, 0.08);
+    position: relative;
+  }
+  .matrix-data.hot::after {
+    content: 'smalt nålsöga';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wine);
+    font-style: italic;
+  }
+
+  /* SLIDE 8: Closing */
+  .closing { text-align: center; }
+  .closing .quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.3;
+    color: var(--ink-soft);
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+
+  /* Navigation hint */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  /* Music staff decoration */
+  .staff-deco {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+  }
+
+  /* Print */
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .path-grid { grid-template-columns: 1fr; }
+    .path-visual { max-height: 30vh; }
+    .split { grid-template-columns: 1fr; }
+    .split-divider { transform: rotate(90deg); }
+    .matrix { grid-template-columns: 80px 1fr 1fr; }
+  }
+
+
+/* ============ DEL II ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .divider {
+    width: 80px;
+    height: 2px;
+    background: var(--ink);
+    margin: 2rem 0;
+    position: relative;
+  }
+  .divider::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--wine);
+    border-radius: 50%;
+    right: -4px;
+    top: -3px;
+  }
+
+  /* TITLE SLIDE */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+  .title-slide .meta {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    margin-top: 4rem;
+  }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* CONTENT GRID FOR TWO-COLUMN SLIDES */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .content-visual {
+    aspect-ratio: 1;
+    max-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .badge.model-a { background: var(--ink); color: var(--paper); }
+  .badge.model-b { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+  .badge.tools { background: var(--brass); color: var(--paper); border-color: var(--brass); }
+
+  /* SCIENCE VS MUSIC visual */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .vs-cell {
+    padding: 2rem;
+    background: rgba(255, 250, 235, 0.4);
+  }
+  .vs-cell:first-child { border-right: 1px solid var(--ink); }
+
+  .vs-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .vs-cell.science .vs-label { color: var(--sepia); }
+  .vs-cell.music .vs-label { color: var(--wine); }
+
+  .vs-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+
+  .vs-desc {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* THRESHOLD COMPARISON */
+  .threshold-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .threshold-side h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .threshold-side .label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1rem;
+  }
+
+  .threshold-side p {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .threshold-vs {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--wine);
+  }
+
+  /* CLOSING */
+  .closing { text-align: center; }
+  .closing .quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.3;
+    color: var(--ink-soft);
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+
+  /* Pull quote panel */
+  .pull-quote {
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--wine);
+    background: rgba(107, 31, 44, 0.04);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 700px;
+  }
+
+  /* Genre tags */
+  .genre-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .genre-tag {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--ink-soft);
+    background: rgba(255, 250, 235, 0.5);
+    color: var(--ink);
+  }
+
+  .genre-tag.accent { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+  .genre-tag.brass { background: var(--brass); color: var(--paper); border-color: var(--brass); }
+
+  /* Navigation hint */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .content-visual { max-height: 30vh; }
+    .vs-grid { grid-template-columns: 1fr; }
+    .vs-cell:first-child { border-right: none; border-bottom: 1px solid var(--ink); }
+    .threshold-grid { grid-template-columns: 1fr; }
+    .threshold-vs { transform: rotate(90deg); }
+  }
+
+
+/* ============ DEL III ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .divider {
+    width: 80px;
+    height: 2px;
+    background: var(--ink);
+    margin: 2rem 0;
+    position: relative;
+  }
+  .divider::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--wine);
+    border-radius: 50%;
+    right: -4px;
+    top: -3px;
+  }
+
+  /* TITLE SLIDE */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* CONTENT GRID */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .content-visual {
+    aspect-ratio: 1;
+    max-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .badge.dark { background: var(--ink); color: var(--paper); }
+  .badge.wine { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+  .badge.brass { background: var(--brass); color: var(--paper); border-color: var(--brass); }
+
+  /* TWO-COLUMN PANEL (success / failure reflection) */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .vs-cell {
+    padding: 1.8rem 2rem;
+    background: rgba(255, 250, 235, 0.4);
+  }
+  .vs-cell:first-child { border-right: 1px solid var(--ink); }
+
+  .vs-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .vs-cell.good .vs-label { color: var(--brass); }
+  .vs-cell.bad .vs-label { color: var(--wine); }
+
+  .vs-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .vs-cell ul {
+    list-style: none;
+  }
+
+  .vs-cell ul li {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    padding-left: 1.2rem;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .vs-cell.good ul li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-weight: 700;
+  }
+
+  .vs-cell.bad ul li::before {
+    content: '−';
+    position: absolute;
+    left: 0;
+    color: var(--wine);
+    font-weight: 700;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--wine);
+    background: rgba(107, 31, 44, 0.04);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 800px;
+  }
+
+  .pull-quote cite {
+    display: block;
+    margin-top: 0.8rem;
+    font-style: normal;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+  }
+
+  .big-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 4px solid var(--wine);
+    padding: 1rem 0 1rem 2rem;
+    margin: 2rem 0;
+    max-width: 900px;
+  }
+
+  .big-quote em { color: var(--wine); }
+
+  .big-quote cite {
+    display: block;
+    margin-top: 1.2rem;
+    font-style: normal;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+  }
+
+  /* HERO CHECKLIST: 4 PILLARS */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .pillar {
+    border: 1.5px solid var(--ink);
+    background: rgba(255, 250, 235, 0.5);
+    padding: 1.8rem 1.4rem 1.6rem;
+    position: relative;
+  }
+
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px solid var(--ink-soft);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .pillar-num {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--wine);
+    margin-bottom: 0.6rem;
+  }
+
+  .pillar-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.05;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+  }
+
+  .pillar-desc {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  .pillar-icon {
+    height: 30px;
+    margin-bottom: 0.8rem;
+    color: var(--brass);
+    opacity: 0.85;
+  }
+
+  /* CLOSING */
+  .closing { text-align: center; }
+  .closing .quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+    line-height: 1.35;
+    color: var(--ink-soft);
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+
+  /* NAV HINT */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .content-visual { max-height: 30vh; }
+    .vs-grid { grid-template-columns: 1fr; }
+    .vs-cell:first-child { border-right: none; border-bottom: 1px solid var(--ink); }
+    .pillars { grid-template-columns: 1fr 1fr; }
+  }
+
+
+/* ============ DEL IV ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* TITLE SLIDE */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+
+  /* BIG QUOTE */
+  .big-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 4px solid var(--wine);
+    padding: 1rem 0 1rem 2rem;
+    margin: 2rem 0;
+    max-width: 900px;
+  }
+
+  .big-quote em { color: var(--wine); }
+
+  .big-quote cite {
+    display: block;
+    margin-top: 1.2rem;
+    font-style: normal;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+  }
+
+  /* TWO-COL OVERVIEW (var / vad) */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .col-cell {
+    padding: 1.8rem 2rem;
+    background: rgba(255, 250, 235, 0.4);
+  }
+  .col-cell:first-child { border-right: 1px solid var(--ink); }
+
+  .col-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1rem;
+  }
+
+  .col-cell h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .inst-list {
+    list-style: none;
+  }
+
+  .inst-list li {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink);
+    padding: 0.55rem 0 0.55rem 1.6rem;
+    border-bottom: 1px dashed rgba(28, 22, 16, 0.2);
+    position: relative;
+  }
+  .inst-list li:last-child { border-bottom: none; }
+
+  .inst-list li::before {
+    content: '§';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    color: var(--brass);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+  }
+
+  .inst-list li small {
+    display: block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    margin-top: 0.2rem;
+  }
+
+  .use-list {
+    list-style: none;
+  }
+
+  .use-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px dashed rgba(28, 22, 16, 0.2);
+  }
+  .use-list li:last-child { border-bottom: none; }
+
+  .use-list strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .use-list em {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  /* PROFILE SLIDE */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .profile-card {
+    padding: 1.8rem 1.6rem;
+    background: rgba(255, 250, 235, 0.5);
+    border: 1.5px solid var(--ink);
+    position: relative;
+  }
+  .profile-card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--ink-soft);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .profile-card.dim {
+    opacity: 0.5;
+    background: rgba(255, 250, 235, 0.2);
+  }
+
+  .profile-card .label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 0.8rem;
+  }
+
+  .profile-card.dim .label {
+    color: var(--ink-soft);
+    text-decoration: line-through;
+  }
+
+  .profile-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .profile-card ul {
+    list-style: none;
+  }
+
+  .profile-card li {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    padding-left: 1.2rem;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .profile-card li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-weight: 700;
+    font-size: 1.4em;
+    line-height: 0.8;
+  }
+
+  /* CLOSING SLIDE */
+  .closing { text-align: center; }
+  .closing-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+  .closing-headline em { font-style: italic; color: var(--wine); }
+
+  .closing-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .next-list {
+    list-style: none;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .next-list li {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    padding: 0.5rem 0 0.5rem 2rem;
+    position: relative;
+  }
+
+  .next-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-weight: 700;
+  }
+
+  /* NAV HINT */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; }
+    .col-cell:first-child { border-right: none; border-bottom: 1px solid var(--ink); }
+    .profile-grid { grid-template-columns: 1fr; }
+  }
+
+
+/* ============ DEL V ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* TITLE SLIDE */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+
+  /* CONTENT GRID */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .content-visual {
+    aspect-ratio: 1;
+    max-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* BIG QUOTE */
+  .big-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 4px solid var(--wine);
+    padding: 1rem 0 1rem 2rem;
+    margin: 2rem 0;
+    max-width: 900px;
+  }
+
+  .big-quote em { color: var(--wine); }
+
+  .big-quote cite {
+    display: block;
+    margin-top: 1.2rem;
+    font-style: normal;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+  }
+
+  .pull-quote {
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--wine);
+    background: rgba(107, 31, 44, 0.04);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 800px;
+  }
+
+  /* TWO TRAPS GRID */
+  .traps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .trap-card {
+    padding: 1.6rem 1.8rem;
+    background: rgba(255, 250, 235, 0.5);
+    border: 1.5px solid var(--ink);
+    position: relative;
+  }
+  .trap-card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--ink-soft);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .trap-num {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--wine);
+    margin-bottom: 0.6rem;
+  }
+
+  .trap-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+
+  .trap-desc {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* HUGE STATEMENT SLIDE (no quitters) */
+  .huge-slide { text-align: center; }
+  .huge-statement {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--wine);
+    margin: 1.5rem 0;
+  }
+
+  .huge-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 750px;
+    margin: 0 auto;
+    font-style: italic;
+  }
+
+  /* SUMMARY OF ALL PARTS (final slide) */
+  .recap-list {
+    list-style: none;
+    max-width: 700px;
+    margin: 2rem auto;
+    text-align: left;
+  }
+
+  .recap-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px dashed rgba(28, 22, 16, 0.2);
+  }
+  .recap-list li:last-child { border-bottom: none; }
+
+  .recap-num {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--wine);
+    flex-shrink: 0;
+    width: 50px;
+  }
+
+  .recap-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink);
+    flex-shrink: 0;
+    width: 200px;
+  }
+
+  .recap-tag {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  /* CLOSING */
+  .closing { text-align: center; }
+  .closing-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .closing-headline em { font-style: italic; color: var(--wine); }
+
+  .closing-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* NAV HINT */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .content-visual { max-height: 30vh; }
+    .traps-grid { grid-template-columns: 1fr; }
+    .recap-list li { flex-direction: column; gap: 0.3rem; }
+    .recap-num, .recap-title { width: auto; }
+  }
+
+
+/* ============ DEL VI ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* TITLE SLIDE */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+
+  /* CONTENT GRID */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .content-visual {
+    aspect-ratio: 1;
+    max-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid var(--ink);
+  }
+  .badge.dark { background: var(--ink); color: var(--paper); }
+  .badge.wine { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+  .badge.warn { background: var(--brass); color: var(--paper); border-color: var(--brass); }
+
+  /* BIG QUOTE */
+  .big-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 4px solid var(--wine);
+    padding: 1rem 0 1rem 2rem;
+    margin: 2rem 0;
+    max-width: 900px;
+  }
+
+  .big-quote em { color: var(--wine); }
+
+  .pull-quote {
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--wine);
+    background: rgba(107, 31, 44, 0.04);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 800px;
+  }
+
+  /* TWO-COL PANEL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .col-cell {
+    padding: 1.8rem 2rem;
+    background: rgba(255, 250, 235, 0.4);
+  }
+  .col-cell:first-child { border-right: 1px solid var(--ink); }
+
+  .col-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1rem;
+  }
+
+  .col-cell h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .col-cell p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* COUNTRY HEADER (flag stripe + country name) */
+  .country-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .flag {
+    width: 64px;
+    height: 44px;
+    border: 1.5px solid var(--ink);
+    flex-shrink: 0;
+    box-shadow: 2px 2px 0 rgba(28, 22, 16, 0.1);
+  }
+
+  /* Danish flag (red with white cross) */
+  .flag.dk {
+    background: #C8102E;
+    background-image:
+      linear-gradient(to bottom, transparent 17px, white 17px, white 24px, transparent 24px),
+      linear-gradient(to right, transparent 21px, white 21px, white 28px, transparent 28px);
+  }
+
+  /* Norwegian flag (red with blue cross outlined in white) */
+  .flag.no {
+    background: #BA0C2F;
+    background-image:
+      linear-gradient(to bottom, transparent 14px, white 14px, white 27px, transparent 27px),
+      linear-gradient(to right, transparent 18px, white 18px, white 31px, transparent 31px),
+      linear-gradient(to bottom, transparent 17px, #00205B 17px, #00205B 24px, transparent 24px),
+      linear-gradient(to right, transparent 21px, #00205B 21px, #00205B 28px, transparent 28px);
+  }
+
+  /* Finnish flag (white with blue cross) */
+  .flag.fi {
+    background: white;
+    background-image:
+      linear-gradient(to bottom, transparent 17px, #003580 17px, #003580 24px, transparent 24px),
+      linear-gradient(to right, transparent 21px, #003580 21px, #003580 28px, transparent 28px);
+  }
+
+  /* PREVIEW CARDS (intro-to-countries) */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .preview-card {
+    padding: 1.6rem 1.4rem;
+    background: rgba(255, 250, 235, 0.5);
+    border: 1.5px solid var(--ink);
+    position: relative;
+    text-align: center;
+  }
+  .preview-card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--ink-soft);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .preview-card .flag {
+    margin: 0 auto 1rem;
+  }
+
+  .preview-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .preview-card .tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  /* FACT LIST (per country) */
+  .fact-list {
+    list-style: none;
+    margin-top: 1rem;
+  }
+
+  .fact-list li {
+    padding: 0.7rem 0 0.7rem 1.6rem;
+    border-bottom: 1px dashed rgba(28, 22, 16, 0.2);
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .fact-list li:last-child { border-bottom: none; }
+  .fact-list li::before {
+    content: '§';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    color: var(--brass);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+  }
+
+  .fact-list li strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* WARNING BLOCK */
+  .warn-block {
+    margin-top: 1.5rem;
+    padding: 1.2rem 1.8rem;
+    background: rgba(184, 137, 58, 0.12);
+    border-left: 4px solid var(--brass);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .warn-block .warn-tag {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--brass);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    margin-top: 2rem;
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--ink);
+    background: rgba(255, 250, 235, 0.5);
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--ink);
+    text-align: left;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    vertical-align: top;
+  }
+
+  .compare-table thead th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .compare-table thead th .flag {
+    margin: 0 auto 0.4rem;
+    width: 32px;
+    height: 22px;
+  }
+  .compare-table thead th .flag.dk {
+    background-image:
+      linear-gradient(to bottom, transparent 8.5px, white 8.5px, white 12px, transparent 12px),
+      linear-gradient(to right, transparent 10.5px, white 10.5px, white 14px, transparent 14px);
+  }
+  .compare-table thead th .flag.no {
+    background-image:
+      linear-gradient(to bottom, transparent 7px, white 7px, white 13.5px, transparent 13.5px),
+      linear-gradient(to right, transparent 9px, white 9px, white 15.5px, transparent 15.5px),
+      linear-gradient(to bottom, transparent 8.5px, #00205B 8.5px, #00205B 12px, transparent 12px),
+      linear-gradient(to right, transparent 10.5px, #00205B 10.5px, #00205B 14px, transparent 14px);
+  }
+  .compare-table thead th .flag.fi {
+    background-image:
+      linear-gradient(to bottom, transparent 8.5px, #003580 8.5px, #003580 12px, transparent 12px),
+      linear-gradient(to right, transparent 10.5px, #003580 10.5px, #003580 14px, transparent 14px);
+  }
+
+  .compare-table tbody th {
+    background: rgba(28, 22, 16, 0.06);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: left;
+    width: 20%;
+  }
+
+  .compare-table tbody td strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .compare-table .yes { color: var(--ink); font-weight: 700; }
+  .compare-table .no  { color: var(--wine); font-weight: 700; }
+
+  /* NAV HINT */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .content-visual { max-height: 30vh; }
+    .two-col { grid-template-columns: 1fr; }
+    .col-cell:first-child { border-right: none; border-bottom: 1px solid var(--ink); }
+    .preview-grid { grid-template-columns: 1fr; }
+    .compare-table { font-size: 0.8rem; }
+  }
+
+
+/* ============ DEL VII ============ */
+
+  :root {
+    --paper: #f1e7d0;
+    --paper-deep: #e8dcc0;
+    --ink: #1c1610;
+    --ink-soft: #3a2f24;
+    --wine: #6b1f2c;
+    --sepia: #8b6f47;
+    --brass: #b8893a;
+    --shadow: rgba(28, 22, 16, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #2a2520;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .paper-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(139, 111, 71, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(107, 31, 44, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 25%, rgba(184, 137, 58, 0.08) 0%, transparent 45%),
+      linear-gradient(135deg, var(--paper) 0%, var(--paper-deep) 100%);
+    z-index: 0;
+  }
+
+  .paper-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .paper-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(139, 90, 43, 0.12) 0%, transparent 8%),
+      radial-gradient(circle at 6% 78%, rgba(107, 60, 30, 0.08) 0%, transparent 6%);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 5vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .frame {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .frame.tl { top: 24px; left: 32px; }
+  .frame.tr { top: 24px; right: 32px; }
+
+  .frame-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .counter {
+    position: fixed;
+    bottom: 28px;
+    right: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    z-index: 3;
+    opacity: 0.7;
+  }
+
+  .counter .now { color: var(--wine); font-weight: 700; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1.8rem;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--wine);
+  }
+
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 780px;
+  }
+
+  .lead strong {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(180deg, transparent 65%, rgba(184, 137, 58, 0.35) 65%);
+    padding: 0 2px;
+  }
+
+  ul.points {
+    list-style: none;
+    margin-top: 1.8rem;
+  }
+
+  ul.points li {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  ul.points li::before {
+    content: '♪';
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 1.3em;
+    line-height: 1.2;
+  }
+
+  ul.points li.alt::before { content: '♫'; }
+
+  .ornament {
+    margin: 2rem auto;
+    width: 200px;
+    height: 30px;
+    color: var(--wine);
+  }
+
+  /* TITLE */
+  .title-slide { text-align: center; }
+  .title-slide .eyebrow { margin-bottom: 2.5rem; }
+  .title-slide .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+
+  /* CONTENT GRID */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .content-visual {
+    aspect-ratio: 1;
+    max-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid var(--ink);
+  }
+  .badge.dark { background: var(--ink); color: var(--paper); }
+  .badge.wine { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+  .badge.brass { background: var(--brass); color: var(--paper); border-color: var(--brass); }
+
+  /* QUOTES */
+  .big-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 4px solid var(--wine);
+    padding: 1rem 0 1rem 2rem;
+    margin: 2rem 0;
+    max-width: 900px;
+  }
+
+  .big-quote em { color: var(--wine); }
+
+  .pull-quote {
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--wine);
+    background: rgba(107, 31, 44, 0.04);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 850px;
+  }
+
+  /* TWO-COL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2rem;
+    border: 1.5px solid var(--ink);
+  }
+
+  .col-cell {
+    padding: 1.8rem 2rem;
+    background: rgba(255, 250, 235, 0.4);
+  }
+  .col-cell:first-child { border-right: 1px solid var(--ink); }
+
+  .col-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 1rem;
+  }
+
+  .col-cell h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .col-cell p {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .col-cell ul.mini {
+    list-style: none;
+    margin-top: 0.8rem;
+  }
+  .col-cell ul.mini li {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding-left: 1.2rem;
+    position: relative;
+    margin-bottom: 0.4rem;
+    color: var(--ink-soft);
+  }
+  .col-cell ul.mini li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    top: -0.2rem;
+    color: var(--brass);
+    font-weight: 700;
+    font-size: 1.4em;
+  }
+
+  /* HUGE NUMBER (tariff slide) */
+  .price-hero {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(5rem, 14vw, 10rem);
+    line-height: 0.9;
+    color: var(--wine);
+    letter-spacing: -0.04em;
+  }
+
+  .price-amount .currency {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.45em;
+    color: var(--ink);
+    margin-left: 0.2em;
+    vertical-align: 0.6em;
+  }
+
+  .price-tag {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  .price-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .price-note {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    max-width: 220px;
+    text-align: center;
+  }
+
+  .price-note .label {
+    display: block;
+    font-family: 'Courier Prime', monospace;
+    font-style: normal;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 0.4rem;
+  }
+
+  /* VENN DIAGRAM (3 reasons) */
+  .venn-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .venn {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+  }
+
+  .venn-circle {
+    fill-opacity: 0.3;
+    stroke-width: 2;
+  }
+
+  .venn-circle.fun { fill: var(--brass); stroke: var(--brass); }
+  .venn-circle.pay { fill: var(--wine); stroke: var(--wine); }
+  .venn-circle.future { fill: var(--ink); stroke: var(--ink); }
+
+  .venn-label {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.1rem;
+  }
+
+  .venn-center-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    fill: var(--ink);
+    font-weight: 700;
+  }
+
+  .age-rule {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    align-items: center;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .age-rule .age-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 0.6rem;
+  }
+
+  .age-rule .age-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .age-rule .age-text strong {
+    font-weight: 700;
+    color: var(--wine);
+    font-style: normal;
+  }
+
+  /* SPIDER WEB visual (sound company slide) */
+  /* (uses inline SVG; no extra CSS needed) */
+
+  /* TRAVEL CARDS */
+  .travel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .travel-card {
+    padding: 1.6rem 1.8rem;
+    background: rgba(255, 250, 235, 0.5);
+    border: 1.5px solid var(--ink);
+    position: relative;
+  }
+  .travel-card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--ink-soft);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .travel-card .label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 0.6rem;
+  }
+
+  .travel-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .travel-card .tradeoff {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--wine);
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed rgba(107, 31, 44, 0.3);
+  }
+
+  /* CLOSING SLIDE — frågestund */
+  .closing-final {
+    text-align: center;
+  }
+
+  .closing-thanks {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    color: var(--ink-soft);
+    margin-bottom: 2.5rem;
+  }
+
+  .closing-big {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--wine);
+    font-style: italic;
+    margin: 0.5rem 0;
+  }
+
+  .closing-then {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    color: var(--ink);
+    margin-top: 1.5rem;
+  }
+
+  .closing-then em {
+    color: var(--wine);
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  /* NAV HINT */
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 40px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    z-index: 3;
+  }
+
+  .nav-hint kbd {
+    font-family: 'Courier Prime', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+
+  @media print {
+    body { overflow: visible; background: white; }
+    .slide {
+      position: relative;
+      page-break-after: always;
+      opacity: 1 !important;
+      transform: none !important;
+      height: 100vh;
+    }
+    .nav-hint, .counter, .frame { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .content-visual { max-height: 30vh; }
+    .two-col { grid-template-columns: 1fr; }
+    .col-cell:first-child { border-right: none; border-bottom: 1px solid var(--ink); }
+    .travel-grid { grid-template-columns: 1fr; }
+    .age-rule { grid-template-columns: 1fr; }
+  }
+
+
+/* ============ MERGED OVERRIDES ============ */
+.counter .part-label {
+  color: var(--ink);
+  font-weight: 700;
+  margin-right: 0.3em;
+}
+
+.counter .sep {
+  opacity: 0.5;
+  margin: 0 0.3em;
+}
+
+.stage.flash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+  animation: flash 0.4s ease;
+}
+
+@keyframes flash {
+  0% { opacity: 0; }
+  30% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="paper-bg"></div>
+
+<div class="frame tl"><span class="frame-text">Richard Hauer</span></div>
+<div class="frame tr"><span class="frame-text" id="partFrame">Del I · Två vattendelare</span></div>
+
+<div class="counter">
+  <span class="part-label" id="partLabel">DEL I</span>
+  <span class="sep">·</span>
+  <span class="now" id="cur">01</span>
+  <span class="sep">/</span>
+  <span id="tot">08</span>
+</div>
+
+<div class="nav-hint"><a href="../../undervisning.html" style="color: var(--ink-soft); text-decoration: none; opacity: 0.7; margin-right: 1.5rem;">← Tillbaka till lektioner</a><kbd>←</kbd> <kbd>→</kbd> bläddra · <kbd>1-7</kbd> hoppa till del · <kbd>F</kbd> fullskärm</div>
+
+<div class="stage" id="stage">
+<section class="slide active title-slide" data-part="1" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">En liten föreläsning</div>
+      <h1 class="title">Att jobba som <em>musiker</em></h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">Två vägar, två vattendelare<br>— och var nålsögat ligger på var och en.</p>
+      <div class="meta">Richard Hauer · Föreläsning</div>
+    </div>
+  </section>
+
+<section class="slide" data-part="1" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Utgångspunkt</div>
+      <h2>Det finns <em>två stora vattendelare</em></h2>
+      <p class="lead">När man vill jobba med musik finns det i grova drag två huvudvägar att välja mellan. Båda är fullt möjliga — men de kräver helt olika saker av dig.</p>
+
+      <div class="split">
+        <div class="split-col">
+          <div class="split-num">VÄG · I</div>
+          <div class="split-title">Som <em style="font-style:italic;color:var(--wine)">utövande musiker</em></div>
+          <div class="split-desc">Du lever av att spela. Spelningar, gig, studio, ackompanjemang. Ditt instrument är ditt levebröd.</div>
+        </div>
+        <div class="split-divider">eller</div>
+        <div class="split-col">
+          <div class="split-num">VÄG · II</div>
+          <div class="split-title">Den <em style="font-style:italic;color:var(--wine)">akademiska vägen</em></div>
+          <div class="split-desc">Du utbildar dig — oftast med musiklärare som mål. Stabilare grund, men också ett eget hantverk.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide path-slide" data-part="1" data-part-local="3">
+    <div class="slide-inner">
+      <div class="badge easier">Väg I · Den enklare ingången</div>
+      <div class="path-grid">
+        <div class="path-text">
+          <h2>Spela det <em>folk känner igen</em></h2>
+          <div class="divider"></div>
+          <p class="lead">Den enklare vägen som musiker är att <strong>spela igenkännbar musik för en rimlig peng</strong>. Det öppnar dörrar — och det öppnar dem snabbt.</p>
+          <ul class="points">
+            <li>Krogar, pubar, restauranger, bröllop, fester</li>
+            <li>Du blir bokningsbar — och det sprider sig</li>
+            <li class="alt">En spelning leder till nästa. Ringar på vattnet.</li>
+            <li>Volym och pålitlighet slår prestige i längden</li>
+          </ul>
+        </div>
+        <div class="path-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- ripples -->
+            <circle cx="150" cy="150" r="30" stroke="#1c1610" stroke-width="1.5" opacity="0.9"/>
+            <circle cx="150" cy="150" r="60" stroke="#1c1610" stroke-width="1.2" opacity="0.6"/>
+            <circle cx="150" cy="150" r="95" stroke="#1c1610" stroke-width="1" opacity="0.4"/>
+            <circle cx="150" cy="150" r="130" stroke="#1c1610" stroke-width="0.8" opacity="0.25"/>
+            <circle cx="150" cy="150" r="6" fill="#6b1f2c"/>
+            <text x="150" y="270" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">RINGAR PÅ VATTNET</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide path-slide" data-part="1" data-part-local="4">
+    <div class="slide-inner">
+      <div class="badge harder">Väg I · När nålsögat krymper</div>
+      <div class="path-grid">
+        <div class="path-text">
+          <h2>Stora scener, <em>kända artister</em></h2>
+          <div class="divider"></div>
+          <p class="lead">Vill man ställa kraven att det ska vara <strong>välorganiserade spelningar med bra betalt och stora scener</strong> — då blir nålsögat plötsligt mycket mindre. Även här pratar vi ofta kommersiell musik.</p>
+          <ul class="points">
+            <li>Turnerande band bakom etablerade artister</li>
+            <li>Studiomusiker på hög nivå</li>
+            <li class="alt">Festivaler, TV-produktioner, professionella ensembler</li>
+            <li>Färre platser, hård konkurrens — men välbetalt och välorganiserat</li>
+          </ul>
+        </div>
+        <div class="path-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- needle's eye -->
+            <ellipse cx="150" cy="150" rx="120" ry="80" stroke="#1c1610" stroke-width="2"/>
+            <ellipse cx="150" cy="150" rx="35" ry="20" stroke="#6b1f2c" stroke-width="2" fill="rgba(107,31,44,0.08)"/>
+            <line x1="150" y1="50" x2="150" y2="130" stroke="#1c1610" stroke-width="1.5"/>
+            <line x1="150" y1="170" x2="150" y2="250" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="150" y="155" font-family="Courier Prime, monospace" font-size="9" fill="#6b1f2c" text-anchor="middle" letter-spacing="2">NÅL-</text>
+            <text x="150" y="167" font-family="Courier Prime, monospace" font-size="9" fill="#6b1f2c" text-anchor="middle" letter-spacing="2">ÖGAT</text>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">SMALARE PASSAGE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide path-slide" data-part="1" data-part-local="5">
+    <div class="slide-inner">
+      <div class="badge easier">Väg II · Den tillgängliga ingången</div>
+      <div class="path-grid">
+        <div class="path-text">
+          <h2>Musiklärare för <em>grundskolan</em></h2>
+          <div class="divider"></div>
+          <p class="lead">Vill man utbilda sig akademiskt behöver det inte vara så komplicerat. Att <strong>sikta på att bli musiklärare i grundskolan</strong> är fullt nåbart — kraven och svårighetsgraden är inte i närheten av de högre stegen.</p>
+          <ul class="points">
+            <li>Lärarutbildning med musikinriktning</li>
+            <li>Bredd snarare än spets — pedagogik, ensemble, sång</li>
+            <li class="alt">Stabilt yrke, fast inkomst, semester</li>
+            <li>Du fortsätter spela parallellt — det utesluter inget</li>
+          </ul>
+        </div>
+        <div class="path-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- broad doorway -->
+            <rect x="70" y="60" width="160" height="200" stroke="#1c1610" stroke-width="2" fill="rgba(255,250,235,0.3)"/>
+            <path d="M 70 60 L 150 30 L 230 60" stroke="#1c1610" stroke-width="2" fill="none"/>
+            <circle cx="210" cy="160" r="3" fill="#1c1610"/>
+            <line x1="100" y1="260" x2="200" y2="260" stroke="#6b1f2c" stroke-width="3"/>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">BREDARE DÖRR</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide path-slide" data-part="1" data-part-local="6">
+    <div class="slide-inner">
+      <div class="badge harder">Väg II · När nålsögat krymper</div>
+      <div class="path-grid">
+        <div class="path-text">
+          <h2>Gymnasium, <em>folkhögskola</em>, högre nivå</h2>
+          <div class="divider"></div>
+          <p class="lead">Vill man undervisa på <strong>musikgymnasium eller folkhögskola</strong> — eller ännu högre — så stiger kraven snabbt. Motsvarande svårighetsgrad som den hårda musikervägen.</p>
+          <ul class="points">
+            <li>Musikhögskola, ofta med inträdesprov på hög nivå</li>
+            <li>Spets på instrumentet, inte bara bredd</li>
+            <li class="alt">Pedagogisk fördjupning + konstnärlig profil</li>
+            <li>Färre tjänster — och ofta ett långt CV bakom</li>
+          </ul>
+        </div>
+        <div class="path-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- narrowing staircase -->
+            <rect x="40" y="220" width="220" height="40" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.3)"/>
+            <rect x="70" y="180" width="160" height="40" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.3)"/>
+            <rect x="100" y="140" width="100" height="40" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.3)"/>
+            <rect x="125" y="100" width="50" height="40" stroke="#6b1f2c" stroke-width="2" fill="rgba(107,31,44,0.1)"/>
+            <circle cx="150" cy="80" r="6" fill="#6b1f2c"/>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">SMALARE STEG UPPÅT</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="1" data-part-local="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Sammanfattning</div>
+      <h2>De fyra <em>fälten</em></h2>
+      <p class="lead">Samma princip på båda sidor: <strong>den breda ingången är öppnare än man tror</strong> — det är spetsen som har det smala nålsögat.</p>
+
+      <div class="matrix-wrap">
+        <div class="matrix">
+          <div class="matrix-cell matrix-corner"></div>
+          <div class="matrix-cell matrix-header">Den enklare ingången</div>
+          <div class="matrix-cell matrix-header">Spetsen / nålsögat</div>
+
+          <div class="matrix-cell matrix-axis">Som musiker</div>
+          <div class="matrix-cell matrix-data">
+            <h4>Spela igenkännbart</h4>
+            <p>Restauranger, fester, bröllop. Volym + pålitlighet → spridning.</p>
+          </div>
+          <div class="matrix-cell matrix-data hot">
+            <h4>Stora scener &amp; artister</h4>
+            <p>Välbetalt, välorganiserat, kommersiellt — men få platser.</p>
+          </div>
+
+          <div class="matrix-cell matrix-axis last-row">Akademiskt</div>
+          <div class="matrix-cell matrix-data last-row">
+            <h4>Lärare i grundskolan</h4>
+            <p>Tillgänglig utbildning, stabilt yrke, bredd.</p>
+          </div>
+          <div class="matrix-cell matrix-data hot last-row">
+            <h4>Gymnasium / folkhögskola</h4>
+            <p>Spets på instrumentet, hård konkurrens om tjänster.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide closing" data-part="1" data-part-local="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Något att fundera på</div>
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+      </svg>
+      <p class="quote">"Vilken väg du än väljer — fråga dig var nålsögat ligger.<br>Och bestäm sen om du vill stå utanför det, eller gå runt det."</p>
+      <div class="meta" style="font-family:'Courier Prime',monospace;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sepia);margin-top:3rem;">— Frågor? —</div>
+    </div>
+  </section>
+
+<section class="slide title-slide" data-part="2" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Del II</div>
+      <h1 class="title">Var <em>nyfiken</em>.<br>Öppna öronen brett.</h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">Om att studera musik från olika tider, kulturer<br>— och varför det gör er attraktiva på marknaden.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Premiss</div>
+      <h2>Musik är <em>inte</em> vetenskap</h2>
+      <p class="lead">Vetenskap bygger linjärt vidare på det som redan testats. Musik gör inte det. Det som skrivs <strong>idag är inte automatiskt det mest avancerade</strong> inom sin genre — bara det senaste.</p>
+
+      <div class="vs-grid">
+        <div class="vs-cell science">
+          <div class="vs-label">Vetenskap</div>
+          <div class="vs-headline">Tes → utveckling → ny tes</div>
+          <div class="vs-desc">Något bygger ovanpå något annat. Det nyaste står på axlarna av allt som kommit förut.</div>
+        </div>
+        <div class="vs-cell music">
+          <div class="vs-label">Musik</div>
+          <div class="vs-headline">Allt finns parallellt</div>
+          <div class="vs-desc">Sofistikering, råhet, tradition och experiment lever sida vid sida. Ny ≠ avancerad. Gammal ≠ enkel.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Exempel</div>
+      <h2>Barocken — <em>enormt avancerad</em> musik</h2>
+      <div class="content-grid">
+        <div>
+          <p class="lead">Strikta regler för stämmor och kontrapunkt. Improviserat material som vävs in i komplexa former. Ett hantverk på <strong>extremt hög nivå</strong> — och det är 300 år sedan.</p>
+          <ul class="points">
+            <li>Strikt stämföring och röstledning</li>
+            <li class="alt">Improvisation över teman in i fugor och kanons</li>
+            <li>Passacaglior, chaconner, sviter</li>
+            <li class="alt">Bach, Händel, Couperin, Buxtehude...</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- staff lines -->
+            <line x1="40" y1="100" x2="260" y2="100" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="115" x2="260" y2="115" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="130" x2="260" y2="130" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="145" x2="260" y2="145" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="160" x2="260" y2="160" stroke="#1c1610" stroke-width="0.8"/>
+            <!-- second staff -->
+            <line x1="40" y1="190" x2="260" y2="190" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="205" x2="260" y2="205" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="220" x2="260" y2="220" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="235" x2="260" y2="235" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="250" x2="260" y2="250" stroke="#1c1610" stroke-width="0.8"/>
+            <!-- bar lines -->
+            <line x1="40" y1="100" x2="40" y2="250" stroke="#1c1610" stroke-width="1.5"/>
+            <line x1="120" y1="100" x2="120" y2="250" stroke="#1c1610" stroke-width="0.6"/>
+            <line x1="190" y1="100" x2="190" y2="250" stroke="#1c1610" stroke-width="0.6"/>
+            <line x1="260" y1="100" x2="260" y2="250" stroke="#1c1610" stroke-width="1.5"/>
+            <!-- voices crossing -->
+            <path d="M 50 130 Q 90 110 130 135 T 200 125 T 250 140" stroke="#6b1f2c" stroke-width="2" fill="none"/>
+            <path d="M 50 220 Q 90 205 130 225 T 200 215 T 250 230" stroke="#1c1610" stroke-width="2" fill="none"/>
+            <!-- notes (dots) -->
+            <circle cx="55" cy="130" r="3" fill="#6b1f2c"/>
+            <circle cx="95" cy="115" r="3" fill="#6b1f2c"/>
+            <circle cx="135" cy="135" r="3" fill="#6b1f2c"/>
+            <circle cx="180" cy="125" r="3" fill="#6b1f2c"/>
+            <circle cx="225" cy="135" r="3" fill="#6b1f2c"/>
+            <circle cx="55" cy="220" r="3" fill="#1c1610"/>
+            <circle cx="95" cy="210" r="3" fill="#1c1610"/>
+            <circle cx="135" cy="225" r="3" fill="#1c1610"/>
+            <circle cx="180" cy="215" r="3" fill="#1c1610"/>
+            <circle cx="225" cy="225" r="3" fill="#1c1610"/>
+            <!-- treble clef stylized -->
+            <text x="20" y="145" font-family="Playfair Display" font-size="40" fill="#1c1610">𝄞</text>
+            <text x="20" y="235" font-family="Playfair Display" font-size="40" fill="#1c1610">𝄢</text>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">TVÅ STÄMMOR · KONTRAPUNKT</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Idag</div>
+      <h2>Trösken är <em>låg</em> — och det är både bra och en utmaning</h2>
+      <p class="lead">Du kan jobba på Biltema på dagen och knäppa fram låtar på din laptop på kvällen. Det är fantastiskt — men det betyder också att <strong>"musik" idag spänner från det djupt skolade till det helt självlärda</strong>.</p>
+
+      <div class="threshold-grid">
+        <div class="threshold-side">
+          <div class="label">Då</div>
+          <h3>Hantverk över generationer</h3>
+          <p>Lärling, mästare, regler, traditioner.</p>
+        </div>
+        <div class="threshold-vs">↔</div>
+        <div class="threshold-side">
+          <div class="label">Nu</div>
+          <h3>Laptop på köksbordet</h3>
+          <p>Låg tröskel. Snabb output. Ingen filter.</p>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        Gemene man hör inte alltid skillnaden — och behöver inte göra det.<br>
+        <strong style="color:var(--ink);background:linear-gradient(180deg,transparent 65%,rgba(184,137,58,0.45) 65%);padding:0 2px;">Men ni behöver höra den.</strong>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="5">
+    <div class="slide-inner">
+      <div class="badge model-a">Modell A · Hired gun</div>
+      <div class="content-grid">
+        <div>
+          <h2>Dammsug <em>brett</em></h2>
+          <div class="divider"></div>
+          <p class="lead">Spelar ni på beställning så kommer önskemålen att skjuta brett. Då hjälper det att ha <strong>ett stort inre bibliotek</strong> — över tider, genrer och kulturer.</p>
+          <ul class="points">
+            <li>Ju bredare lyssning, desto fler bokningar</li>
+            <li class="alt">"Kan ni det här?" → ja, oftast</li>
+            <li>Stilkänsla > teknisk perfektion i många stilar</li>
+            <li class="alt">Ingen genre är "för enkel" att studera</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- wide net / radial sweep -->
+            <circle cx="150" cy="220" r="6" fill="#6b1f2c"/>
+            <line x1="150" y1="220" x2="40" y2="60" stroke="#1c1610" stroke-width="1"/>
+            <line x1="150" y1="220" x2="90" y2="40" stroke="#1c1610" stroke-width="1"/>
+            <line x1="150" y1="220" x2="150" y2="30" stroke="#1c1610" stroke-width="1"/>
+            <line x1="150" y1="220" x2="210" y2="40" stroke="#1c1610" stroke-width="1"/>
+            <line x1="150" y1="220" x2="260" y2="60" stroke="#1c1610" stroke-width="1"/>
+            <!-- arc -->
+            <path d="M 40 60 Q 150 -20 260 60" stroke="#6b1f2c" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
+            <!-- genre dots -->
+            <circle cx="40" cy="60" r="4" fill="#1c1610"/>
+            <circle cx="90" cy="40" r="4" fill="#1c1610"/>
+            <circle cx="150" cy="30" r="4" fill="#1c1610"/>
+            <circle cx="210" cy="40" r="4" fill="#1c1610"/>
+            <circle cx="260" cy="60" r="4" fill="#1c1610"/>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">BREDD &gt; DJUP</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="genre-cloud">
+        <span class="genre-tag">Bossa nova</span>
+        <span class="genre-tag accent">Swing</span>
+        <span class="genre-tag">Soul</span>
+        <span class="genre-tag">Folkmusik</span>
+        <span class="genre-tag brass">Country</span>
+        <span class="genre-tag">Reggae</span>
+        <span class="genre-tag accent">Funk</span>
+        <span class="genre-tag">Pop</span>
+        <span class="genre-tag">Klassiskt</span>
+        <span class="genre-tag brass">Latin</span>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="6">
+    <div class="slide-inner">
+      <div class="badge model-b">Modell B · Specialist</div>
+      <div class="content-grid">
+        <div>
+          <h2>Sticka ut <em>skarpt</em></h2>
+          <div class="divider"></div>
+          <p class="lead">Den andra modellen är att gå djupt på <strong>en sak</strong>. Den fungerar — men att lägga alla ägg i en korg i ett litet land är svårt.</p>
+          <ul class="points">
+            <li>Sverige = för få potentiella kunder för smala specialiteter</li>
+            <li class="alt">NY, LA, London, Berlin = större marknad, fler "kunder"</li>
+            <li>Specialisering måste vara <em>väldigt</em> specialiserad</li>
+            <li class="alt">"Den enda i landet som kan X på riktigt"</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- narrow deep column -->
+            <rect x="125" y="30" width="50" height="240" stroke="#6b1f2c" stroke-width="2" fill="rgba(107,31,44,0.08)"/>
+            <line x1="135" y1="50" x2="165" y2="50" stroke="#1c1610" stroke-width="1"/>
+            <line x1="135" y1="80" x2="165" y2="80" stroke="#1c1610" stroke-width="1"/>
+            <line x1="135" y1="110" x2="165" y2="110" stroke="#1c1610" stroke-width="1"/>
+            <line x1="135" y1="140" x2="165" y2="140" stroke="#1c1610" stroke-width="1"/>
+            <line x1="135" y1="170" x2="165" y2="170" stroke="#1c1610" stroke-width="1"/>
+            <line x1="135" y1="200" x2="165" y2="200" stroke="#1c1610" stroke-width="1"/>
+            <line x1="135" y1="230" x2="165" y2="230" stroke="#1c1610" stroke-width="1"/>
+            <circle cx="150" cy="150" r="8" fill="#6b1f2c"/>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">DJUP &gt; BREDD</text>
+            <text x="55" y="155" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" letter-spacing="1.5">NY · LA</text>
+            <text x="200" y="155" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" letter-spacing="1.5">BERLIN</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="pull-quote" style="margin-top: 1rem;">
+        Att vara "ganska bra på en sak" räcker inte i specialistspåret.<br>
+        <strong style="color:var(--ink);">Det måste synas på en kilometers håll vad ni är bra på.</strong>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Glöm inte</div>
+      <h2>Det <em>moderna</em> räknas också</h2>
+      <p class="lead">När jag säger "lyssna brett" gäller det <strong>även nutida musik</strong>. Era kunder kanske vill ha 90-talsr&amp;b, 2000-talspop, eller dagens hits. Allt folk kan tänkas vilja höra är värt att åtminstone känna till.</p>
+      <ul class="points">
+        <li>1900-talets popgenrer — Motown, disco, rock, new wave...</li>
+        <li class="alt">2000-talets hits — det folk dansat till på sina bröllop</li>
+        <li>Det som spelas på radion just nu</li>
+        <li class="alt">Ni måste inte älska allt — men förstå vad det är och hur det funkar</li>
+      </ul>
+
+      <div class="pull-quote">
+        Att vara musiker = att kunna tala flera musikaliska språk.<br>
+        Det moderna är ett av dem — inte ett undantag.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="2" data-part-local="8">
+    <div class="slide-inner">
+      <div class="badge tools">Verktyget</div>
+      <h2>Transkribera — och <em>fråga vidare</em></h2>
+      <div class="content-grid">
+        <div>
+          <p class="lead">Ni hinner inte transkribera allt — det är ok. Men <strong>det ni transkriberar lär er mer om form och uppbyggnad</strong> än bara passiv lyssning gör.</p>
+          <ul class="points">
+            <li>Transkribering = djupare förståelse för struktur</li>
+            <li class="alt">Hör en term ni inte kan? Slå upp den.</li>
+            <li>Är det inom ert intresseområde? Gräv djupare.</li>
+            <li class="alt">Nyfikenhet är ert verkliga arbetsverktyg</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- pencil on staff -->
+            <line x1="40" y1="120" x2="260" y2="120" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="135" x2="260" y2="135" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="150" x2="260" y2="150" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="165" x2="260" y2="165" stroke="#1c1610" stroke-width="0.8"/>
+            <line x1="40" y1="180" x2="260" y2="180" stroke="#1c1610" stroke-width="0.8"/>
+            <!-- notes being written -->
+            <circle cx="70" cy="155" r="4" fill="#1c1610"/>
+            <line x1="74" y1="155" x2="74" y2="125" stroke="#1c1610" stroke-width="1.5"/>
+            <circle cx="110" cy="145" r="4" fill="#1c1610"/>
+            <line x1="114" y1="145" x2="114" y2="115" stroke="#1c1610" stroke-width="1.5"/>
+            <circle cx="150" cy="160" r="4" fill="#1c1610"/>
+            <line x1="154" y1="160" x2="154" y2="130" stroke="#1c1610" stroke-width="1.5"/>
+            <!-- pencil -->
+            <g transform="translate(180, 90) rotate(35)">
+              <rect x="0" y="0" width="80" height="10" fill="#b8893a" stroke="#1c1610" stroke-width="1"/>
+              <polygon points="80,0 95,5 80,10" fill="#1c1610"/>
+              <rect x="-15" y="0" width="15" height="10" fill="#6b1f2c" stroke="#1c1610" stroke-width="1"/>
+            </g>
+            <!-- treble clef -->
+            <text x="42" y="170" font-family="Playfair Display" font-size="40" fill="#1c1610">𝄞</text>
+            <!-- annotation arrows -->
+            <path d="M 65 220 Q 100 230 145 220" stroke="#6b1f2c" stroke-width="1" fill="none" stroke-dasharray="2,2"/>
+            <text x="100" y="245" font-family="Courier Prime, monospace" font-size="9" fill="#6b1f2c" text-anchor="middle" letter-spacing="1.5">"vad gör den här?"</text>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">SKRIV. FRÅGA. SLÅ UPP.</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide closing" data-part="2" data-part-local="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Sammanfattning · Del II</div>
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+      </svg>
+      <p class="quote">"Era öron är ert kapital.<br>Lyssna brett, gräv djupt där ni vill,<br>och låt nyfikenheten vara <em style="color:var(--wine)">arbetsverktyg nummer ett</em>."</p>
+      <div style="font-family:'Courier Prime',monospace;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sepia);margin-top:3rem;">— Frågor? —</div>
+    </div>
+  </section>
+
+<section class="slide title-slide" data-part="3" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Del III</div>
+      <h1 class="title">Var <em>trevlig</em>.<br>Var <em>förberedd</em>.</h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">Två sidor av samma mynt<br>— och båda kräver träning.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Premiss</div>
+      <h2>Trevlighet är en <em>färdighet</em></h2>
+      <p class="lead">Det är inte en personlighet du föds med — det är något <strong>man tränar</strong>. Och i musikbranschen är det ren yrkeskunskap, inte ett bonusdrag.</p>
+
+      <div class="big-quote">
+        I ett yrke där folk bokar dem de <em>vill umgås med</em>,<br>
+        är trevlighet inte mjukt prat. Det är ditt CV mellan raderna.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Verktyget</div>
+      <h2><em>Reflektera</em> bakåt</h2>
+      <p class="lead">Tänk efter över sociala situationer som varit framgångsrika för dig — varför blev det bra? Tänk också på de gånger det gick mindre bra. Vad fungerade inte? <strong>Ville jag kanske inte att det skulle fungera?</strong></p>
+
+      <div class="vs-grid">
+        <div class="vs-cell good">
+          <div class="vs-label">När det gick bra</div>
+          <div class="vs-headline">Vad var det som funkade?</div>
+          <ul>
+            <li>Vilken energi tog jag med mig in?</li>
+            <li>Vad lyssnade jag på, hur svarade jag?</li>
+            <li>Vad lockade folk till att vilja prata mer?</li>
+          </ul>
+        </div>
+        <div class="vs-cell bad">
+          <div class="vs-label">När det gick mindre bra</div>
+          <div class="vs-headline">Vad var det som inte funkade?</div>
+          <ul>
+            <li>Vad gick fel — och varför?</li>
+            <li>Ville jag egentligen inte att det skulle fungera?</li>
+            <li>Satte jag mig på tvären utan anledning?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Personlig erfarenhet</div>
+      <h2>Med åren <em>smalnar</em> gästlistan</h2>
+
+      <div class="big-quote">
+        Ju äldre jag blir, desto hårdare gränser sätter jag för hur jag vill umgås socialt. Men det hade legat mig i fatet om jag gjort så när jag var <em>yngre</em>. Då var det viktigare att höras, synas och möta många olika människor — som alla fick ett bra intryck.
+        <cite>— Min egen erfarenhet</cite>
+      </div>
+
+      <ul class="points">
+        <li>Som ung musiker: bredd före djup i kontakter</li>
+        <li class="alt">Som etablerad: du har råd att välja</li>
+        <li>Var medveten om var i kurvan ni är just nu</li>
+      </ul>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Avkastningen</div>
+      <h2>Bli den någon <em>tänker på</em></h2>
+
+      <div class="content-grid">
+        <div>
+          <p class="lead">Många trevliga möten genererar något viktigt: en ökad sannolikhet att <strong>du</strong> blir den som någon kommer att tänka på när dina kunskaper behövs. Det är så hired gun-spåret faktiskt fungerar.</p>
+          <ul class="points">
+            <li>Folk bokar inte bara på CV</li>
+            <li class="alt">Folk bokar dem de vill ha med i bussen</li>
+            <li>"Vem var det där som kunde X?" → ditt namn</li>
+            <li class="alt">Var den lättaste personen att rekommendera</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- network: many nodes pointing to one central node -->
+            <!-- outer client nodes -->
+            <circle cx="60" cy="70" r="14" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <circle cx="240" cy="60" r="14" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <circle cx="50" cy="180" r="14" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <circle cx="250" cy="200" r="14" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <circle cx="130" cy="40" r="14" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <circle cx="170" cy="240" r="14" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <!-- arrows toward center -->
+            <line x1="74" y1="78" x2="135" y2="135" stroke="#6b1f2c" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="226" y1="68" x2="165" y2="135" stroke="#6b1f2c" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="64" y1="180" x2="135" y2="155" stroke="#6b1f2c" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="236" y1="200" x2="165" y2="160" stroke="#6b1f2c" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="130" y1="54" x2="145" y2="135" stroke="#6b1f2c" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="170" y1="226" x2="155" y2="160" stroke="#6b1f2c" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <!-- central node (you) -->
+            <circle cx="150" cy="148" r="22" fill="#6b1f2c" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="150" y="153" font-family="Courier Prime, monospace" font-size="11" fill="#f1e7d0" text-anchor="middle" letter-spacing="1.5" font-weight="700">DU</text>
+            <text x="150" y="290" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">DU BLIR NODEN</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Övergång</div>
+      <h2>Du <em>fick</em> jobbet.<br>Nu ska du <em>leverera</em>.</h2>
+      <p class="lead">Trevligheten kan ha varit <strong>grunden</strong> till att du fick jobbet. Men för att de ska höra av sig igen — då måste du också leverera så bra att det märks. Resten av kapitlet handlar om det.</p>
+
+      <div style="margin-top: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 2rem;">
+        <div style="text-align: center;">
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; letter-spacing: 0.25em; color: var(--wine); margin-bottom: 0.6rem;">FAS 1</div>
+          <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--ink);">Trevlig</div>
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.3rem;">→ får jobbet</div>
+        </div>
+
+        <svg width="100" height="40" viewBox="0 0 100 40" fill="none" style="opacity: 0.7;">
+          <path d="M 5 20 L 90 20" stroke="#1c1610" stroke-width="1.5"/>
+          <path d="M 80 12 L 95 20 L 80 28" stroke="#1c1610" stroke-width="1.5" fill="none"/>
+        </svg>
+
+        <div style="text-align: center;">
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; letter-spacing: 0.25em; color: var(--wine); margin-bottom: 0.6rem;">FAS 2</div>
+          <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; color: var(--ink);">Förberedd</div>
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.3rem;">→ får jobbet igen</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Hantverket</div>
+      <h2>Var <em>förberedd</em> — och <em>strukturerad</em></h2>
+      <p class="lead">Försök ta reda på vad som förväntas av dig på plats. Och fråga inte i ettor och tvåor — <strong>samla dina frågor och ställ dem på ett bräde</strong>. Ring eller messa inte ihjäl den huvudansvariga för att du inte orkat tänka igenom dina frågor.</p>
+
+      <ul class="points">
+        <li>Tag reda på förväntningarna i god tid</li>
+        <li class="alt">Skriv en lista. Skicka den samlat.</li>
+        <li>Ett genomtänkt mejl &gt; tio panik-meddelanden</li>
+        <li class="alt">Var den lättaste personen att jobba med — det märks</li>
+      </ul>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Fyra grundpelare</div>
+      <h2>Det här <em>frågar</em> du om — varje gång</h2>
+      <p class="lead">Detta är minimum. Lär dig dem utantill, ställ dem tidigt, så slipper du ställa dem sent.</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 30 30" fill="none">
+            <text x="0" y="22" font-family="Playfair Display" font-size="26" fill="currentColor">𝄞</text>
+          </svg>
+          <div class="pillar-num">01</div>
+          <div class="pillar-name">Repertoar</div>
+          <div class="pillar-desc">Vilka låtar förväntas? Önskelista? Stil? Hur lång set?</div>
+        </div>
+
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="10" width="22" height="14" rx="1"/>
+            <circle cx="10" cy="17" r="2"/>
+            <circle cx="20" cy="17" r="2"/>
+            <line x1="14" y1="6" x2="14" y2="10"/>
+            <line x1="16" y1="6" x2="16" y2="10"/>
+          </svg>
+          <div class="pillar-num">02</div>
+          <div class="pillar-name">Utrustning</div>
+          <div class="pillar-desc">Vad finns på plats? Vad tar vi med? PA, mickar, monitorer?</div>
+        </div>
+
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="15" cy="15" r="11"/>
+            <line x1="15" y1="9" x2="15" y2="15"/>
+            <line x1="15" y1="15" x2="20" y2="18"/>
+          </svg>
+          <div class="pillar-num">03</div>
+          <div class="pillar-name">Tider</div>
+          <div class="pillar-desc">Soundcheck, inspel, set-tider, pauser, sluttid — när händer vad?</div>
+        </div>
+
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M 8 6 L 15 4 L 22 6 L 22 12 L 26 14 L 24 24 L 6 24 L 4 14 L 8 12 Z"/>
+          </svg>
+          <div class="pillar-num">04</div>
+          <div class="pillar-name">Klädsel</div>
+          <div class="pillar-desc">Dress code? Specifik stil eller färg? Ombyte mellan setten?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="9">
+    <div class="slide-inner">
+      <div class="badge brass">Bonus</div>
+      <h2>Två frågor du <em>också</em> bör ställa</h2>
+
+      <div class="vs-grid">
+        <div class="vs-cell good">
+          <div class="vs-label">Signaler</div>
+          <div class="vs-headline">Hur skickas ljudet?</div>
+          <p style="font-size:0.95rem;line-height:1.55;color:var(--ink-soft);">XLR direkt? Egen mixer? DI-boxar? Vem äger PA:t? Klargör det i förväg — inte fem minuter före soundcheck.</p>
+        </div>
+        <div class="vs-cell bad">
+          <div class="vs-label">Mat</div>
+          <div class="vs-headline">Är det mat på plats?</div>
+          <p style="font-size:0.95rem;line-height:1.55;color:var(--ink-soft);">Vegetariskt? Allergier? Min erfarenhet: stora event har sällan fler än 2 alternativ — mindre event ännu färre. Vegetariskt brukar dock alltid finnas, om man frågar i tid.</p>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        Frågan kostar inget att ställa.<br>
+        <strong style="color:var(--ink);">Men att inte få mat på en lång gigdag märks i levereransen.</strong>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="3" data-part-local="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Dagen före</div>
+      <h2><em>Packa</em> kvällen innan. Sov på saken.</h2>
+
+      <div class="content-grid">
+        <div>
+          <p class="lead">Det är där 90% av glömda saker undviks. När du sovit på det <strong>kommer du ofta på något mer</strong> som behöver med — och du har tid att åtgärda det.</p>
+          <ul class="points">
+            <li>Packa inte två sekunder innan du drar</li>
+            <li class="alt">Inte sista bussen. Inte sista tåget.</li>
+            <li>Så få ekipage som möjligt — kombinera, packa smart</li>
+            <li class="alt">Marginal är professionellt</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- moon -->
+            <circle cx="220" cy="60" r="20" fill="#f1e7d0" stroke="#1c1610" stroke-width="1.5"/>
+            <circle cx="225" cy="55" r="3" fill="#1c1610" opacity="0.2"/>
+            <circle cx="215" cy="65" r="2" fill="#1c1610" opacity="0.2"/>
+            <!-- stars -->
+            <text x="60" y="50" font-size="10" fill="#1c1610" opacity="0.6">✦</text>
+            <text x="100" y="80" font-size="8" fill="#1c1610" opacity="0.4">✦</text>
+            <text x="170" y="40" font-size="9" fill="#1c1610" opacity="0.5">✦</text>
+            <!-- flightcase / amp case -->
+            <rect x="60" y="140" width="180" height="100" stroke="#1c1610" stroke-width="2" fill="rgba(255,250,235,0.5)" rx="3"/>
+            <line x1="60" y1="180" x2="240" y2="180" stroke="#1c1610" stroke-width="1"/>
+            <rect x="135" y="172" width="30" height="16" stroke="#1c1610" stroke-width="1.5" fill="#b8893a"/>
+            <circle cx="150" cy="180" r="3" fill="#1c1610"/>
+            <!-- corners -->
+            <rect x="55" y="135" width="14" height="14" stroke="#1c1610" stroke-width="1.5" fill="#6b1f2c"/>
+            <rect x="231" y="135" width="14" height="14" stroke="#1c1610" stroke-width="1.5" fill="#6b1f2c"/>
+            <rect x="55" y="231" width="14" height="14" stroke="#1c1610" stroke-width="1.5" fill="#6b1f2c"/>
+            <rect x="231" y="231" width="14" height="14" stroke="#1c1610" stroke-width="1.5" fill="#6b1f2c"/>
+            <!-- tag -->
+            <line x1="100" y1="140" x2="115" y2="115" stroke="#1c1610" stroke-width="1"/>
+            <rect x="80" y="100" width="50" height="20" stroke="#1c1610" stroke-width="1" fill="#f1e7d0" transform="rotate(-8 105 110)"/>
+            <text x="105" y="114" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle" transform="rotate(-8 105 114)">PACKAT</text>
+            <text x="150" y="285" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">SOV PÅ DET</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide closing" data-part="3" data-part-local="11">
+    <div class="slide-inner">
+      <div class="eyebrow">Sammanfattning · Del III</div>
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+      </svg>
+      <p class="quote">"Det här kapitlet spänner från att vara <em style="color:var(--wine)">trevlig</em> till att dyka upp <em style="color:var(--wine)">väl förberedd</em>.<br>Det kan tyckas vara två helt olika saker — men de hör ihop."</p>
+      <div style="font-family:'Courier Prime',monospace;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sepia);margin-top:3rem;">— Frågor? —</div>
+    </div>
+  </section>
+
+<section class="slide title-slide" data-part="4" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Del IV</div>
+      <h1 class="title"><em>Bidragsspåret</em></h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">En annan väg<br>— som jag bara kan peka på.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="4" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Premiss</div>
+      <h2>En väg jag inte själv <em>vandrat</em></h2>
+      <p class="lead">Det finns en typ av musikerverksamhet som inte handlar om gigbokningar i första hand. Den finansieras genom <strong>bidrag och stipendier</strong> från statliga organ och privata stiftelser — och passar oftare smalare genrer än den breda kommersiella sidan.</p>
+
+      <div class="big-quote">
+        Jag har själv inte mycket erfarenhet av det här spåret.<br>
+        Men jag vill att ni vet att <em>det finns</em> — och att vi nuddar vid det.
+        <cite>— Min ärlighet</cite>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="4" data-part-local="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Översikt</div>
+      <h2>Var pengarna <em>kommer ifrån</em> — och till vad</h2>
+
+      <div class="two-col">
+        <div class="col-cell">
+          <div class="col-label">Var söker man?</div>
+          <h4>Avsändarna</h4>
+          <ul class="inst-list">
+            <li>Konstnärsnämnden
+              <small>Stipendier till verksamma konstnärer</small>
+            </li>
+            <li>Kulturrådet
+              <small>Bidrag till kulturprojekt</small>
+            </li>
+            <li>Privata stiftelser
+              <small>Ofta inriktade på en specifik genre</small>
+            </li>
+            <li>Regionala &amp; kommunala medel
+              <small>Lokala kulturbidrag</small>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-cell">
+          <div class="col-label">Till vad?</div>
+          <h4>Typiska användningsområden</h4>
+          <ul class="use-list">
+            <li>
+              <strong>Resestöd</strong>
+              <em>T.ex. en inbjudan att spela din originalmusik utomlands.</em>
+            </li>
+            <li>
+              <strong>Skolkonserter</strong>
+              <em>Program som introducerar ungdomar för musikgrenar de annars inte möter.</em>
+            </li>
+            <li>
+              <strong>Inspelningsprojekt</strong>
+              <em>Konstnärlig fördjupning, inte kommersiell volym.</em>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="4" data-part-local="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Profil</div>
+      <h2>Vem passar det här <em>för</em>?</h2>
+      <p class="lead">Generellt sett dem som rör sig i smalare genrer eller skapar egen musik med <strong>konstnärligt eller pedagogiskt värde</strong> — snarare än rent kommersiell volym.</p>
+
+      <div class="profile-grid">
+        <div class="profile-card dim">
+          <div class="label">Inte främst för</div>
+          <h4>Den breda kommersiella sidan</h4>
+          <ul>
+            <li>Bröllopsbandet</li>
+            <li>Krog- och festspelningar</li>
+            <li>Hired gun-uppdrag</li>
+          </ul>
+        </div>
+        <div class="profile-card">
+          <div class="label">Framför allt för</div>
+          <h4>Den smalare, konstnärliga sidan</h4>
+          <ul>
+            <li>Originalmusik-skapare</li>
+            <li>Smalare genrer: samtida musik, jazz, folk, världsmusik</li>
+            <li>Pedagogiska musikprojekt</li>
+            <li>Internationella samarbeten</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide closing" data-part="4" data-part-local="5">
+    <div class="slide-inner">
+      <div class="eyebrow" style="margin: 0 auto 2rem; display: inline-block;">Sammanfattning · Del IV</div>
+
+      <h2 class="closing-headline">Här tar mina råd <em>slut</em></h2>
+
+      <p class="closing-quote">"Är det här just <em style="color:var(--wine)">er</em> väg? Då är jag fel person att leda er ner för den. Jag vill bara att ni vet att den finns — och hittar någon som kan ämnet bättre."</p>
+
+      <ul class="next-list">
+        <li>Prata med era lärare på er skola eller hos era kollegor</li>
+        <li>Sök upp musiker som lever på bidragsfinansierad verksamhet</li>
+        <li>Konstnärsnämnden &amp; Kulturrådets sajter har egen vägledning</li>
+        <li>Det finns workshops om bidragsskrivande — anmäl er till en</li>
+      </ul>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2" style="margin-top: 2.5rem;">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+      </svg>
+
+      <div style="font-family:'Courier Prime',monospace;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sepia);margin-top:1rem;">— Frågor? —</div>
+    </div>
+  </section>
+
+<section class="slide title-slide" data-part="5" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Del V</div>
+      <h1 class="title"><em>Förvalta</em></h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">När rutorna upplöses till en boll med lite av varje<br>— och belöningen ligger i att hålla vad ni lovat.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="5" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Återkoppling till Del I</div>
+      <h2>Med åren blir <em>rutorna</em> till en <em>boll</em></h2>
+      <p class="lead">Har ni studerat akademiskt, spelat era hundår, fått fina välbetalda spelningar, undervisar på bra skolor — då har ni jobbat brett och länge. Då hamnar ni inte längre i en av de fyra rutorna. <strong>Ni hamnar i en boll med lite av varje.</strong></p>
+
+      <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; margin-top: 2.5rem;">
+        <!-- LEFT: 4 boxes -->
+        <div style="text-align: center;">
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; letter-spacing: 0.25em; color: var(--sepia); margin-bottom: 1rem;">SOM UNG</div>
+          <svg viewBox="0 0 200 200" style="max-width: 220px;">
+            <rect x="10" y="10" width="85" height="85" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <rect x="105" y="10" width="85" height="85" stroke="#1c1610" stroke-width="1.5" fill="rgba(107,31,44,0.06)"/>
+            <rect x="10" y="105" width="85" height="85" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.5)"/>
+            <rect x="105" y="105" width="85" height="85" stroke="#1c1610" stroke-width="1.5" fill="rgba(107,31,44,0.06)"/>
+            <text x="52" y="55" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">CAFÉ</text>
+            <text x="147" y="55" font-family="Courier Prime, monospace" font-size="9" fill="#6b1f2c" text-anchor="middle">STORA</text>
+            <text x="147" y="65" font-family="Courier Prime, monospace" font-size="9" fill="#6b1f2c" text-anchor="middle">SCENER</text>
+            <text x="52" y="150" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">GRUND-</text>
+            <text x="52" y="160" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">SKOLA</text>
+            <text x="147" y="155" font-family="Courier Prime, monospace" font-size="9" fill="#6b1f2c" text-anchor="middle">HÖGRE</text>
+          </svg>
+          <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">fyra tydliga rutor</div>
+        </div>
+
+        <!-- ARROW -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--wine); margin-bottom: 0.5rem;">TIDEN</div>
+          <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
+            <line x1="0" y1="10" x2="50" y2="10" stroke="#6b1f2c" stroke-width="1.5"/>
+            <path d="M 45 4 L 58 10 L 45 16" stroke="#6b1f2c" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- RIGHT: blob with mixed labels -->
+        <div style="text-align: center;">
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; letter-spacing: 0.25em; color: var(--sepia); margin-bottom: 1rem;">EFTER ÅR</div>
+          <svg viewBox="0 0 200 200" style="max-width: 220px;">
+            <!-- organic blob shape -->
+            <path d="M 100 15
+                     Q 165 10 180 65
+                     Q 195 110 170 155
+                     Q 135 195 90 185
+                     Q 35 180 18 130
+                     Q 5 80 35 45
+                     Q 65 12 100 15 Z"
+                  stroke="#1c1610"
+                  stroke-width="2"
+                  fill="rgba(184, 137, 58, 0.08)"/>
+            <!-- scattered dots -->
+            <circle cx="60" cy="55" r="5" fill="#1c1610"/>
+            <text x="60" y="48" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">CAFÉ</text>
+
+            <circle cx="135" cy="60" r="5" fill="#6b1f2c"/>
+            <text x="135" y="53" font-family="Courier Prime, monospace" font-size="8" fill="#6b1f2c" text-anchor="middle">SCEN</text>
+
+            <circle cx="50" cy="115" r="5" fill="#1c1610"/>
+            <text x="50" y="135" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">SKOLA</text>
+
+            <circle cx="155" cy="125" r="5" fill="#6b1f2c"/>
+            <text x="155" y="145" font-family="Courier Prime, monospace" font-size="8" fill="#6b1f2c" text-anchor="middle">HÖGRE</text>
+
+            <circle cx="100" cy="90" r="6" fill="#b8893a"/>
+            <text x="100" y="80" font-family="Courier Prime, monospace" font-size="8" fill="#b8893a" text-anchor="middle">DU</text>
+
+            <circle cx="90" cy="160" r="3" fill="#1c1610" opacity="0.5"/>
+            <circle cx="125" cy="155" r="3" fill="#6b1f2c" opacity="0.5"/>
+          </svg>
+          <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">en boll med lite av varje</div>
+        </div>
+      </div>
+
+      <ul class="points" style="margin-top: 1.5rem;">
+        <li>Inte alla spelningar är kanonbra — men flertalet är det</li>
+        <li class="alt">Inte alla elever är superintresserade — men de flesta är det</li>
+      </ul>
+    </div>
+  </section>
+
+<section class="slide" data-part="5" data-part-local="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Premiss</div>
+      <h2>Då handlar det om att <em>förvalta</em></h2>
+      <p class="lead">När ni har byggt något som fungerar, då handlar mer av jobbet om att <strong>vårda det</strong>. Hålla det ni lovat. Vara den ni sagt att ni ska vara. Det är där långsiktig framgång byggs — eller faller.</p>
+
+      <div class="big-quote">
+        Att förvalta är det <em>tråkigaste</em>, viktigaste arbete<br>
+        ni kommer göra som musiker.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="5" data-part-local="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Akta er</div>
+      <h2>Två klassiska <em>fällor</em></h2>
+
+      <div class="traps-grid">
+        <div class="trap-card">
+          <div class="trap-num">FÄLLA · 01</div>
+          <div class="trap-name">Avboka nära inpå</div>
+          <div class="trap-desc">Att avboka kort innan ett gig — av lättja, dåligt humör, eller "bättre erbjudande". Ni försätter någon annan i dåligt läge. Det här syns. Och det glöms inte bort.</div>
+        </div>
+
+        <div class="trap-card">
+          <div class="trap-num">FÄLLA · 02</div>
+          <div class="trap-name">Hoppa på något "lite bättre"</div>
+          <div class="trap-desc">"Det här giget är liiite bättre betalt..." och "...lite mer creddigt". Att hoppa över ett ja för något skinier är klassiskt — och det syns ännu mer än fälla 1.</div>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        Den här typen av beteende sprider <strong style="color:var(--ink);">dåligt rykte</strong>.<br>
+        I värsta fall får det er på fall.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="5" data-part-local="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Verkligheten</div>
+      <h2>Sverige är <em>litet</em>.<br>Branschen är ännu <em>mindre</em>.</h2>
+      <div class="content-grid">
+        <div>
+          <p class="lead">Sannolikheten att folk i olika städer <strong>känner till — eller känner — varandra</strong> är stor. Det ni gör i Malmö hörs i Stockholm. Det ni gör i Göteborg hörs i Umeå.</p>
+          <p class="lead" style="margin-top:1rem;font-style:italic;">Tänk på det.</p>
+          <ul class="points">
+            <li>Bandledare snackar med varandra över städer</li>
+            <li class="alt">Producenter byter tips om vem som funkar</li>
+            <li>Ett rykte byggs över år, men kan rivas på en helg</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- city nodes connected -->
+            <!-- Stockholm -->
+            <circle cx="200" cy="80" r="10" fill="#6b1f2c" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="200" y="65" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">STHLM</text>
+            <!-- Göteborg -->
+            <circle cx="80" cy="160" r="10" fill="#1c1610" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="80" y="145" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">GBG</text>
+            <!-- Malmö -->
+            <circle cx="120" cy="240" r="10" fill="#6b1f2c" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="120" y="265" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">MALMÖ</text>
+            <!-- Umeå -->
+            <circle cx="220" cy="40" r="8" fill="#1c1610" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="245" y="44" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610">UMEÅ</text>
+            <!-- Uppsala -->
+            <circle cx="180" cy="130" r="7" fill="#1c1610" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="200" y="134" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610">UPPSALA</text>
+            <!-- Örebro -->
+            <circle cx="140" cy="120" r="6" fill="#1c1610" stroke="#1c1610" stroke-width="1.5"/>
+            <!-- Lund -->
+            <circle cx="100" cy="250" r="6" fill="#1c1610" stroke="#1c1610" stroke-width="1.5"/>
+            <!-- connections -->
+            <line x1="80" y1="160" x2="200" y2="80" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="80" y1="160" x2="120" y2="240" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="200" y1="80" x2="120" y2="240" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="200" y1="80" x2="220" y2="40" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="180" y1="130" x2="200" y2="80" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="180" y1="130" x2="80" y2="160" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="140" y1="120" x2="80" y2="160" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="140" y1="120" x2="200" y2="80" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="100" y1="250" x2="120" y2="240" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="100" y1="250" x2="80" y2="160" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="180" y1="130" x2="140" y2="120" stroke="#6b1f2c" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="150" y="290" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">ALLA KÄNNER ALLA</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="5" data-part-local="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Undantag</div>
+      <h2>Det finns ett <em>rätt sätt</em> att backa</h2>
+      <p class="lead">I sällsynta fall händer det att man måste backa ur ett sammanhang man tackat ja till. Det är ok — men då behöver det göras rätt. <strong>Ni behöver veta vem ni gör det till</strong>, så att inga konsekvenser drabbar er i efterhand.</p>
+
+      <ul class="points">
+        <li>I god tid — inte sista dagen</li>
+        <li class="alt">Direkt till huvudansvarig — inte via en kompis eller i ett gruppchatt</li>
+        <li>Hjälp gärna till att lösa det — har ni en bra ersättare?</li>
+        <li class="alt">Var rak om varför — folk respekterar ärlighet</li>
+      </ul>
+
+      <div class="pull-quote">
+        Behandla varje kollega som om ni kommer jobba ihop igen om fem år.<br>
+        <strong style="color:var(--ink);">För det kommer ni.</strong>
+      </div>
+    </div>
+  </section>
+
+<section class="slide huge-slide" data-part="5" data-part-local="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Regel</div>
+      <h2 style="margin-bottom: 0.5rem;">Bli inga</h2>
+      <div class="huge-statement">quitters.</div>
+      <p class="huge-sub">Har ni tackat ja till ett jobb där ni kände till förutsättningarna — <strong style="color:var(--ink);font-weight:700;">genomför det.</strong><br>Skulle det visa sig att det inte passar er — tacka inte ja nästa gång.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="5" data-part-local="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Avkastningen</div>
+      <h2>Belöningen — <em>trovärdighet</em></h2>
+      <div class="content-grid">
+        <div>
+          <p class="lead">Det här sättet att tänka kommer öka er trovärdighet. Och om ni har <strong>tillräckliga kunskaper och erfarenheter</strong>, så får ni så småningom också förtroendet att vara <strong>kapellmästare</strong> eller musikaliskt ansvarig för olika sammanhang. För många vet att ni är att lita på.</p>
+          <ul class="points">
+            <li>Ledarroller fördelas inte främst efter teknisk virtuositet</li>
+            <li class="alt">Utan efter att vara att lita på över tid</li>
+            <li>Det är där förtroendet konverteras till uppdrag</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- conductor's stand / podium -->
+            <ellipse cx="150" cy="270" rx="100" ry="10" fill="#1c1610" opacity="0.15"/>
+            <!-- podium -->
+            <rect x="100" y="200" width="100" height="60" stroke="#1c1610" stroke-width="2" fill="rgba(184,137,58,0.15)"/>
+            <line x1="100" y1="220" x2="200" y2="220" stroke="#1c1610" stroke-width="1"/>
+            <!-- music stand silhouette -->
+            <line x1="150" y1="200" x2="150" y2="130" stroke="#1c1610" stroke-width="2"/>
+            <line x1="125" y1="130" x2="175" y2="130" stroke="#1c1610" stroke-width="2"/>
+            <rect x="115" y="100" width="70" height="35" stroke="#1c1610" stroke-width="1.5" fill="rgba(255,250,235,0.7)" rx="2"/>
+            <line x1="125" y1="115" x2="175" y2="115" stroke="#1c1610" stroke-width="0.5"/>
+            <line x1="125" y1="122" x2="175" y2="122" stroke="#1c1610" stroke-width="0.5"/>
+            <!-- baton (slanted) -->
+            <line x1="180" y1="80" x2="220" y2="50" stroke="#6b1f2c" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="222" cy="48" r="3" fill="#6b1f2c"/>
+            <!-- title -->
+            <text x="150" y="290" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">KAPELLMÄSTARE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide closing" data-part="5" data-part-local="9">
+    <div class="slide-inner">
+      <div class="eyebrow" style="margin: 0 auto 2rem; display: inline-block;">Sammanfattning · Del V</div>
+
+      <h2 class="closing-headline">Förvalta det ni <em>bygger</em>.</h2>
+
+      <p class="closing-quote" style="margin-bottom: 2.5rem;">"Två vägar att välja, breda öron, trevliga manér, väl förberedda väskor — och sen ett liv av att förvalta det ni byggt."</p>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2" style="margin-top: 2.5rem;">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+      </svg>
+    </div>
+  </section>
+
+<section class="slide title-slide" data-part="6" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Del VI</div>
+      <h1 class="title">Var <em>affärsmässig</em></h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">Avtal, ekonomi, gränser<br>— det formella spelet bakom musiken.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Premiss</div>
+      <h2>Gage är ingen <em>mänsklig rättighet</em></h2>
+      <p class="lead">Ni får inte automatiskt betalt för att ni utövar musik. Ni får betalt om det finns en <strong>uppgörelse</strong> som säger så. Men då — är den också bindande.</p>
+
+      <div class="big-quote">
+        Det finns inget <em>per default</em>.<br>
+        Det finns bara det ni avtalat.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Lagrum</div>
+      <h2>Alla avtal är <em>bindande</em> — också de muntliga</h2>
+      <p class="lead">I Sverige binder både muntliga och skriftliga avtal lika hårt juridiskt. Skillnaden är inte vad som <strong>gäller</strong> — utan vad som går att <strong>bevisa</strong>.</p>
+
+      <div class="two-col">
+        <div class="col-cell">
+          <div class="col-label">Skriftligt</div>
+          <h4>Tydligt &amp; dokumenterat</h4>
+          <p>Lätt att hänvisa till. Inga "sa du så?"-diskussioner. Båda parter vet vad som gäller.</p>
+        </div>
+        <div class="col-cell">
+          <div class="col-label">Muntligt</div>
+          <h4>Lika bindande — svårare att bevisa</h4>
+          <p>Juridiskt jämställt med ett skriftligt avtal. Men i en tvist är det ord mot ord.</p>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        Är ni osäkra på en kund som beter sig nyckfullt under förhandlingen?<br>
+        <strong style="color:var(--ink);">Skriv avtalet själva.</strong> Punkterna har ändå ramlat fram och tillbaka — samla dem på ett papper så hänger inget i luften.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Företagsformen</div>
+      <h2><em>Egenföretagare</em> är vanligast</h2>
+      <p class="lead">I Sverige är egenföretagandet (enskild firma eller AB) den absolut vanligaste formen för musiker. Ni säljer en tjänst, ni fakturerar — och <strong>artisteri är momsfritt</strong>.</p>
+
+      <ul class="points">
+        <li>Som egenföretagare: ni fakturerar, sköter F-skatt och redovisning</li>
+        <li class="alt">Som anställd: oftast genom större bolag, institutioner eller orkestrar</li>
+        <li>Reglerna ser olika ut i grannländerna — det blir nästa steg</li>
+      </ul>
+
+      <div class="big-quote" style="margin-top: 2rem; font-size: clamp(1.1rem,1.8vw,1.4rem);">
+        Det här gäller i Sverige.<br>
+        Så fort ni passerar en gräns gäller <em>något annat</em>.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Tre exempel</div>
+      <h2>Vi tittar på <em>grannländerna</em></h2>
+      <p class="lead">Tre länder, tre olika regelverk — och stora konsekvenser om ni inte vet vad som gäller. Som företagare gäller olika saker beroende på om landet är inom EU eller inte. Som anställd ändras spelplanen igen.</p>
+
+      <div class="preview-grid">
+        <div class="preview-card">
+          <div class="flag dk"></div>
+          <h4>Danmark</h4>
+          <p class="tagline">EU. Stark valuta. Tariffer på gager.</p>
+        </div>
+        <div class="preview-card">
+          <div class="flag no"></div>
+          <h4>Norge</h4>
+          <p class="tagline">Utanför EU. Varning för utrustning vid gräns.</p>
+        </div>
+        <div class="preview-card">
+          <div class="flag fi"></div>
+          <h4>Finland</h4>
+          <p class="tagline">EU. Artistskatt 15% — men inte slutbetalt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Land · 01</div>
+      <div class="country-header">
+        <div class="flag dk"></div>
+        <h2 style="margin-bottom:0;">Danmark — <em>EU, men starkare valuta</em></h2>
+      </div>
+
+      <div class="two-col" style="margin-top: 1.8rem;">
+        <div class="col-cell">
+          <div class="col-label">Som företagare</div>
+          <h4>Faktura mot DK = kvartalsrapport</h4>
+          <ul class="fact-list">
+            <li>Fakturerar ni i annat EU-land måste det <strong>rapporteras 4 ggr per år</strong> till Skatteverket</li>
+            <li>Gäller även om ni inte använder moms — artisteri är ju momsfritt</li>
+            <li>Skattemyndigheterna i SE och DK har <strong>begränsad kontakt</strong> med varandra</li>
+          </ul>
+        </div>
+        <div class="col-cell">
+          <div class="col-label">På scen</div>
+          <h4>Stark krona &amp; reglerade gager</h4>
+          <ul class="fact-list">
+            <li>Den <strong>danska kronan är stark</strong> — siffrorna ser bra ut omräknat</li>
+            <li>Det finns <strong>tariffer</strong> på gager som arrangörer förväntas följa</li>
+            <li>Anställd i DK: jag har inte erfarenhet av det själv</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Land · 02</div>
+      <div class="country-header">
+        <div class="flag no"></div>
+        <h2 style="margin-bottom:0;">Norge — <em>utanför EU</em></h2>
+      </div>
+
+      <p class="lead" style="margin-top: 1.5rem;">Här blir det krångligare. Norge är inte med i EU och har en mer <strong>protektionistisk hållning till import</strong> — de vill att ni handlar hos dem, trots de höga priserna.</p>
+
+      <ul class="fact-list" style="margin-top: 1.5rem;">
+        <li>Ni får <strong>inte</strong> passera gränsen med utrustning av nämnvärt värde — utan tillstånd</li>
+        <li>Lösning 1: <strong>passertillstånd</strong> via Musikerförbundet (kräver medlemskap)</li>
+        <li>Lösning 2: <strong>carnet</strong> via Handelskammaren — möjligt på egen hand, men dyrt och krångligt</li>
+        <li>Hem till Sverige igen: ingen kontroll — vi är EU-land med fri rörlighet</li>
+      </ul>
+
+      <div class="warn-block">
+        <div class="warn-tag">⚠ Varning · Det här har hänt många gånger</div>
+        Stoppas ni vid gränsen utan tillstånd — med bilen full av utrustning — får ni <strong>betala momsvärdet på all utrustning på plats</strong>. Pengarna får ni tillbaka efter en juridisk process och cirka <strong>ett års väntan</strong>.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Land · 03</div>
+      <div class="country-header">
+        <div class="flag fi"></div>
+        <h2 style="margin-bottom:0;">Finland — <em>EU, men anställning bjuder på en grej</em></h2>
+      </div>
+
+      <div class="two-col" style="margin-top: 1.8rem;">
+        <div class="col-cell">
+          <div class="col-label">Som företagare</div>
+          <h4>Som DK</h4>
+          <ul class="fact-list">
+            <li>Finland är EU-land — <strong>samma regler som Danmark</strong></li>
+            <li>Kvartalsrapportering till Skatteverket vid fakturering i annat EU-land</li>
+          </ul>
+        </div>
+        <div class="col-cell">
+          <div class="col-label">Som anställd</div>
+          <h4>15% artistskatt — som inte räcker</h4>
+          <ul class="fact-list">
+            <li>Finland tar bara <strong>15% i artistskatt</strong> på er ersättning</li>
+            <li>Men eftersom ni har <strong>Sverige som skatteland</strong> måste ni komplettera</li>
+            <li>Sverige vill ha minst sina 30% — så ni betalar <strong>de återstående 15%</strong> hemma</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="warn-block">
+        <div class="warn-tag">⚠ Skatteverket kollar</div>
+        Finska och svenska skattemyndigheter har <strong>betydligt mer med varandra att göra</strong> än de svenska och danska. Slarva inte med kompletteringen — det märks.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="6" data-part-local="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Sammanfattning</div>
+      <h2>Tre länder, <em>tre system</em></h2>
+      <p class="lead">På ett bräde — vad som skiljer dem åt.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="background: var(--ink);"></th>
+            <th><div class="flag dk"></div>Danmark</th>
+            <th><div class="flag no"></div>Norge</th>
+            <th><div class="flag fi"></div>Finland</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>EU-land?</th>
+            <td><span class="yes">Ja</span></td>
+            <td><span class="no">Nej</span></td>
+            <td><span class="yes">Ja</span></td>
+          </tr>
+          <tr>
+            <th>Som företagare</th>
+            <td>Faktura + <strong>kvartalsrapport</strong> till SKV</td>
+            <td><strong>Passertillstånd eller carnet</strong> krävs vid gräns</td>
+            <td>Faktura + <strong>kvartalsrapport</strong> till SKV</td>
+          </tr>
+          <tr>
+            <th>Som anställd</th>
+            <td>Ej egen erfarenhet</td>
+            <td>Ej egen erfarenhet</td>
+            <td><strong>15%</strong> artistskatt + <strong>15%</strong> till Sverige</td>
+          </tr>
+          <tr>
+            <th>Specialgrejer</th>
+            <td>Stark valuta. Tariffer på gager.</td>
+            <td>Reglerad ekonomi. Hård gränskontroll.</td>
+            <td>SKV pratar med finska kollegor.</td>
+          </tr>
+          <tr>
+            <th>Risk om ni slarvar</th>
+            <td>Skattemässiga påföljder</td>
+            <td><strong>Moms på all utrustning</strong> + ~1 års väntan</td>
+            <td>Skattekrav från Sverige i efterhand</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--sepia); margin-top: 1.2rem; text-align: center;">
+        — Detta är min erfarenhet. Verifiera alltid med Skatteverket eller revisor innan ni gör affärer utomlands. —
+      </p>
+    </div>
+  </section>
+
+<section class="slide title-slide" data-part="7" data-part-local="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Del VII</div>
+      <h1 class="title"><em>Gager</em></h1>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+        <path d="M 95 11 Q 100 7 105 11" fill="none"/>
+      </svg>
+
+      <p class="subtitle">Vad ni kan ta betalt — och vad som faktiskt blir kvar.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Premiss</div>
+      <h2>Spannet är <em>enormt</em></h2>
+      <p class="lead">Det finns ingen "marknadsstandard" som täcker alla situationer. Vad ni kan ta betalt beror på <strong>vem som anlitar er</strong>, <strong>vem ni spelar för</strong>, och <strong>hur mycket risk någon är beredd att ta</strong>.</p>
+
+      <ul class="points">
+        <li>Krögaren som ni övertalat — osäker utgång</li>
+        <li class="alt">Bandet som anlitar er som hired gun — annan logik</li>
+        <li>Stora arrangörer med tydlig publik — ytterligare en logik</li>
+      </ul>
+
+      <div class="big-quote" style="margin-top: 2rem;">
+        Att prissätta sig själv är en <em>balansgång</em>.<br>
+        Och balansgång lär man sig genom att gå.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="3">
+    <div class="slide-inner">
+      <div class="badge dark">Sammanhang · 01</div>
+      <h2>Krögardealen — <em>två exempel</em></h2>
+      <p class="lead">Vi tar två band. Vi värderar inte deras musikaliska kvalitet — bara hur en krögare ser på dem.</p>
+
+      <div class="two-col">
+        <div class="col-cell">
+          <div class="col-label">Band 01</div>
+          <h4>Skickliga &amp; flexibla — men nystartade</h4>
+          <p>Bra musiker. Bred repertoar. Kan ta önskelåtar på studs.</p>
+          <ul class="mini">
+            <li>Ej etablerade — ingen vet vilka de är än</li>
+            <li>Ingen befintlig publik som följer dem</li>
+            <li>Krögaren tar en risk på dem</li>
+          </ul>
+        </div>
+        <div class="col-cell">
+          <div class="col-label">Band 02</div>
+          <h4>Hobbyaktiga — men etablerade</h4>
+          <p>Smalare repertoar. Spelar bara det de övat in. Men har valt <strong>säkra kort</strong> som öser på vilket party som helst.</p>
+          <ul class="mini">
+            <li>Etablerade — har en publik som brukar dyka upp</li>
+            <li>Inte kändisar — men kända lokalt</li>
+            <li>Krögaren vet vad hen får</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="lead" style="margin-top: 1.5rem; font-size: 1.05rem;">Krögaren tar <strong>hellre risken på band 02</strong>. Skulle ett tillfälle gå sämre kompenserar nästa det. Det är inte rättvist mot band 01 — men det är så det är.</p>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Analogin</div>
+      <h2>Nike eller den <em>okända</em> tillverkaren?</h2>
+
+      <div class="content-grid">
+        <div>
+          <p class="lead">Tänk på kläder. Det finns <strong>okända tillverkare som gör kvalitetskläder</strong> — kanske bättre än de stora märkena. Men många väljer ändå Nike eller Adidas.</p>
+          <p class="lead" style="margin-top: 1rem;">Varför? För att de redan vet vad det är. <strong>Igenkänning slår potential</strong> i de flesta inköpsbeslut.</p>
+          <ul class="points">
+            <li>Krögaren bokar inte den bästa musiken — utan den säkraste affären</li>
+            <li class="alt">Det betyder inte att band 01 är sämre</li>
+            <li>Det betyder bara att band 02 är <em>känt</em></li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- two t-shirts side by side -->
+            <!-- left shirt: unknown brand -->
+            <g transform="translate(30, 70)">
+              <path d="M 30 15 L 45 5 L 60 5 L 75 15 L 95 35 L 85 50 L 75 45 L 75 130 L 30 130 L 30 45 L 20 50 L 10 35 Z"
+                    stroke="#1c1610" stroke-width="2" fill="rgba(255,250,235,0.7)"/>
+              <text x="52" y="80" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">OKÄND</text>
+              <text x="52" y="92" font-family="Courier Prime, monospace" font-size="9" fill="#1c1610" text-anchor="middle">KVALITET</text>
+              <text x="52" y="160" font-family="Courier Prime, monospace" font-size="10" fill="#3a2f24" text-anchor="middle" letter-spacing="2">BAND 01</text>
+            </g>
+            <!-- right shirt: Nike-style swoosh -->
+            <g transform="translate(170, 70)">
+              <path d="M 30 15 L 45 5 L 60 5 L 75 15 L 95 35 L 85 50 L 75 45 L 75 130 L 30 130 L 30 45 L 20 50 L 10 35 Z"
+                    stroke="#1c1610" stroke-width="2" fill="rgba(107, 31, 44, 0.15)"/>
+              <!-- abstract logo (not actual Nike) -->
+              <path d="M 30 75 Q 50 60 70 80" stroke="#6b1f2c" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <text x="52" y="160" font-family="Courier Prime, monospace" font-size="10" fill="#3a2f24" text-anchor="middle" letter-spacing="2">BAND 02</text>
+            </g>
+            <!-- arrow pointing right (preference) -->
+            <path d="M 145 135 L 165 135" stroke="#6b1f2c" stroke-width="1.5"/>
+            <path d="M 158 130 L 167 135 L 158 140" stroke="#6b1f2c" stroke-width="1.5" fill="none"/>
+            <text x="150" y="270" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">IGENKÄNNING SLÅR POTENTIAL</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="pull-quote" style="margin-top: 1.5rem;">
+        Och om <em>ni</em> är dragplåstret? Då vet ni det redan — och bör <strong style="color:var(--ink);">förhandla om en del av intäkten</strong>, inte ett fast gage.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="5">
+    <div class="slide-inner">
+      <div class="badge wine">Sammanhang · 02</div>
+      <h2>Hired gun — <em>balansgången</em></h2>
+      <p class="lead">När ni blir anlitade av ett band ni inte är medlem i: vad är ett rimligt gage? Det är en <strong>jättesvår balansgång</strong>.</p>
+
+      <div class="two-col">
+        <div class="col-cell">
+          <div class="col-label">För högt</div>
+          <h4>Ni förlorar jobbet</h4>
+          <p>Bandet hittar någon annan. Ni får ingen erfarenhet, ingen lön, ingen referens.</p>
+        </div>
+        <div class="col-cell">
+          <div class="col-label">För lågt</div>
+          <h4>Ni känner er utnyttjade</h4>
+          <p>En sten i skon som skaver. Det påverkar ert humör. Det påverkar er trevlighet. Det påverkar relationen till bandet.</p>
+        </div>
+      </div>
+
+      <div class="big-quote">
+        En sten i skon på spelningen<br>
+        sprider sig till hela <em>relationen</em>.
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Riktmärket</div>
+      <h2>Musikerförbundets <em>tariff</em></h2>
+      <p class="lead" style="text-align: center; margin: 0 auto;">För beställda uppdrag med rimlig förberedelse, som redan utövande musiker:</p>
+
+      <div class="price-hero">
+        <div class="price-tag">cirka</div>
+        <div class="price-amount">6&nbsp;000<span class="currency">kr</span></div>
+      </div>
+
+      <div class="price-notes">
+        <div class="price-note">
+          <span class="label">Exklusive moms</span>
+          När ni själva är med och spelar musiken är det <em>momsfritt</em>.
+        </div>
+        <div class="price-note">
+          <span class="label">Beställt uppdrag</span>
+          Med <em>rimlig förberedelse</em> — inte vad som helst, närsomhelst.
+        </div>
+        <div class="price-note">
+          <span class="label">Riktmärke</span>
+          Ni behöver inte hitta på själva — men ni måste inte heller följa det.
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Strategi</div>
+      <h2>Pris som <em>filter</em></h2>
+      <p class="lead">Att acceptera 6 000 kr är upp till er. Det är inget lagrum — det är ett <strong>förhandlingsläge</strong>.</p>
+
+      <div class="big-quote">
+        Jag har själv ibland sagt ett <em>högre</em> gage<br>
+        för spelningar jag inte var intresserad av.<br>
+        Får jag hutlöst bra betalt — då tar jag den ändå.
+      </div>
+
+      <ul class="points">
+        <li>Lågt pris kan filtrera bort er från seriösa kunder</li>
+        <li class="alt">Högt pris kan filtrera bort er från ointressanta sammanhang</li>
+        <li><strong>Våga ta betalt</strong> — om någon är intresserad av era tjänster</li>
+        <li class="alt">Anpassa repertoaren efter vem ni spelar för — det rättfärdigar priset</li>
+      </ul>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="8">
+    <div class="slide-inner">
+      <div class="badge brass">Stora ställen</div>
+      <h2>Ljudfirma — låt <em>någon annan</em> hålla i trådarna</h2>
+
+      <div class="content-grid">
+        <div>
+          <p class="lead">På större ställen är det ofta lämpligt att anlita en ljudfirma. Då kan ni <strong>koncentrera er på musiken</strong> — och slipper hantera tekniken på plats.</p>
+          <ul class="points">
+            <li>Få <em>arrangören</em> att skriva kontraktet med ljudfirman</li>
+            <li class="alt">Annars blir <em>ni</em> spindeln i nätet — det jobbet växer</li>
+            <li>Tar ni ändå på er det: räkna in det i gaget</li>
+            <li class="alt">Lägg gärna på <strong>det dubbla</strong> för korrespondensen</li>
+          </ul>
+        </div>
+        <div class="content-visual">
+          <svg viewBox="0 0 300 300" fill="none">
+            <!-- spider web -->
+            <g stroke="#1c1610" stroke-width="0.8" fill="none" opacity="0.6">
+              <!-- radial lines -->
+              <line x1="150" y1="150" x2="150" y2="40"/>
+              <line x1="150" y1="150" x2="240" y2="80"/>
+              <line x1="150" y1="150" x2="260" y2="170"/>
+              <line x1="150" y1="150" x2="220" y2="250"/>
+              <line x1="150" y1="150" x2="100" y2="260"/>
+              <line x1="150" y1="150" x2="40" y2="200"/>
+              <line x1="150" y1="150" x2="50" y2="100"/>
+              <line x1="150" y1="150" x2="100" y2="40"/>
+              <!-- web rings -->
+              <path d="M 150 90 Q 200 100 215 130 Q 220 170 195 200 Q 150 225 110 210 Q 75 185 80 150 Q 90 110 150 90 Z"/>
+              <path d="M 150 60 Q 220 80 245 130 Q 250 190 215 230 Q 150 260 95 240 Q 50 200 55 145 Q 75 80 150 60 Z"/>
+            </g>
+            <!-- musician at center, frazzled -->
+            <circle cx="150" cy="150" r="14" fill="#6b1f2c" stroke="#1c1610" stroke-width="1.5"/>
+            <text x="150" y="155" font-family="Courier Prime, monospace" font-size="9" fill="#f1e7d0" text-anchor="middle" font-weight="700">DU</text>
+            <!-- pull labels around the edges -->
+            <text x="150" y="35" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">LJUDFIRMA</text>
+            <text x="245" y="78" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">EL</text>
+            <text x="270" y="172" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">TIDER</text>
+            <text x="225" y="262" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">BACKLINE</text>
+            <text x="98" y="272" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">PARKERING</text>
+            <text x="30" y="205" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">MAT</text>
+            <text x="40" y="100" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">HOTELL</text>
+            <text x="100" y="35" font-family="Courier Prime, monospace" font-size="8" fill="#1c1610" text-anchor="middle">RIDER</text>
+            <text x="150" y="290" font-family="Courier Prime, monospace" font-size="11" fill="#3a2f24" text-anchor="middle" letter-spacing="2">SPINDELN I NÄTET</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Min privata regel</div>
+      <h2>De <em>tre</em> anledningarna</h2>
+      <p class="lead" style="text-align: center; margin: 0 auto 1rem;">Jag tar ett uppdrag om något av detta är uppfyllt. Helst flera. Helst alla.</p>
+
+      <div class="venn-wrap">
+        <svg class="venn" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
+          <!-- Three overlapping circles -->
+          <circle class="venn-circle fun" cx="200" cy="120" r="90"/>
+          <circle class="venn-circle pay" cx="140" cy="220" r="90"/>
+          <circle class="venn-circle future" cx="260" cy="220" r="90"/>
+
+          <!-- labels (outside the overlap zones for clarity) -->
+          <text class="venn-label" x="200" y="55" text-anchor="middle" fill="#b8893a">Roligt</text>
+          <text class="venn-label" x="60" y="270" text-anchor="middle" fill="#6b1f2c">Bra betalt</text>
+          <text class="venn-label" x="345" y="270" text-anchor="middle" fill="#1c1610">Framtidsvärde</text>
+
+          <!-- Center: dream gig label -->
+          <text class="venn-center-text" x="200" y="178" text-anchor="middle">DRÖMJOBBET</text>
+
+          <!-- Numbers in pure regions -->
+          <text x="200" y="100" font-family="Playfair Display" font-style="italic" font-size="20" fill="#b8893a" text-anchor="middle" font-weight="700">1</text>
+          <text x="115" y="240" font-family="Playfair Display" font-style="italic" font-size="20" fill="#6b1f2c" text-anchor="middle" font-weight="700">2</text>
+          <text x="285" y="240" font-family="Playfair Display" font-style="italic" font-size="20" fill="#1c1610" text-anchor="middle" font-weight="700">3</text>
+        </svg>
+      </div>
+
+      <div class="age-rule">
+        <div>
+          <div class="age-label">Som ung</div>
+          <div class="age-text">Jag tog jobbet om <strong>1 av 3</strong> var uppfyllt.</div>
+        </div>
+        <div style="font-family: 'Playfair Display'; font-style: italic; font-size: 2rem; color: var(--wine);">→</div>
+        <div>
+          <div class="age-label">Idag</div>
+          <div class="age-text">Jag är mer kräsen — <strong>minst 2</strong>, helst alla 3.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide" data-part="7" data-part-local="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Glöm inte</div>
+      <h2><em>Resor</em> &amp; <em>traktamenten</em></h2>
+      <p class="lead">Två detaljer som tas för givna men sällan räknas på ordentligt.</p>
+
+      <div class="travel-grid">
+        <div class="travel-card">
+          <div class="label">Bilersättning</div>
+          <h4>25 kr / mil</h4>
+          <p style="font-size:0.95rem;line-height:1.55;color:var(--ink-soft);">Det är en <strong>låg ersättning</strong> för att föra fram ett fordon — om ni räknar på hela omkostnaden (bränsle, slitage, försäkring, värdeminskning).</p>
+          <p class="tradeoff">Förhandla högre om resan är en stor del av jobbet.</p>
+        </div>
+
+        <div class="travel-card">
+          <div class="label">Traktamenten</div>
+          <h4>Olika per land</h4>
+          <p style="font-size:0.95rem;line-height:1.55;color:var(--ink-soft);">Kan dras av på gaget för att <strong>minska skatteutgifterna</strong>. Bra för kassaflödet idag.</p>
+          <p class="tradeoff">Men: minskar också inbetalningen till er <em>pension</em>. En mindre summa nu — eller mer pengar om 35 år. Tänk på det.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide closing-final" data-part="7" data-part-local="11">
+    <div class="slide-inner">
+      <p class="closing-thanks">Tack för att ni lyssnat på mig idag.</p>
+
+      <div class="closing-big">Frågestund.</div>
+
+      <p class="closing-then">Sen — <em>lunch.</em></p>
+
+      <svg class="ornament" viewBox="0 0 200 30" fill="none" stroke="currentColor" stroke-width="1.2" style="margin-top: 3.5rem;">
+        <line x1="0" y1="15" x2="80" y2="15"/>
+        <circle cx="100" cy="15" r="4" fill="currentColor"/>
+        <line x1="120" y1="15" x2="200" y2="15"/>
+      </svg>
+    </div>
+  </section>
+</div>
+
+<script>
+  const partInfo = {
+    '1': { roman: 'I', name: 'Del I · Två vattendelare', total: 8 },
+    '2': { roman: 'II', name: 'Del II · Öppna öronen', total: 9 },
+    '3': { roman: 'III', name: 'Del III · Trevlig & förberedd', total: 11 },
+    '4': { roman: 'IV', name: 'Del IV · Bidragsspåret', total: 5 },
+    '5': { roman: 'V', name: 'Del V · Förvalta', total: 9 },
+    '6': { roman: 'VI', name: 'Del VI · Affärssidan', total: 9 },
+    '7': { roman: 'VII', name: 'Del VII · Gager', total: 11 }
+  };
+
+  const partStart = { '1': 0, '2': 8, '3': 17, '4': 28, '5': 33, '6': 42, '7': 51 };
+
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const stage = document.getElementById('stage');
+  let cur = 0;
+
+  function show(i, isJump) {
+    cur = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === cur));
+
+    const slide = slides[cur];
+    const part = slide.dataset.part;
+    const local = slide.dataset.partLocal;
+    const info = partInfo[part];
+
+    document.getElementById('partLabel').textContent = `DEL ${info.roman}`;
+    document.getElementById('cur').textContent = String(local).padStart(2, '0');
+    document.getElementById('tot').textContent = String(info.total).padStart(2, '0');
+    document.getElementById('partFrame').textContent = info.name;
+
+    if (isJump) {
+      stage.classList.remove('flash');
+      void stage.offsetWidth;
+      stage.classList.add('flash');
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); show(cur + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); show(cur - 1);
+    } else if (e.key === 'Home') {
+      show(0);
+    } else if (e.key === 'End') {
+      show(total - 1);
+    } else if (['1','2','3','4','5','6','7'].includes(e.key)) {
+      e.preventDefault();
+      show(partStart[e.key], true);
+    } else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('a, button, input')) return;
+    show(cur + 1);
+  });
+
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    show(cur - 1);
+  });
+
+  show(0);
+</script>
+
+</body>
+</html>
