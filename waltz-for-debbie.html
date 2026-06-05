@@ -111,6 +111,16 @@
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--gold); }
     .divider { max-width: 1100px; margin: 0 auto; height: 1px; background: var(--border); }
+    .dates-section { background: var(--surface); max-width: 100%; padding: 0; }
+    .dates-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 3rem; }
+    .show-row { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+    .show-row:first-of-type { border-top: 1px solid var(--border); }
+    .show-date-day { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; line-height: 1; color: var(--gold); }
+    .show-date-month { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: .2rem; }
+    .show-venue { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin-bottom: .25rem; }
+    .show-details { font-size: .85rem; color: var(--muted); }
+    .ticket-link { display: inline-block; color: var(--gold); border: 1px solid var(--gold-dim); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; padding: .65rem 1.5rem; text-decoration: none; transition: background .2s, color .2s; white-space: nowrap; }
+    .ticket-link:hover { background: var(--gold); color: var(--bg); }
     @media (max-width: 860px) {
       nav { padding: 1rem 1.5rem; }
       .hero { min-height: 80vh; align-items: flex-end; }
@@ -125,6 +135,9 @@
       .album-inner { padding: 4rem 1.5rem; flex-direction: column; }
       .booking-inner { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
       .practical-inner { padding: 4rem 1.5rem; }
+      .show-row { grid-template-columns: 60px 1fr; gap: 1.25rem; }
+      .ticket-link { grid-column: 1 / -1; text-align: center; }
+      .dates-inner { padding: 3.5rem 1.5rem; }
     }
   </style>
 </head>
@@ -259,6 +272,24 @@
     <img src="img/waltz/second.jpeg" alt="Waltz for Debbie concert">
     <img src="img/waltz/third.jpeg"  alt="Waltz for Debbie concert">
     <img src="img/waltz/first.jpeg"  alt="Waltz for Debbie concert">
+  </div>
+
+  <div class="dates-section">
+    <div class="dates-inner">
+      <div class="section-label">Upcoming shows</div>
+      <h2 class="section-title">Live dates</h2>
+      <div class="show-row">
+        <div>
+          <div class="show-date-day">28</div>
+          <div class="show-date-month">Aug 2026</div>
+        </div>
+        <div>
+          <div class="show-venue">Ballerup Jazzklub</div>
+          <div class="show-details">Sct. Jacobsvej 1, Ballerup · Denmark &nbsp;·&nbsp; 20:00</div>
+        </div>
+        <a href="https://ballerupjazz.dk/kommende-events/" target="_blank" rel="noopener" class="ticket-link">Info &amp; tickets</a>
+      </div>
+    </div>
   </div>
 
   <div class="divider"></div>
