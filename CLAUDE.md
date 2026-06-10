@@ -1,6 +1,6 @@
 # Richard Hauers hemsida – projektöversikt
 
-Senast uppdaterad: 2026-06-10
+Senast uppdaterad: 2026-06-10 (synktest)
 
 ## Vad detta är
 Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (ren HTML/CSS/JS, inget byggsystem) som ligger på GitHub Pages.
