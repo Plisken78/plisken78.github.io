@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teknikunderlag · Greetings From Sweden · Viking Line 3–4 sep 2026</title>
+  <meta name="description" content="Kanallista, stageplot och monitorlista för Alexandra Jardvall & The SWE Street Band – Greetings From Sweden, Viking Line 3–4 september 2026.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-meta { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+    /* ── Header ── */
+    .head { padding: 9rem 3rem 3.5rem; max-width: 1100px; margin: 0 auto; }
+    .head-eyebrow { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+    .head h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 700; line-height: 1; letter-spacing: -.01em; margin-bottom: .5rem; }
+    .head-sub { font-family: var(--font-display); font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-style: italic; color: var(--gold); margin-bottom: 2.5rem; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem 2.5rem; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+    .fact-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .fact-value { font-size: .95rem; color: var(--text); line-height: 1.5; }
+    .fact-value a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--gold-dim); }
+    .fact-value a:hover { color: var(--gold); }
+
+    /* ── Sections ── */
+    .section { padding: 3.5rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-alt { background: var(--surface); max-width: 100%; }
+    .section-alt > .inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.75rem; }
+
+    /* ── Stageplot ── */
+    .plot { background: var(--surface2); border: 1px solid var(--border); padding: 1.75rem; }
+    .plot svg { display: block; width: 100%; height: auto; }
+    .plot-legend { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: .85rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 2rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); background: var(--surface2); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 560px; }
+    th { text-align: left; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; background: rgba(201,165,90,.05); padding: .85rem 1.1rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: .7rem 1.1rem; border-bottom: 1px solid rgba(201,165,90,.07); vertical-align: top; color: var(--muted); }
+    td.what { color: var(--text); font-weight: 500; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    td.num { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--gold); width: 60px; line-height: 1.2; white-space: nowrap; }
+    .type { display: inline-block; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: .18rem .5rem; white-space: nowrap; }
+
+    /* ── Notes ── */
+    .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; }
+    .note { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .note h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; margin-bottom: .5rem; }
+    .note p { color: var(--muted); font-size: .92rem; line-height: 1.75; }
+
+    /* ── Contact ── */
+    .contact-card { background: var(--surface2); border: 1px solid var(--border); padding: 2.25rem; max-width: 460px; }
+    .contact-card-label { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+    .contact-card-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; margin-bottom: .2rem; }
+    .contact-card-org { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: .6rem; font-size: .92rem; color: var(--muted); }
+    .contact-detail-icon { color: var(--gold); width: 1.2rem; text-align: center; flex-shrink: 0; }
+    .contact-detail a { color: var(--text); text-decoration: none; }
+    .contact-detail a:hover { color: var(--gold); }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-meta { display: none; }
+      .head { padding: 7rem 1.5rem 2.5rem; }
+      .section { padding: 2.5rem 1.5rem; }
+      .plot { padding: 1rem; }
+    }
+
+    /* ── Print: ljus, teknikervänlig ── */
+    @media print {
+      :root { --bg:#fff; --surface:#fff; --surface2:#fff; --text:#111; --muted:#444; --gold:#7a5f22; --gold-dim:#7a5f22; --border:#bbb; }
+      body { background:#fff; color:#111; font-size: 11pt; }
+      nav, footer { display: none; }
+      .head { padding: 0 0 1.5rem; }
+      .section { padding: 1.25rem 0; page-break-inside: avoid; }
+      .section-alt { background: #fff; }
+      .plot, .table-wrap, .contact-card { border-color:#bbb; }
+      a { color:#111; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">Richard Hauer</a>
+    <span class="nav-meta">Teknikunderlag</span>
+  </nav>
+
+  <header class="head">
+    <div class="head-eyebrow">Kanallista · Stageplot · Monitorer</div>
+    <h1>Greetings<br>From Sweden</h1>
+    <div class="head-sub">Alexandra Jardvall &amp; The SWE Street Band</div>
+    <div class="facts">
+      <div>
+        <div class="fact-label">Datum</div>
+        <div class="fact-value">3–4 september 2026</div>
+      </div>
+      <div>
+        <div class="fact-label">Plats</div>
+        <div class="fact-value">Ombord Viking Line</div>
+      </div>
+      <div>
+        <div class="fact-label">Format</div>
+        <div class="fact-value">90 min hyllningskonsert, 6 musiker</div>
+      </div>
+      <div>
+        <div class="fact-label">Kanaler</div>
+        <div class="fact-value">20 in · 11 returer</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-label">Scen</div>
+    <h2 class="section-title">Stageplot</h2>
+    <div class="plot">
+      <svg viewBox="0 0 680 520" role="img">
+        <title>Stageplot för Greetings From Sweden</title>
+        <desc>Scenkarta uppifrån med bandets positioner, monitorer och backline, publik vänd mot scenens framkant.</desc>
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#888580" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <text x="335" y="50" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="22" font-weight="600" fill="#f0ede8">Publik</text>
+        <line x1="335" y1="68" x2="335" y2="90" stroke="#888580" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <rect x="40" y="95" width="590" height="400" rx="4" fill="#0b0b0c" stroke="rgba(201,165,90,.25)" stroke-width="1"/>
+        <text x="60" y="120" font-size="11" letter-spacing="2" fill="#888580" font-family="Inter, sans-serif">SCEN — VY UPPIFRÅN</text>
+
+        <text x="142" y="168" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#888580" font-family="Inter, sans-serif">in-ear</text>
+        <text x="310" y="168" text-anchor="middle" dominant-baseline="central" font-size="16" fill="#c9a55a">&#9650;</text>
+        <text x="360" y="168" text-anchor="middle" dominant-baseline="central" font-size="16" fill="#c9a55a">&#9650;</text>
+        <text x="527" y="168" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#888580" font-family="Inter, sans-serif">in-ear</text>
+
+        <g font-family="Inter, sans-serif">
+          <rect x="60" y="180" width="165" height="64" rx="2" fill="#1c1c1f" stroke="#8a6e38" stroke-width="1"/>
+          <text x="142" y="204" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#f0ede8">Simon — keys</text>
+          <text x="142" y="226" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">In-ear · RD-2000</text>
+        </g>
+        <g font-family="Inter, sans-serif">
+          <rect x="245" y="180" width="180" height="64" rx="2" fill="#1c1c1f" stroke="#c9a55a" stroke-width="1.5"/>
+          <text x="335" y="204" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="600" fill="#c9a55a">Alexandra — sång</text>
+          <text x="335" y="226" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">Stereo wedge · eget mic</text>
+        </g>
+        <g font-family="Inter, sans-serif">
+          <rect x="445" y="180" width="165" height="64" rx="2" fill="#1c1c1f" stroke="#8a6e38" stroke-width="1"/>
+          <text x="527" y="204" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#f0ede8">Richard — gitarr</text>
+          <text x="527" y="226" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">In-ear · kör-mic</text>
+        </g>
+
+        <rect x="445" y="254" width="165" height="26" rx="2" fill="#141416" stroke="rgba(201,165,90,.2)" stroke-width="1"/>
+        <text x="527" y="267" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#888580" font-family="Inter, sans-serif">Richards rack (19″)</text>
+
+        <text x="142" y="325" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#888580" font-family="Inter, sans-serif">in-ear</text>
+        <text x="335" y="325" text-anchor="middle" dominant-baseline="central" font-size="16" fill="#c9a55a">&#9650;</text>
+        <text x="527" y="325" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#888580" font-family="Inter, sans-serif">in-ear</text>
+
+        <g font-family="Inter, sans-serif">
+          <rect x="60" y="340" width="165" height="64" rx="2" fill="#1c1c1f" stroke="#8a6e38" stroke-width="1"/>
+          <text x="142" y="364" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#f0ede8">Viktor — sax</text>
+          <text x="142" y="386" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">In-ear · kör-mic</text>
+        </g>
+        <g font-family="Inter, sans-serif">
+          <rect x="245" y="340" width="180" height="64" rx="2" fill="#1c1c1f" stroke="#8a6e38" stroke-width="1"/>
+          <text x="335" y="364" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#f0ede8">Matts — bas</text>
+          <text x="335" y="386" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">Wedge · kör-mic</text>
+        </g>
+        <g font-family="Inter, sans-serif">
+          <rect x="445" y="340" width="165" height="64" rx="2" fill="#1c1c1f" stroke="#8a6e38" stroke-width="1"/>
+          <text x="527" y="364" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#f0ede8">Anders — trummor</text>
+          <text x="527" y="386" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">In-ear · husets kit</text>
+        </g>
+
+        <g font-family="Inter, sans-serif">
+          <rect x="245" y="414" width="180" height="46" rx="2" fill="#141416" stroke="rgba(201,165,90,.2)" stroke-width="1"/>
+          <text x="335" y="432" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#f0ede8">Bas backline</text>
+          <text x="335" y="450" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">Markbass Heat 2, 4x10</text>
+        </g>
+        <g font-family="Inter, sans-serif">
+          <rect x="445" y="414" width="165" height="46" rx="2" fill="#141416" stroke="rgba(201,165,90,.2)" stroke-width="1"/>
+          <text x="527" y="432" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#f0ede8">Trumset backline</text>
+          <text x="527" y="450" text-anchor="middle" dominant-baseline="central" font-size="11.5" fill="#888580">Husets kit</text>
+        </g>
+      </svg>
+      <div class="plot-legend">
+        <span><span style="color:#c9a55a">▲</span> = wedge-monitor riktad mot musikern</span>
+        <span>Samtliga positioner har mikrofonstativ inkl. bom</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Input</div>
+      <h2 class="section-title">Kanallista</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Vad</th><th>Typ</th><th>Övrigt</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td class="what">BD</td><td><span class="type">Trum</span></td><td>Tekniker väljer setup</td></tr>
+            <tr><td class="num">2</td><td class="what">SD</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">3</td><td class="what">HH</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">4</td><td class="what">Tom 1</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">5</td><td class="what">Tom 2</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">6</td><td class="what">Tom 3</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">7</td><td class="what">OH HH</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">8</td><td class="what">OH Ride</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">9</td><td class="what">Bas</td><td><span class="type">XLR</span></td><td>Från Markbass Combo Heat 2 (Matts egen backline, 4x10)</td></tr>
+            <tr><td class="num">10</td><td class="what">Key 1 L</td><td><span class="type">DI</span></td><td>Roland RD-2000, husets</td></tr>
+            <tr><td class="num">11</td><td class="what">Key 1 R</td><td><span class="type">DI</span></td><td>Roland RD-2000, husets</td></tr>
+            <tr><td class="num">12</td><td class="what">Elgit L</td><td><span class="type">XLR</span></td><td>Från Richards rack (in-ear)</td></tr>
+            <tr><td class="num">13</td><td class="what">Elgit R</td><td><span class="type">XLR</span></td><td>Från Richards rack (in-ear)</td></tr>
+            <tr><td class="num">14</td><td class="what">Voc Alexandra</td><td><span class="type">Mic</span></td><td>Eget mic, Shure Beta 87. Stativ inkl. bom</td></tr>
+            <tr><td class="num">15</td><td class="what">Voc Gitarr</td><td><span class="type">Mic</span></td><td>Kör-mic (Richard). Stativ inkl. bom</td></tr>
+            <tr><td class="num">16</td><td class="what">Voc Bas</td><td><span class="type">Mic</span></td><td>Kör-mic (Matts). Stativ inkl. bom</td></tr>
+            <tr><td class="num">17</td><td class="what">Sax</td><td><span class="type">XLR</span></td><td>Från trådlös mottagare – Shure Beta 98, Viktors egna</td></tr>
+            <tr><td class="num">18</td><td class="what">Kör Sax</td><td><span class="type">Mic</span></td><td>Stativ inkl. bom, båten ställer fram (Viktor)</td></tr>
+            <tr><td class="num">19</td><td class="what">Alexandra gitarr</td><td><span class="type">DI</span></td><td>Längre tele-kabel till gitarren</td></tr>
+            <tr><td class="num">20</td><td class="what">Alexandra stomp</td><td><span class="type">DI</span></td><td>Kort tele-kabel till stomp-boxen</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Output</div>
+    <h2 class="section-title">Returer &amp; monitorer</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Vem</th><th>Övrigt</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1–2</td><td class="what">Alexandra</td><td>2 wedges, konfigurerade i stereo</td></tr>
+          <tr><td class="num">3–4</td><td class="what">Richard (gitarr)</td><td>In-ear, egna lurar</td></tr>
+          <tr><td class="num">5–6</td><td class="what">Simon (keys)</td><td>In-ear, egna lurar</td></tr>
+          <tr><td class="num">7–8</td><td class="what">Anders (trummor)</td><td>In-ear, egna lurar</td></tr>
+          <tr><td class="num">9</td><td class="what">Matts (bas)</td><td>Wedge</td></tr>
+          <tr><td class="num">10–11</td><td class="what">Viktor (sax)</td><td>In-ear, egna lurar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Bra att veta</div>
+      <h2 class="section-title">Noteringar</h2>
+      <div class="notes">
+        <div class="note">
+          <h3>Backline</h3>
+          <p>Trummor och keys (Roland RD-2000) är husets. Bas tar med egen Markbass Combo Heat 2 med 4x10 och lämnar XLR ut. Gitarr går direkt från eget 19-tumsrack – ingen mik framför kabinett behövs.</p>
+        </div>
+        <div class="note">
+          <h3>Monitorer</h3>
+          <p>Fyra i bandet kör in-ear med egna lurar. Alexandra har två wedges i stereo, Matts en wedge. Alla positioner behöver mikrofonstativ inklusive bom.</p>
+        </div>
+        <div class="note">
+          <h3>Kontakt inför gig</h3>
+          <p>Hör gärna av dig i förväg om något behöver anpassas efter er rigg – vi är flexibla med kanalordning och antal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Kontakt</div>
+    <h2 class="section-title">Frågor om tekniken?</h2>
+    <div class="contact-card">
+      <div class="contact-card-label">Kontaktperson</div>
+      <div class="contact-card-name">Richard Hauer</div>
+      <div class="contact-card-org">Gitarr · The SWE Street Band</div>
+      <div class="contact-detail"><span class="contact-detail-icon">✉</span><a href="mailto:richardhauer@me.com">richardhauer@me.com</a></div>
+      <div class="contact-detail"><span class="contact-detail-icon">☎</span><a href="tel:+46708781116">070-878 11 16</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Greetings From Sweden · Springsteen Tribute · Teknikunderlag för Viking Line 3–4 sep 2026 · <a href="../jardvall.html">Om showen</a></p>
+  </footer>
+
+</body>
+</html>

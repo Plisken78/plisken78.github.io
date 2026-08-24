@@ -1,6 +1,6 @@
 # Richard Hauers hemsida – projektöversikt
 
-Senast uppdaterad: 2026-06-10 (synktest)
+Senast uppdaterad: 2026-08-24
 
 ## Vad detta är
 Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (ren HTML/CSS/JS, inget byggsystem) som ligger på GitHub Pages.
@@ -20,6 +20,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 | `waltz-for-debbie.html` | Waltz for Debbie – A tribute to Monica Z |
 | `forelasning/musikeryrket.html` | Föreläsning "Att jobba som musiker" (slides-liknande) |
 | `notlasning/notlasning.html` | Notläsningsövning – spelar upp MusicXML-låtar listade i `notlasning/songs.json` |
+| `teknik/vikingline-2026.html` | Teknikunderlag (kanallista, stageplot, returer) för Greetings From Sweden, Viking Line 3–4 sep 2026. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Har ljus print-stil. |
 
 ## Bilder
 - `img/bildspel/` – ca 65 bilder till galleriet/bildspelet på startsidan
@@ -32,6 +33,8 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 - Kontakt: richardhauer@me.com, 070-878 11 16
 
 ## Att tänka på
+- `INBOX/` är Richards arbetsmapp för underlag – **git-ignorerad**, publiceras aldrig
+- `teknik/`-sidor är olänkade från menyn med `<meta name="robots" content="noindex">`; dela URL:en manuellt
 - Allt är single-file-sidor: CSS/JS ligger inline i respektive HTML-fil
 - Notläsningssidan: nya låtar = lägg .musicxml i `notlasning/songs/` + rad i `songs.json`
 - Richard vill ha enkelt och konkret – ändra direkt i filerna, synka med .command-scriptet
