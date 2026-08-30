@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kostnadsförslag · Greetings From Sweden · Karlskrona maj 2026</title>
+  <meta name="description" content="Fyra alternativ för företagsspelning i Karlskrona, en fredag i maj 2026 – Alexandra Jardvall &amp; The SWE Street Band.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --border-str: rgba(201,165,90,.32);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
+    .nav-back { font-size: .8rem; letter-spacing: .04em; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: .55rem; transition: color .2s; }
+    .nav-back:hover { color: var(--gold); }
+    .nav-back span.arrow { font-size: 1rem; line-height: 1; }
+    .nav-meta { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+    /* ── Header ── */
+    .head { padding: 9rem 3rem 3.5rem; max-width: 1100px; margin: 0 auto; }
+    .head-eyebrow { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+    .head h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 700; line-height: 1; letter-spacing: -.01em; margin-bottom: .5rem; }
+    .head-sub { font-family: var(--font-display); font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-style: italic; color: var(--gold); margin-bottom: 2.5rem; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem 2.5rem; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+    .fact-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .fact-value { font-size: .95rem; color: var(--text); line-height: 1.5; }
+
+    /* ── Sections ── */
+    .section { padding: 3.5rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-alt { background: var(--surface); max-width: 100%; }
+    .section-alt > .inner { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.75rem; }
+    .lede { font-size: 1.02rem; color: var(--muted); max-width: 62ch; margin-bottom: 2.25rem; }
+    .lede strong { color: var(--text); font-weight: 500; }
+
+    /* ── Översiktstabell ── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); background: var(--surface2); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 640px; }
+    thead th { text-align: left; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 500; padding: 1rem 1.1rem; border-bottom: 1px solid var(--border-str); white-space: nowrap; }
+    tbody td { padding: .95rem 1.1rem; border-bottom: 1px solid rgba(201,165,90,.07); vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    td.num { color: var(--gold); font-variant-numeric: tabular-nums; font-weight: 500; width: 3rem; }
+    td.money { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    td.money.total { color: var(--gold); font-weight: 600; }
+    .alt-name { font-weight: 500; color: var(--text); }
+    .alt-desc { display: block; color: var(--muted); font-size: .82rem; margin-top: .2rem; line-height: 1.5; }
+
+    /* ── Alternativkort ── */
+    .alts { display: grid; gap: 1.5rem; }
+    .alt { border: 1px solid var(--border); background: var(--surface2); }
+    .alt-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .75rem 1.5rem; padding: 1.6rem 1.75rem 1.3rem; border-bottom: 1px solid var(--border); }
+    .alt-head-left { min-width: 0; }
+    .alt-kicker { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: .45rem; }
+    .alt-title { font-family: var(--font-display); font-size: 1.75rem; font-weight: 600; line-height: 1.1; }
+    .alt-line { color: var(--muted); font-size: .85rem; margin-top: .35rem; }
+    .alt-price { text-align: right; }
+    .alt-price .amount { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--gold); line-height: 1; font-variant-numeric: tabular-nums; }
+    .alt-price .unit { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: .4rem; }
+    .alt-body { padding: 1.5rem 1.75rem 1.75rem; }
+    .rows { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .rows td { padding: .55rem 0; border-bottom: 1px solid rgba(201,165,90,.07); vertical-align: top; }
+    .rows td.r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 1.5rem; }
+    .rows td .sub { display: block; color: var(--muted); font-size: .78rem; margin-top: .15rem; line-height: 1.5; }
+    .rows tr.sum td { border-top: 1px solid var(--border-str); border-bottom: none; padding-top: .85rem; font-weight: 500; }
+    .rows tr.vat td { border-bottom: none; color: var(--muted); padding-top: .2rem; }
+    .rows tr.grand td { border-top: 1px solid var(--border-str); border-bottom: none; padding-top: .85rem; color: var(--gold); font-weight: 600; font-size: 1rem; }
+    .flag { display: inline-block; font-size: .72rem; color: var(--gold); border: 1px solid var(--border-str); border-radius: 2px; padding: .1rem .45rem; margin-left: .5rem; vertical-align: middle; letter-spacing: .04em; }
+
+    /* ── Notlista ── */
+    .notes { list-style: none; display: grid; gap: 1.1rem; }
+    .notes li { padding-left: 1.6rem; position: relative; color: var(--muted); font-size: .93rem; }
+    .notes li::before { content: ''; position: absolute; left: 0; top: .72em; width: 7px; height: 7px; border: 1px solid var(--gold-dim); }
+    .notes li strong { color: var(--text); font-weight: 500; }
+
+    .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem 3rem; }
+    .col h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: .75rem; }
+    .col p { color: var(--muted); font-size: .92rem; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 3rem; max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    .foot-contact { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+    .foot-contact a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--gold-dim); }
+    .foot-contact a:hover { color: var(--gold); }
+    .btn-back { display: inline-flex; align-items: center; gap: .6rem; border: 1px solid var(--border-str); color: var(--text); text-decoration: none; padding: .8rem 1.5rem; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; transition: border-color .2s, color .2s; }
+    .btn-back:hover { border-color: var(--gold); color: var(--gold); }
+
+    @media (max-width: 720px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-meta { display: none; }
+      .head { padding: 7rem 1.5rem 2.5rem; }
+      .section { padding: 2.75rem 1.5rem; }
+      .section-alt > .inner { padding: 0 1.5rem; }
+      .alt-head, .alt-body { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .alt-price { text-align: left; }
+      footer { padding: 2.5rem 1.5rem; }
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      nav { display: none; }
+      .head { padding-top: 2rem; }
+      .alt, .table-wrap { border-color: #ccc; background: #fff; }
+      .alt-price .amount, .section-label, .fact-label, .head-eyebrow, .alt-kicker, td.money.total, .rows tr.grand td { color: #8a6e38; }
+      .lede, .notes li, .col p, .alt-line, .rows td .sub, .alt-desc { color: #444; }
+      .section-alt { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../jardvall.html" class="nav-back"><span class="arrow">←</span> Alexandra Jardvall &amp; The SWE Street Band</a>
+    <span class="nav-meta">Kostnadsförslag</span>
+  </nav>
+
+  <header class="head">
+    <div class="head-eyebrow">Företagsspelning · Fyra alternativ</div>
+    <h1>Greetings<br>From Sweden</h1>
+    <div class="head-sub">Karlskrona, en fredag i maj 2026</div>
+    <div class="facts">
+      <div>
+        <div class="fact-label">Datum</div>
+        <div class="fact-value">Fredag i maj 2026<br><span style="color:var(--muted)">ännu ej spikat</span></div>
+      </div>
+      <div>
+        <div class="fact-label">Plats</div>
+        <div class="fact-value">Lagerlokal, Karlskrona</div>
+      </div>
+      <div>
+        <div class="fact-label">Spann</div>
+        <div class="fact-value">38 250 – 124 150 kr<br><span style="color:var(--muted)">exkl. moms</span></div>
+      </div>
+      <div>
+        <div class="fact-label">Underlag</div>
+        <div class="fact-value">Kostnadsuppskattning BLLAB<br><span style="color:var(--muted)">6 augusti 2026</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-label">Sammanfattning</div>
+    <h2 class="section-title">Fyra vägar till samma kväll</h2>
+    <p class="lede">Alternativen skiljer sig åt på <strong>två axlar samtidigt</strong> – hur stor ensemblen är och hur mycket teknisk produktion som köps in. Alternativ 1 är full show med kvartett och komplett produktion; alternativ 4 är en akustisk duo där lokalen står för ljudet. Alla priser är angivna <strong>exklusive moms</strong>, med momsen redovisad separat i varje alternativ.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Alternativ</th>
+            <th style="text-align:right">Ensemble</th>
+            <th style="text-align:right">Resa &amp; logi</th>
+            <th style="text-align:right">Produktion</th>
+            <th style="text-align:right">Exkl. moms</th>
+            <th style="text-align:right">Inkl. moms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">1</td>
+            <td><span class="alt-name">Full show</span><span class="alt-desc">Kvartett · komplett produktion</span></td>
+            <td class="money">45 500</td>
+            <td class="money">7 250</td>
+            <td class="money">71 400</td>
+            <td class="money total">124 150</td>
+            <td class="money">155 188</td>
+          </tr>
+          <tr>
+            <td class="num">2</td>
+            <td><span class="alt-name">Konsert</span><span class="alt-desc">Kvartett · ljud &amp; ljus utan dekor och DJ</span></td>
+            <td class="money">45 500</td>
+            <td class="money">7 250</td>
+            <td class="money">65 000</td>
+            <td class="money total">117 750</td>
+            <td class="money">147 188</td>
+          </tr>
+          <tr>
+            <td class="num">3</td>
+            <td><span class="alt-name">Scaled down</span><span class="alt-desc">Trio · ljud och ljus, ingen scenteknik</span></td>
+            <td class="money">39 000</td>
+            <td class="money">7 250</td>
+            <td class="money">57 000</td>
+            <td class="money total">103 250</td>
+            <td class="money">129 063</td>
+          </tr>
+          <tr>
+            <td class="num">4</td>
+            <td><span class="alt-name">Akustiskt</span><span class="alt-desc">Duo · lokalen ordnar ljudet</span></td>
+            <td class="money">32 500</td>
+            <td class="money">5 750</td>
+            <td class="money">—</td>
+            <td class="money total">38 250</td>
+            <td class="money">47 813</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Alternativen i detalj</div>
+      <h2 class="section-title">Vad som ingår, post för post</h2>
+
+      <div class="alts">
+
+        <!-- ── 1 ── -->
+        <article class="alt">
+          <div class="alt-head">
+            <div class="alt-head-left">
+              <div class="alt-kicker">Alternativ 1</div>
+              <div class="alt-title">Full show</div>
+              <div class="alt-line">Kvartett · komplett teknisk produktion · DJ före och efter</div>
+            </div>
+            <div class="alt-price">
+              <div class="amount">124 150 kr</div>
+              <div class="unit">exkl. moms</div>
+            </div>
+          </div>
+          <div class="alt-body">
+            <table class="rows">
+              <tr>
+                <td>Ensemble – fyra musiker
+                  <span class="sub">Sång, gitarr, bas, trummor. Inkluderar musikalisk ledning: arrangemang, plank och notmaterial, instudering.</span></td>
+                <td class="r">45 500</td>
+              </tr>
+              <tr>
+                <td>Resa – två bilar tur och retur
+                  <span class="sub">Stockholm–Karlskrona 100 mil, Göteborg–Karlskrona 70 mil. 25 kr/mil.</span></td>
+                <td class="r">4 250</td>
+              </tr>
+              <tr>
+                <td>Logi – två rum, en natt
+                  <span class="sub">För de två som reser från Stockholm. Uppskattat 1 500 kr/rum inkl. frukost.</span></td>
+                <td class="r">3 000</td>
+              </tr>
+              <tr>
+                <td>Teknisk produktion – BLLAB
+                  <span class="sub">Ljudteknik 18 000 · Ljusteknik 20 000 · Scenteknik 8 000 · Easydrape/backdrops 3 400 · DJ-setup 3 000 · Transport lastbil 4 000 · Ljud- och ljustekniker 15 000.</span></td>
+                <td class="r">71 400</td>
+              </tr>
+              <tr>
+                <td>Bärhjälp på plats <span class="flag">ej prissatt</span>
+                  <span class="sub">BLLAB anger att bärhjälp behövs men har inte satt en siffra. Tillkommer.</span></td>
+                <td class="r">—</td>
+              </tr>
+              <tr class="sum"><td>Summa exkl. moms</td><td class="r">124 150</td></tr>
+              <tr class="vat"><td>Moms 25 %</td><td class="r">31 038</td></tr>
+              <tr class="grand"><td>Att betala</td><td class="r">155 188 kr</td></tr>
+            </table>
+          </div>
+        </article>
+
+        <!-- ── 2 ── -->
+        <article class="alt">
+          <div class="alt-head">
+            <div class="alt-head-left">
+              <div class="alt-kicker">Alternativ 2</div>
+              <div class="alt-title">Konsert</div>
+              <div class="alt-line">Kvartett · full ljud- och ljusproduktion utan dekor och DJ</div>
+            </div>
+            <div class="alt-price">
+              <div class="amount">117 750 kr</div>
+              <div class="unit">exkl. moms</div>
+            </div>
+          </div>
+          <div class="alt-body">
+            <table class="rows">
+              <tr>
+                <td>Ensemble – fyra musiker
+                  <span class="sub">Samma sättning och samma musikaliska förberedelse som alternativ 1.</span></td>
+                <td class="r">45 500</td>
+              </tr>
+              <tr>
+                <td>Resa – två bilar tur och retur
+                  <span class="sub">170 mil sammanlagt, 25 kr/mil.</span></td>
+                <td class="r">4 250</td>
+              </tr>
+              <tr>
+                <td>Logi – två rum, en natt<span class="sub">Stockholmsresenärerna.</span></td>
+                <td class="r">3 000</td>
+              </tr>
+              <tr>
+                <td>Teknisk produktion – BLLAB
+                  <span class="sub">Ljudteknik 18 000 · Ljusteknik 20 000 · Scenteknik 8 000 · Transport lastbil 4 000 · Ljud- och ljustekniker 15 000. Easydrape/backdrops och DJ-setup är borttagna.</span></td>
+                <td class="r">65 000</td>
+              </tr>
+              <tr>
+                <td>Bärhjälp på plats <span class="flag">ej prissatt</span><span class="sub">Tillkommer.</span></td>
+                <td class="r">—</td>
+              </tr>
+              <tr class="sum"><td>Summa exkl. moms</td><td class="r">117 750</td></tr>
+              <tr class="vat"><td>Moms 25 %</td><td class="r">29 438</td></tr>
+              <tr class="grand"><td>Att betala</td><td class="r">147 188 kr</td></tr>
+            </table>
+          </div>
+        </article>
+
+        <!-- ── 3 ── -->
+        <article class="alt">
+          <div class="alt-head">
+            <div class="alt-head-left">
+              <div class="alt-kicker">Alternativ 3</div>
+              <div class="alt-title">Scaled down</div>
+              <div class="alt-line">Trio · ljud och ljus, ingen scenbyggnation</div>
+            </div>
+            <div class="alt-price">
+              <div class="amount">103 250 kr</div>
+              <div class="unit">exkl. moms</div>
+            </div>
+          </div>
+          <div class="alt-body">
+            <table class="rows">
+              <tr>
+                <td>Ensemble – tre musiker
+                  <span class="sub">Sång, gitarr och bas med stämsång. Trummor kan bytas in i stället för bas till samma pris.</span></td>
+                <td class="r">39 000</td>
+              </tr>
+              <tr>
+                <td>Resa – två bilar tur och retur<span class="sub">170 mil sammanlagt, 25 kr/mil.</span></td>
+                <td class="r">4 250</td>
+              </tr>
+              <tr>
+                <td>Logi – två rum, en natt<span class="sub">Stockholmsresenärerna.</span></td>
+                <td class="r">3 000</td>
+              </tr>
+              <tr>
+                <td>Teknisk produktion – BLLAB
+                  <span class="sub">Ljudteknik 18 000 · Ljusteknik 20 000 · Transport lastbil 4 000 · Ljud- och ljustekniker 15 000. Scenteknik, dekor och DJ-setup är borttagna.</span></td>
+                <td class="r">57 000</td>
+              </tr>
+              <tr class="sum"><td>Summa exkl. moms</td><td class="r">103 250</td></tr>
+              <tr class="vat"><td>Moms 25 %</td><td class="r">25 813</td></tr>
+              <tr class="grand"><td>Att betala</td><td class="r">129 063 kr</td></tr>
+            </table>
+            <p style="color:var(--muted);font-size:.85rem;margin-top:1.1rem">En mindre rigg bör kunna dra ner ljusposten och möjligen räcka med en tekniker i stället för två. Det kräver en ny siffra från BLLAB – här är deras fulla poster använda oförändrade, så alternativet är räknat försiktigt.</p>
+          </div>
+        </article>
+
+        <!-- ── 4 ── -->
+        <article class="alt">
+          <div class="alt-head">
+            <div class="alt-head-left">
+              <div class="alt-kicker">Alternativ 4</div>
+              <div class="alt-title">Akustiskt</div>
+              <div class="alt-line">Duo · lokalen står för ljudanläggning och ljus</div>
+            </div>
+            <div class="alt-price">
+              <div class="amount">38 250 kr</div>
+              <div class="unit">exkl. moms</div>
+            </div>
+          </div>
+          <div class="alt-body">
+            <table class="rows">
+              <tr>
+                <td>Ensemble – två musiker
+                  <span class="sub">Sång och gitarr, akustiskt upplägg. Inkluderar arrangemang och instudering för duoformatet.</span></td>
+                <td class="r">32 500</td>
+              </tr>
+              <tr>
+                <td>Resa – två bilar tur och retur
+                  <span class="sub">Stockholm 100 mil, Göteborg 70 mil. 25 kr/mil.</span></td>
+                <td class="r">4 250</td>
+              </tr>
+              <tr>
+                <td>Logi – ett rum, en natt<span class="sub">För resenären från Stockholm.</span></td>
+                <td class="r">1 500</td>
+              </tr>
+              <tr>
+                <td>Teknisk produktion
+                  <span class="sub">Ingår inte. Beställaren håller med PA, två mikrofoner, DI och enkel scenbelysning enligt teknisk specifikation som skickas separat.</span></td>
+                <td class="r">—</td>
+              </tr>
+              <tr class="sum"><td>Summa exkl. moms</td><td class="r">38 250</td></tr>
+              <tr class="vat"><td>Moms 25 %</td><td class="r">9 563</td></tr>
+              <tr class="grand"><td>Att betala</td><td class="r">47 813 kr</td></tr>
+            </table>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Att notera</div>
+    <h2 class="section-title">Öppna punkter</h2>
+    <ul class="notes">
+      <li><strong>Underlaget från BLLAB är en kostnadsuppskattning, inte en formell offert.</strong> Siffrorna är hämtade ur deras mejl den 6 augusti 2026. En bindande offert kräver att datum och lokal är spikade.</li>
+      <li><strong>Moms på teknikposten är inte bekräftad.</strong> BLLAB har inte angett om deras siffror är inklusive eller exklusive moms. Här är de räknade som exklusive. Är de inklusive sjunker teknikposten med en femtedel, och alternativ 1 landar på cirka 110 000 kr i stället.</li>
+      <li><strong>Bärhjälp tillkommer i alternativ 1–3.</strong> BLLAB skriver att den lär behövas men har inte satt en siffra. Omfattningen beror på lastväg och avstånd från angöring till scen i lagerlokalen.</li>
+      <li><strong>Datum är inte fastställt.</strong> Underlaget utgår från en fredag i maj 2026. Maj är högsäsong – både bandets och BLLAB:s tillgänglighet behöver bekräftas mot ett faktiskt datum.</li>
+      <li><strong>Lokalens förutsättningar påverkar alternativ 1–3.</strong> Elförsörjning, takhöjd, lastväg och golv i lagerlokalen avgör hur mycket scenteknik som faktiskt krävs. Ett platsbesök eller ritning före bindande offert är att rekommendera.</li>
+      <li><strong>Milersättningen följer Skatteverkets nivå</strong> på 25 kr/mil och är beräknad på vägavstånd tur och retur, avrundat till hel mil.</li>
+      <li><strong>Logikostnaden är en uppskattning</strong> på 1 500 kr per rum och natt inklusive frukost. Karlskrona i maj kan ligga både över och under det.</li>
+    </ul>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Förutsättningar</div>
+      <h2 class="section-title">Det här ingår oavsett alternativ</h2>
+      <div class="cols">
+        <div class="col">
+          <h3>Musikalisk ledning</h3>
+          <p>Arrangemang, plank och notmaterial, instudering och musikalisk ledning under repetition och spelning ingår i ensemblepriset i samtliga fyra alternativ.</p>
+        </div>
+        <div class="col">
+          <h3>Backline och instrument</h3>
+          <p>Musikerna håller själva med instrument och personlig utrustning. Trumset, klaviatur och basförstärkare räknas som lokal backline i alternativ 1–3 och ingår i BLLAB:s scenteknik.</p>
+        </div>
+        <div class="col">
+          <h3>Speltid</h3>
+          <p>Underlaget utgår från ett konsertset om cirka 90 minuter, alternativt två kortare set. Annan speltid påverkar inte ensemblepriset nämnvärt men bör stämmas av.</p>
+        </div>
+        <div class="col">
+          <h3>Betalning och fakturering</h3>
+          <p>Fakturering sker efter genomförd spelning med 30 dagars betalningsvillkor om inget annat avtalas. Teknikleverantören fakturerar antingen direkt till beställaren eller via oss.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-contact">
+      <strong style="color:var(--text);font-weight:500">Richard Hauer</strong> · kapellmästare, Alexandra Jardvall &amp; The SWE Street Band<br>
+      <a href="mailto:richardhauer@me.com">richardhauer@me.com</a> · 070-878 11 16
+    </div>
+    <a href="../jardvall.html" class="btn-back">← Om showen</a>
+  </footer>
+
+</body>
+</html>
