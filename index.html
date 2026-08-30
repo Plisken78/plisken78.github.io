@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
   <title>Richard Hauer – Gitarrist &amp; Gitarrlärare</title>
   <meta name="description" content="Richard Hauer är en frilansande gitarrist och gitarrlärare baserad i Göteborg. Han har spelat med några av Sveriges mest namnkunniga artister och undervisar på Rytmus.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* Safari auto-lankar sifferserier som telefonnummer och maler dem i
+       systemets bla lankfarg. Ligger forst i stilmallen: sidans egna
+       lankregler har minst lika hog specificitet och vinner. */
+    a[href^="tel:"] { color: inherit; text-decoration: none; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {

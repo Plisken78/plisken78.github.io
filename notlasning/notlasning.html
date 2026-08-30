@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
   <title>Notläsning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay/build/opensheetmusicdisplay.min.js"></script>
   <style>
+    /* Safari auto-lankar sifferserier som telefonnummer och maler dem i
+       systemets bla lankfarg. Ligger forst i stilmallen: sidans egna
+       lankregler har minst lika hog specificitet och vinner. */
+    a[href^="tel:"] { color: inherit; text-decoration: none; }
     :root {
       --bg:        #0f0e0c;
       --surface:   #1a1814;

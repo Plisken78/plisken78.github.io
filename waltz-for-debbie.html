@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
   <title>Waltz for Debbie – A tribute to Monica Z · Richard Hauer</title>
   <meta name="description" content="Waltz for Debbie is an intimate concert tribute to Monica Zetterlund, performed by vocalist Anna Pauline and guitarist Richard Hauer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* Safari auto-lankar sifferserier som telefonnummer och maler dem i
+       systemets bla lankfarg. Ligger forst i stilmallen: sidans egna
+       lankregler har minst lika hog specificitet och vinner. */
+    a[href^="tel:"] { color: inherit; text-decoration: none; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg:        #0b0b0c;
