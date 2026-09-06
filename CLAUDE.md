@@ -21,6 +21,8 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 | `forelasning/musikeryrket.html` | Föreläsning "Att jobba som musiker" (slides-liknande) |
 | `notlasning/notlasning.html` | Notläsningsövning – spelar upp MusicXML-låtar listade i `notlasning/songs.json` |
 | `teknik/vikingline-2026.html` | Teknikunderlag (kanallista, stageplot, returer) för Greetings From Sweden, Viking Line 3–4 sep 2026. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Har ljus print-stil. |
+| `macken/index.html` | Macken 40 år – showsida (premiär 26/9 2026, 14 föreställningar, Kajskjul 8). **Står `noindex` tills Richard godkänt texten**; ta bort raden för att publicera. Ännu inte länkad från startsidans Macken-kort, som pekar på Kajskjul 8:s biljettsida. |
+| `macken/kanallista.html` | Teknikunderlag (kanallista, returer, öppna frågor) för Macken 40 år. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Samma print-stil som vikingline-sidan. **Ligger medvetet under `macken/`** så att en bakåtnavigering från kanallistan landar på showsidan. |
 
 ## Bilder
 - `img/bildspel/` – ca 65 bilder till galleriet/bildspelet på startsidan
@@ -35,6 +37,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 ## Att tänka på
 - `INBOX/` är Richards arbetsmapp för underlag – **git-ignorerad**, publiceras aldrig
 - `teknik/`-sidor är olänkade från menyn med `<meta name="robots" content="noindex">`; dela URL:en manuellt
+- **Teknikunderlag som hör till en show läggs under showens egen mapp** (`macken/kanallista.html`), inte i `teknik/` — då landar man på showsidan när man backar i URL:en. `teknik/` är kvar för underlag utan egen showsida, som vikingline-2026.
 - Allt är single-file-sidor: CSS/JS ligger inline i respektive HTML-fil
 - Notläsningssidan: nya låtar = lägg .musicxml i `notlasning/songs/` + rad i `songs.json`
 - Richard vill ha enkelt och konkret – ändra direkt i filerna, synka med .command-scriptet

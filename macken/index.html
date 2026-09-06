@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <title>Macken 40 år · Kajskjul 8 · Richard Hauer</title>
+  <meta name="description" content="En hyllning till Macken — Kajskjul 8, Göteborg, hösten 2026. Richard Hauer är kapellmästare för produktionen.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    /* Safari auto-lankar sifferserier (kanalnummer, tider) som telefonnummer
+       och maler dem i systemets bla lankfarg - olasligt mot mork bakgrund.
+       Star fore .contact-detail a, som darfor behaller sin egen styling. */
+    a[href^="tel:"] { color: inherit; text-decoration: none; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-meta { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+    /* ── Header ── */
+    .head { padding: 9rem 3rem 3.5rem; max-width: 1100px; margin: 0 auto; }
+    .head-eyebrow { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+    .head h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 700; line-height: 1; letter-spacing: -.01em; margin-bottom: .5rem; }
+    .head-sub { font-family: var(--font-display); font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-style: italic; color: var(--gold); margin-bottom: 2.5rem; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem 2.5rem; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+    .fact-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .fact-value { font-size: .95rem; color: var(--text); line-height: 1.5; }
+    .fact-value a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--gold-dim); }
+    .fact-value a:hover { color: var(--gold); }
+
+    /* ── Sections ── */
+    .section { padding: 3.5rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-alt { background: var(--surface); max-width: 100%; }
+    .section-alt > .inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.75rem; }
+
+    /* ── Stageplot ── */
+    .plot { background: var(--surface2); border: 1px solid var(--border); padding: 1.75rem; }
+    .plot svg { display: block; width: 100%; height: auto; }
+    .plot-legend { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: .85rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 2rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); background: var(--surface2); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 560px; }
+    th { text-align: left; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; background: rgba(201,165,90,.05); padding: .85rem 1.1rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: .7rem 1.1rem; border-bottom: 1px solid rgba(201,165,90,.07); vertical-align: top; color: var(--muted); }
+    td.what { color: var(--text); font-weight: 500; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    td.num { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--gold); width: 60px; line-height: 1.2; white-space: nowrap; }
+    .type { display: inline-block; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: .18rem .5rem; white-space: nowrap; }
+
+    /* ── Notes ── */
+    .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; }
+    .note { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .note h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; margin-bottom: .5rem; }
+    .note p { color: var(--muted); font-size: .92rem; line-height: 1.75; }
+
+    /* ── Contact ── */
+    .contact-card { background: var(--surface2); border: 1px solid var(--border); padding: 2.25rem; max-width: 460px; }
+    .contact-card-label { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+    .contact-card-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; margin-bottom: .2rem; }
+    .contact-card-org { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: .6rem; font-size: .92rem; color: var(--muted); }
+    .contact-detail-icon { color: var(--gold); width: 1.2rem; text-align: center; flex-shrink: 0; }
+    .contact-detail a { color: var(--text); text-decoration: none; }
+    .contact-detail a:hover { color: var(--gold); }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-meta { display: none; }
+      .head { padding: 7rem 1.5rem 2.5rem; }
+      .section { padding: 2.5rem 1.5rem; }
+      .plot { padding: 1rem; }
+    }
+
+    /* ── Print: ljus, teknikervänlig ── */
+    @media print {
+      :root { --bg:#fff; --surface:#fff; --surface2:#fff; --text:#111; --muted:#444; --gold:#7a5f22; --gold-dim:#7a5f22; --border:#bbb; }
+      body { background:#fff; color:#111; font-size: 11pt; }
+      nav, footer { display: none; }
+      .head { padding: 0 0 1.5rem; }
+      .section { padding: 1.25rem 0; page-break-inside: avoid; }
+      .section-alt { background: #fff; }
+      .plot, .table-wrap, .contact-card { border-color:#bbb; }
+      a { color:#111; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">Richard Hauer</a>
+    <span class="nav-meta">Macken 40 år</span>
+  </nav>
+
+  <header class="head">
+    <div class="head-eyebrow">Hösten 2026 · Kapellmästare</div>
+    <h1>Macken<br>40 år</h1>
+    <div class="head-sub">En hyllningsföreställning · Kajskjul 8, Göteborg</div>
+    <div class="facts">
+      <div>
+        <div class="fact-label">Premiär</div>
+        <div class="fact-value">Lördag 26 september 2026</div>
+      </div>
+      <div>
+        <div class="fact-label">Spelperiod</div>
+        <div class="fact-value">26 september – 21 november<br>14 föreställningar</div>
+      </div>
+      <div>
+        <div class="fact-label">Plats</div>
+        <div class="fact-value">Kajskjul 8, Packhusplatsen 11<br>411 13 Göteborg</div>
+      </div>
+      <div>
+        <div class="fact-label">Biljetter</div>
+        <div class="fact-value"><a href="https://kajskjul8.se/show/en-hyllning-till-macken/" target="_blank" rel="noopener">kajskjul8.se</a></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Om föreställningen</div>
+      <h2 class="section-title">Fyrtio år av Macken</h2>
+      <div class="notes">
+        <div class="note">
+          <h3>Produktionen</h3>
+          <p>En hyllningsföreställning till den älskade TV-serien Macken, som firar 40 år. Richard Hauer är kapellmästare för produktionen på Kajskjul 8 i Göteborg.</p>
+        </div>
+        <div class="note">
+          <h3>Formen</h3>
+          <p>Kvällen inleds med en förshow och fortsätter med ett fullt band på scen. Musiken går från original­arrangemangen till nya versioner skrivna för produktionen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Spelschema</div>
+    <h2 class="section-title">14 föreställningar</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Datum</th><th>Dag</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="num">26/9</td><td class="what">Lördag</td><td><span class="type">Premiär</span></td></tr>
+          <tr><td class="num">2/10</td><td class="what">Fredag</td><td></td></tr>
+          <tr><td class="num">3/10</td><td class="what">Lördag</td><td></td></tr>
+          <tr><td class="num">9/10</td><td class="what">Fredag</td><td></td></tr>
+          <tr><td class="num">10/10</td><td class="what">Lördag</td><td></td></tr>
+          <tr><td class="num">16/10</td><td class="what">Fredag</td><td></td></tr>
+          <tr><td class="num">17/10</td><td class="what">Lördag</td><td></td></tr>
+          <tr><td class="num">6/11</td><td class="what">Fredag</td><td></td></tr>
+          <tr><td class="num">7/11</td><td class="what">Lördag</td><td></td></tr>
+          <tr><td class="num">13/11</td><td class="what">Fredag</td><td></td></tr>
+          <tr><td class="num">14/11</td><td class="what">Lördag</td><td></td></tr>
+          <tr><td class="num">19/11</td><td class="what">Torsdag</td><td></td></tr>
+          <tr><td class="num">20/11</td><td class="what">Fredag</td><td></td></tr>
+          <tr><td class="num">21/11</td><td class="what">Lördag</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Biljetter</div>
+    <h2 class="section-title">Kom och se den</h2>
+    <div class="contact-card">
+      <div class="contact-card-label">Biljetter och information</div>
+      <div class="contact-card-name">Kajskjul 8</div>
+      <div class="contact-card-org">Packhusplatsen 11 · Göteborg</div>
+      <div class="contact-detail"><span class="contact-detail-icon">→</span><a href="https://kajskjul8.se/show/en-hyllning-till-macken/" target="_blank" rel="noopener">kajskjul8.se</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Macken 40 år · Kajskjul 8, hösten 2026 · <a href="../index.html">Richard Hauer</a></p>
+  </footer>
+
+</body>
+</html>

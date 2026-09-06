@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <title>Teknikunderlag · Macken 40 år · Kajskjul 8, hösten 2026</title>
+  <meta name="description" content="Kanallista, monitorlista och noteringar för En hyllning till Macken – Kajskjul 8, Göteborg, hösten 2026.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0b0b0c;
+      --surface:   #141416;
+      --surface2:  #1c1c1f;
+      --gold:      #c9a55a;
+      --gold-dim:  #8a6e38;
+      --text:      #f0ede8;
+      --muted:     #888580;
+      --border:    rgba(201,165,90,.15);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    /* Safari auto-lankar sifferserier (kanalnummer, tider) som telefonnummer
+       och maler dem i systemets bla lankfarg - olasligt mot mork bakgrund.
+       Star fore .contact-detail a, som darfor behaller sin egen styling. */
+    a[href^="tel:"] { color: inherit; text-decoration: none; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(11,11,12,.97); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-meta { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+    /* ── Header ── */
+    .head { padding: 9rem 3rem 3.5rem; max-width: 1100px; margin: 0 auto; }
+    .head-eyebrow { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+    .head h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 700; line-height: 1; letter-spacing: -.01em; margin-bottom: .5rem; }
+    .head-sub { font-family: var(--font-display); font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-style: italic; color: var(--gold); margin-bottom: 2.5rem; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem 2.5rem; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+    .fact-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .fact-value { font-size: .95rem; color: var(--text); line-height: 1.5; }
+    .fact-value a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--gold-dim); }
+    .fact-value a:hover { color: var(--gold); }
+
+    /* ── Sections ── */
+    .section { padding: 3.5rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-alt { background: var(--surface); max-width: 100%; }
+    .section-alt > .inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-dim); }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.75rem; }
+
+    /* ── Stageplot ── */
+    .plot { background: var(--surface2); border: 1px solid var(--border); padding: 1.75rem; }
+    .plot svg { display: block; width: 100%; height: auto; }
+    .plot-legend { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: .85rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 2rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); background: var(--surface2); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 560px; }
+    th { text-align: left; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; background: rgba(201,165,90,.05); padding: .85rem 1.1rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: .7rem 1.1rem; border-bottom: 1px solid rgba(201,165,90,.07); vertical-align: top; color: var(--muted); }
+    td.what { color: var(--text); font-weight: 500; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    td.num { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--gold); width: 60px; line-height: 1.2; white-space: nowrap; }
+    .type { display: inline-block; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: .18rem .5rem; white-space: nowrap; }
+
+    /* ── Notes ── */
+    .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; }
+    .note { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .note h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; margin-bottom: .5rem; }
+    .note p { color: var(--muted); font-size: .92rem; line-height: 1.75; }
+
+    /* ── Contact ── */
+    .contact-card { background: var(--surface2); border: 1px solid var(--border); padding: 2.25rem; max-width: 460px; }
+    .contact-card-label { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+    .contact-card-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; margin-bottom: .2rem; }
+    .contact-card-org { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: .6rem; font-size: .92rem; color: var(--muted); }
+    .contact-detail-icon { color: var(--gold); width: 1.2rem; text-align: center; flex-shrink: 0; }
+    .contact-detail a { color: var(--text); text-decoration: none; }
+    .contact-detail a:hover { color: var(--gold); }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2.5rem 3rem; color: var(--muted); font-size: .8rem; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-meta { display: none; }
+      .head { padding: 7rem 1.5rem 2.5rem; }
+      .section { padding: 2.5rem 1.5rem; }
+      .plot { padding: 1rem; }
+    }
+
+    /* ── Print: ljus, teknikervänlig ── */
+    @media print {
+      :root { --bg:#fff; --surface:#fff; --surface2:#fff; --text:#111; --muted:#444; --gold:#7a5f22; --gold-dim:#7a5f22; --border:#bbb; }
+      body { background:#fff; color:#111; font-size: 11pt; }
+      nav, footer { display: none; }
+      .head { padding: 0 0 1.5rem; }
+      .section { padding: 1.25rem 0; page-break-inside: avoid; }
+      .section-alt { background: #fff; }
+      .plot, .table-wrap, .contact-card { border-color:#bbb; }
+      a { color:#111; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">Richard Hauer</a>
+    <span class="nav-meta">Teknikunderlag</span>
+  </nav>
+
+  <header class="head">
+    <div class="head-eyebrow">Kanallista · Monitorer · Noteringar</div>
+    <h1>Macken<br>40 år</h1>
+    <div class="head-sub">En hyllning till Macken · Kajskjul 8, Göteborg</div>
+    <div class="facts">
+      <div>
+        <div class="fact-label">Period</div>
+        <div class="fact-value">Premiär 26 september 2026<br>14 föreställningar t.o.m. 21 november</div>
+      </div>
+      <div>
+        <div class="fact-label">Plats</div>
+        <div class="fact-value">Kajskjul 8, Packhusplatsen 11<br>411 13 Göteborg</div>
+      </div>
+      <div>
+        <div class="fact-label">Sättning</div>
+        <div class="fact-value">5 musiker · trummor, keys, bas,<br>trumpet, gitarr</div>
+      </div>
+      <div>
+        <div class="fact-label">Kanaler</div>
+        <div class="fact-value">26 in · 13 returer</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Input</div>
+      <h2 class="section-title">Kanallista</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Vad</th><th>Typ</th><th>Noteringar</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td class="what">BD</td><td><span class="type">Trum</span></td><td>Tekniker väljer setup och mickval</td></tr>
+            <tr><td class="num">2</td><td class="what">SD</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">3</td><td class="what">HH</td><td><span class="type">Trum</span></td><td>—"—</td></tr>
+            <tr><td class="num">4</td><td class="what">Tom 1</td><td><span class="type">Trum</span></td><td></td></tr>
+            <tr><td class="num">5</td><td class="what">Tom 2</td><td><span class="type">Trum</span></td><td></td></tr>
+            <tr><td class="num">6</td><td class="what">Tom 3</td><td><span class="type">Trum</span></td><td></td></tr>
+            <tr><td class="num">7</td><td class="what">OH L</td><td><span class="type">Trum</span></td><td></td></tr>
+            <tr><td class="num">8</td><td class="what">OH R</td><td><span class="type">Trum</span></td><td></td></tr>
+            <tr><td class="num">9</td><td class="what">SPD-SX L</td><td><span class="type">DI</span></td><td>Drumpad, stereo — perc och effekter. <strong>DI-box</strong></td></tr>
+            <tr><td class="num">10</td><td class="what">SPD-SX R</td><td><span class="type">DI</span></td><td>—"—</td></tr>
+            <tr><td class="num">11</td><td class="what">Trummor sång</td><td><span class="type">Mick</span></td><td>Trummor</td></tr>
+            <tr><td class="num">12–13</td><td class="what">Keys A</td><td><span class="type">DI</span></td><td>Stereopar. Kort tele-kabel</td></tr>
+            <tr><td class="num">14–15</td><td class="what">Keys B</td><td><span class="type">DI</span></td><td>Andra stereoparet — marginal, se noteringen</td></tr>
+            <tr><td class="num">16</td><td class="what">Keys sång</td><td><span class="type">Mick</span></td><td></td></tr>
+            <tr><td class="num">17</td><td class="what">Elbas</td><td><span class="type">DI</span></td><td>Line. Trådlöst instrument. Kort tele-kabel</td></tr>
+            <tr><td class="num">18</td><td class="what">Kontrabas</td><td><span class="type">DI</span></td><td>Line, <strong>egen kanal</strong>. Kort tele-kabel</td></tr>
+            <tr><td class="num">19</td><td class="what">Bas sång</td><td><span class="type">Mick</span></td><td></td></tr>
+            <tr><td class="num">20</td><td class="what">Trumpet</td><td><span class="type">Trådlös</span></td><td>Trådlös mikrofon — ska kunna gå fram i numren</td></tr>
+            <tr><td class="num">21</td><td class="what">Akustisk gitarr</td><td><span class="type">DI</span></td><td>DI <strong>inkl. kort tele-kabel</strong> — tar inte med egen</td></tr>
+            <tr><td class="num">22</td><td class="what">Trumpet sång</td><td><span class="type">Mick</span></td><td></td></tr>
+            <tr><td class="num">23–24</td><td class="what">Gitarr</td><td><span class="type">XLR</span></td><td>2× XLR ut, stereo, från eget rack — <strong>även banjon går den vägen</strong>. Trådlöst instrument</td></tr>
+            <tr><td class="num">25</td><td class="what">Gitarr kör</td><td><span class="type">Mick</span></td><td>Samma mikrofon som talkbacken — se noteringen</td></tr>
+            <tr><td class="num">26</td><td class="what">Gitarr talkback</td><td><span class="type">Mick</span></td><td><strong>Samma mikrofon som kören</strong>, delad med Hipshot på golvet</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Output</div>
+    <h2 class="section-title">Returer &amp; monitorer</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Vem</th><th>Vad</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1–2</td><td class="what">Trummor</td><td><strong>2 golvmonitorer i äkta L/R-stereo.</strong> Inte två lådor på samma monomix</td></tr>
+          <tr><td class="num">3</td><td class="what">Trummor — närfält</td><td>Närfältsmonitor <strong>på stativ intill henne</strong>, bär kapellmästarens talkback</td></tr>
+          <tr><td class="num">4</td><td class="what">Trummor — over-ear</td><td>Hörlursväg vid trumpodiet med <strong>egen mix</strong>, för click. <strong>Får vara kablad</strong></td></tr>
+          <tr><td class="num">5–6</td><td class="what">Gitarr / kapellmästare</td><td>In-ear, stereo</td></tr>
+          <tr><td class="num">7–8</td><td class="what">Keys</td><td>In-ear, stereo. Egna lurar — behöver mottagare</td></tr>
+          <tr><td class="num">9–10</td><td class="what">Trumpet</td><td>In-ear, stereo</td></tr>
+          <tr><td class="num">11</td><td class="what">Trumpet — golv</td><td>Golvmonitor <em>utöver</em> in-earen</td></tr>
+          <tr><td class="num">12–13</td><td class="what">Bas</td><td>In-ear, stereo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner section">
+      <div class="section-label">Viktigt</div>
+      <h2 class="section-title">Noteringar</h2>
+      <div class="notes">
+        <div class="note">
+          <h3>Talkback — två vägar, och två kanaler på en mick</h3>
+          <p>Kapellmästarens talkback ska höras <strong>både i samtliga in-ears och i trumpositionens närfältsmonitor</strong>. Trumpositionen kör inte in-ear, så utan den andra vägen är det den enda platsen på scenen som inte hör kapellmästaren.</p>
+          <p style="margin-top:.8rem">⚠️ <strong>Talkbacken delar mikrofon med kören.</strong> En <strong>Hipshot på golvet</strong> vid gitarrpositionen växlar mellan de två, så samma mick ska ha <strong>två kanaler</strong> — 25 kör, 26 talkback. Fotstyrt, eftersom händerna är upptagna.</p>
+        </div>
+        <div class="note">
+          <h3>Trummorna kör wedge, inte in-ear</h3>
+          <p>Trumpositionen ska ha wedge-lyssning. Tre separata delar, och de ersätter inte varandra: <strong>två golvmonitorer</strong> i äkta stereo för lyssningen, <strong>en närfältsmonitor på stativ</strong> för talkbacken, och <strong>en kablad hörlursväg med egen mix</strong> för clicken. Övriga fyra positioner kör in-ear — alltså <strong>fyra mottagare</strong>.</p>
+        </div>
+        <div class="note">
+          <h3>Keys — två stereopar</h3>
+          <p>Keys kör två keyboards via en keyboardmixer och skickar ett stereopar därifrån. Det andra paret är <strong>marginal</strong>, så att ett keyboard kan tas direkt förbi mixern om det behövs. Klockspel och marimba är <strong>ljud i synten</strong>, inte fysiska instrument — inga extra mickar.</p>
+        </div>
+        <div class="note">
+          <h3>Sång</h3>
+          <p><strong>Alla fem positioner sjunger.</strong> Trummor, keys, bas och trumpet har var sin sångmick. Gitarrpositionen delar en mikrofon mellan kör och talkback via Hipshot — därav <strong>två kanaler på samma mick</strong>.</p>
+        </div>
+        <div class="note">
+          <h3>DI och kablage</h3>
+          <p><strong>DI till samtliga</strong> som behöver det — inklusive SPD-SX:en — och <strong>korta tele-kablar</strong> till dem. Den akustiska gitarristen tar inte med egen kabel.</p>
+        </div>
+        <div class="note">
+          <h3>Trådlöst</h3>
+          <p>Trumpet, bas och gitarr ska vara trådlösa för att kunna röra sig och gå fram i olika musiknummer.</p>
+        </div>
+        <div class="note">
+          <h3>Akt 1 ingår inte här</h3>
+          <p>Förshowen — piano och ståbas — ligger utanför det här underlaget och speccas separat av produktionen.</p>
+        </div>
+        <div class="note">
+          <h3>Tracks och click</h3>
+          <p><em>Truckdriving Song</em> <strong>spelas live</strong> — den låg tidigare helt på tracks. Kvar på tracks är då <em>Konfirmationspresenten</em>, som har clicktrack och voice-guide. <strong>Click behövs alltså sannolikt bara på en låt.</strong> Hur tracks och ljudeffekter spelas upp är däremot <strong>ännu inte avgjort</strong> — Q-lab från FOH, SPD-SX från trummor, eller båda — och trumpositionens clickväg beror på det beslutet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Att bestämma</div>
+    <h2 class="section-title">Öppna frågor</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Fråga</th><th>Vem avgör</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td class="what">Tracks: Q-lab, SPD-SX eller båda?</td><td>Produktionen / Sonic Group. Enda kvarvarande frågan — styr även vem som äger clicken</td></tr>
+            </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Kontakt</div>
+    <h2 class="section-title">Frågor om tekniken?</h2>
+    <div class="contact-card">
+      <div class="contact-card-label">Kontaktperson</div>
+      <div class="contact-card-name">Richard Hauer</div>
+      <div class="contact-card-org">Kapellmästare · Macken 40 år</div>
+      <div class="contact-detail"><span class="contact-detail-icon">✉</span><a href="mailto:richardhauer@me.com">richardhauer@me.com</a></div>
+      <div class="contact-detail"><span class="contact-detail-icon">☎</span><a href="tel:+46708781116">070-878 11 16</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>En hyllning till Macken · Kajskjul 8, hösten 2026 · Teknikunderlag · <a href="index.html">Om showen</a></p>
+  </footer>
+
+</body>
+</html>
