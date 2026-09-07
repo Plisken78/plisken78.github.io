@@ -36,7 +36,7 @@ if [ $? -eq 0 ]; then
 else
   echo ""
   echo "❌  Något gick fel. Kontrollera din internetanslutning"
-  echo "    och att din GitHub-token fortfarande är giltig."
+  echo "    och att SSH-nyckeln ligger i ssh-agent (remoten är git@github.com sedan 30 aug 2026)."
 fi
 
 echo ""
