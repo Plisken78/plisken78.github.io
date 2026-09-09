@@ -39,6 +39,11 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 - `INBOX/` är Richards arbetsmapp för underlag – **git-ignorerad**, publiceras aldrig
 - `teknik/`-sidor är olänkade från menyn med `<meta name="robots" content="noindex">`; dela URL:en manuellt
 - **Teknikunderlag som hör till en show läggs under showens egen mapp** (`macken/kanallista.html`), inte i `teknik/` — då landar man på showsidan när man backar i URL:en. `teknik/` är kvar för underlag utan egen showsida, som vikingline-2026.
+- **Länka bara nedåt i mottagarkrets.** Underlagen under `macken/` har olika publik:
+  kanallistan går till ljudteknikerna, cuekortet till bandet och regissören. Cuekortet
+  länkar därför TILL kanallistan, men kanallistan länkar aldrig tillbaka — cuekortet bär
+  ofärdiga omtag och en "att lösa"-lista som inte hör hemma hos en inhyrd tekniker.
+  Samma resonemang gäller nästa show: fråga vem som får URL:en, inte vad som är praktiskt.
 - 🔒 **Teknikunderlag: skriv ROLL, inte namn — och ÖNSKEMÅL, inte skäl (infört 6 sep 2026).**
   Kanalerna heter `Trummor`, `Keys`, `Elbas`, `Trumpet`, `Gitarr kör`, `Talkback` — inte
   musikernas förnamn. Richards eget namn står bara på kontaktkortet, där det behövs.
