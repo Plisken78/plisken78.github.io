@@ -164,9 +164,16 @@
 
   /* ---------- print ---------- */
   @page{size:A4 portrait; margin:11mm}
+  /* Lank till kanallistan – klickbar pa skarm, utskriven URL pa papper */
+  .xlink{color:inherit; text-decoration:none; border-bottom:1.5px solid var(--ink); font-weight:700}
+  .xlink:hover{background:var(--fill)}
+
   @media print{
     body{background:#fff; font-size:11pt}
     .panel{display:none}
+    .xlink{border-bottom:0}
+    .xlink::after{content:" richardhauer.com/macken/kanallista.html";
+      font-family:var(--mono); font-weight:400; font-size:8pt; white-space:nowrap}
     .sheet{max-width:none; padding:0; margin:0}
     .card{border-width:1.6px}
     body.breaks .paus{break-after:page; page-break-after:always}
@@ -412,6 +419,7 @@ function build(){
         <div><b>Cuekort</b> – kapellmästare/gitarr</div>
         <div><b>Attacca</b> = håll ihop, ingen paus</div>
         <div><b>Akt 2</b> ca 1 tim 40 min</div>
+        <div><a class="xlink" href="kanallista.html">Kanallista &amp; monitorlista &rarr;</a></div>
       </div>
     </div>`;
 
