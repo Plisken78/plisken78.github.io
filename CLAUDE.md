@@ -23,7 +23,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 | `teknik/vikingline-2026.html` | Teknikunderlag (kanallista, stageplot, returer) för Greetings From Sweden, Viking Line 3–4 sep 2026. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Har ljus print-stil. |
 | `macken/index.html` | Macken 40 år – showsida (premiär 26/9 2026, 14 föreställningar, Kajskjul 8). **Står `noindex` tills Richard godkänt texten**; ta bort raden för att publicera. Ännu inte länkad från startsidans Macken-kort, som pekar på Kajskjul 8:s biljettsida. |
 | `macken/kanallista.html` | Teknikunderlag (26 kanaler in, 13 returer, öppna frågor) för Macken 40 år. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Samma print-stil som vikingline-sidan. **Ligger medvetet under `macken/`** så att en bakåtnavigering från kanallistan landar på showsidan. |
-| `macken/cuekort.html` | Cuekort för kapellmästare/gitarr (Macken 40 år) – kortlista per akt med cue-repliker, attacca, omtag, rigg/preset och "att lösa". Olänkad + `noindex` – URL skickas direkt till bandet och regissören. Egen ljus print-stil (A4), innehållet ligger i `SHOW`-arrayen längst ner i filen – ändra bara där. |
+| `macken/cuekort.html` | Cuekort för kapellmästare/gitarr (Macken 40 år) – kortlista per akt med cue-repliker, attacca, omtag, rigg/preset och "att lösa". Olänkad + `noindex` – URL skickas direkt till bandet och regissören. Egen ljus print-stil (A4), innehållet ligger i `SHOW`-arrayen längst ner i filen – ändra bara där. **Redigeras direkt i `macken/cuekort.html`** – originalet i `INBOX/` är bara leveransen, död efter första publiceringen 9 sep 2026. |
 
 ## Bilder
 - `img/bildspel/` – ca 65 bilder till galleriet/bildspelet på startsidan
