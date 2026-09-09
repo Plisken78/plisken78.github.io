@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuekort · Macken 40 år · Kajskjul 8, hösten 2026</title>
+<meta name="description" content="Cuekort för kapellmästare/gitarr – Macken 40 år, Kajskjul 8, Göteborg, hösten 2026.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --ink:#000;
+    --rule:#8a8a8a;
+    --fill:#efefef;
+    --paper:#fff;
+    --sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:#d9d9d9; color:var(--ink);
+    font-family:var(--sans); font-size:11.5pt; line-height:1.35;
+  }
+  .sheet{
+    max-width:198mm; margin:0 auto; background:var(--paper);
+    padding:14mm 13mm 18mm;
+  }
+
+  /* ---------- kontrollpanel (bara skärm) ---------- */
+  .panel{
+    position:sticky; top:0; z-index:9; background:#111; color:#fff;
+    padding:10px 14px; display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+    font-size:10.5pt;
+  }
+  .panel strong{font-weight:700; letter-spacing:.02em}
+  .panel label{display:flex; gap:6px; align-items:center; cursor:pointer}
+  .panel input{accent-color:#fff}
+  .panel button{
+    font:inherit; font-weight:700; background:#fff; color:#111; border:0;
+    padding:6px 14px; cursor:pointer;
+  }
+  .panel button:focus-visible, .panel label:focus-within{outline:2px solid #fff; outline-offset:2px}
+
+  /* ---------- huvud ---------- */
+  .plate{border:2.5px solid var(--ink); padding:7mm 8mm 6mm; margin-bottom:8mm}
+  .plate h1{
+    margin:0; font-size:30pt; line-height:.95; font-weight:800;
+    letter-spacing:-.02em;
+  }
+  .plate h1 span{display:block; font-size:13pt; font-weight:400; letter-spacing:.34em; margin-bottom:5px}
+  .plate .meta{
+    margin-top:6mm; padding-top:3mm; border-top:1px solid var(--rule);
+    display:flex; flex-wrap:wrap; gap:4mm 10mm;
+    font-family:var(--mono); font-size:9pt;
+  }
+  .plate .meta b{font-weight:700}
+
+  /* ---------- översikt ---------- */
+  h2.sec{
+    font-size:12pt; font-weight:800; letter-spacing:.18em; margin:0 0 4mm;
+    padding-bottom:2mm; border-bottom:2.5px solid var(--ink);
+  }
+  .over{width:100%; border-collapse:collapse; font-size:9.5pt; margin-bottom:9mm}
+  .over th{
+    text-align:left; font-family:var(--mono); font-size:8pt; font-weight:700;
+    border-bottom:1px solid var(--ink); padding:2px 6px 3px;
+  }
+  .over td{padding:3px 6px; border-bottom:1px solid #ddd; vertical-align:top}
+  .over td:first-child{font-family:var(--mono); font-weight:700; width:12mm}
+  .over .brk td{background:var(--fill); font-family:var(--mono); font-size:8.5pt}
+
+  /* ---------- kort ---------- */
+  .akt{
+    margin:0 0 5mm; padding:2mm 0 2mm;
+    border-top:5px solid var(--ink); border-bottom:1.5px solid var(--ink);
+    font-size:14pt; font-weight:800; letter-spacing:.2em;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .akt em{font-style:normal; font-family:var(--mono); font-size:8.5pt; font-weight:400; letter-spacing:.06em}
+
+  .card{
+    border:2px solid var(--ink); margin:0 0 6mm; break-inside:avoid; page-break-inside:avoid;
+  }
+  .card > header{
+    display:flex; align-items:stretch; border-bottom:2px solid var(--ink);
+  }
+  .card .num{
+    font-family:var(--mono); font-weight:700; font-size:14pt;
+    background:var(--ink); color:var(--paper);
+    padding:3mm 3.5mm; display:flex; align-items:center; min-width:15mm; justify-content:center;
+  }
+  .card .head{padding:2.5mm 4mm; flex:1}
+  .card .head h3{margin:0; font-size:14pt; font-weight:800; line-height:1.15; letter-spacing:-.01em}
+  .card .head .tags{margin-top:1.5mm; font-family:var(--mono); font-size:8pt; display:flex; flex-wrap:wrap; gap:2mm 5mm}
+  .body{padding:3mm 4mm 3.5mm}
+
+  .row{display:flex; gap:3mm; padding:1.8mm 0; align-items:flex-start}
+  .row + .row{border-top:1px dotted #c4c4c4}
+  .ic{flex:0 0 auto; width:15px; height:15px; margin-top:1.5px}
+  .ic svg{display:block; width:15px; height:15px}
+  .lbl{
+    flex:0 0 21mm; font-family:var(--mono); font-size:7.6pt; font-weight:700;
+    letter-spacing:.06em; padding-top:2px;
+  }
+  .txt{flex:1}
+  .txt .sub{font-size:9pt; color:#333}
+
+  /* låtrad = det viktigaste */
+  .song .txt{font-size:13pt; font-weight:800; line-height:1.2}
+  .song .lbl{padding-top:4px}
+
+  /* cue-repliker */
+  .say{font-weight:700; font-size:12pt}
+  .who{font-weight:400}
+
+  .attacca{
+    display:flex; align-items:center; gap:3mm; margin:1.5mm 0 1.5mm 0;
+    font-family:var(--mono); font-size:8pt; font-weight:700; letter-spacing:.14em;
+  }
+  .attacca::after{content:""; flex:1; border-top:1.5px solid var(--ink)}
+  .attacca svg{width:13px; height:13px}
+
+  .flag{
+    display:inline-block; border:1.5px solid var(--ink); padding:0 4px;
+    font-family:var(--mono); font-size:7.5pt; font-weight:700; letter-spacing:.05em;
+    margin-right:4px; white-space:nowrap;
+  }
+  .flag.solid{background:var(--ink); color:var(--paper)}
+
+  .paus{
+    display:flex; align-items:center; gap:3mm; margin:0 0 6mm; padding:1.5mm 0;
+    border-top:1px dashed var(--ink); border-bottom:1px dashed var(--ink);
+    font-family:var(--mono); font-size:9pt; letter-spacing:.05em;
+    break-inside:avoid;
+  }
+  .paus svg{width:16px; height:16px}
+  .paus b{font-weight:700}
+  .paus.big{
+    background:var(--ink); color:var(--paper); border:0;
+    padding:3mm 4mm; font-size:11pt; font-weight:700; letter-spacing:.3em;
+  }
+
+  .todolist{border:2px dashed var(--ink); padding:4mm 5mm; margin-top:7mm; break-inside:avoid}
+  .todolist h2{margin:0 0 2.5mm; font-size:11pt; letter-spacing:.14em}
+  .todolist ul{margin:0; padding-left:5mm; font-size:10pt}
+  .todolist li{margin-bottom:1.5mm}
+  .todolist li b{font-family:var(--mono); font-size:8.5pt}
+
+  footer.foot{
+    margin-top:8mm; padding-top:2mm; border-top:1px solid var(--rule);
+    font-family:var(--mono); font-size:8pt; display:flex; justify-content:space-between;
+  }
+
+  /* ---------- lägen ---------- */
+  body.compact{font-size:10.5pt}
+  body.compact .card .head h3{font-size:12pt}
+  body.compact .song .txt{font-size:11.5pt}
+  body.compact .say{font-size:10.5pt}
+  body.compact .body{padding:2mm 3.5mm 2.5mm}
+  body.compact .row{padding:1.2mm 0}
+  body.compact .card{margin-bottom:4.5mm}
+
+  body.hide-rig .rigtag{display:none}
+
+  /* ---------- print ---------- */
+  @page{size:A4 portrait; margin:11mm}
+  @media print{
+    body{background:#fff; font-size:11pt}
+    .panel{display:none}
+    .sheet{max-width:none; padding:0; margin:0}
+    .card{border-width:1.6px}
+    body.breaks .paus{break-after:page; page-break-after:always}
+    body.breaks .paus.big{break-after:auto; page-break-after:auto}
+    body.breaks .akt{break-before:page; page-break-before:always}
+    body.breaks .akt.first{break-before:auto; page-break-before:auto}
+    .todolist{break-before:auto}
+  }
+</style>
+</head>
+<body class="breaks">
+
+<div class="panel">
+  <strong>Cuekort · Macken 40 år</strong>
+  <label><input type="checkbox" id="tBreaks" checked> Ny sida vid varje paus</label>
+  <label><input type="checkbox" id="tCompact"> Kompakt</label>
+  <label><input type="checkbox" id="tRig" checked> Visa gitarr/preset</label>
+  <button id="btnPrint">Skriv ut</button>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-cue"><path d="M2 3h20v13H9l-6 5v-5H2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g>
+    <g id="i-out"><path d="M14 3h7v18h-7M3 12h11m0 0-4-4m4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-repeat"><path d="M4 11V9a4 4 0 0 1 4-4h11m0 0-4-4m4 4-4 4M20 13v2a4 4 0 0 1-4 4H5m0 0 4 4m-4-4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-wrench"><path d="M20 4a5 5 0 0 1-6.5 6.5L5 19a2.1 2.1 0 0 1-3-3l8.5-8.5A5 5 0 0 1 17 1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g>
+    <g id="i-bulb"><path d="M9 20h6M10 23h4M12 2a7 7 0 0 0-4 12.8V17h8v-2.2A7 7 0 0 0 12 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-sfx"><path d="M4 9v6h4l5 4V5L8 9zM17 8a6 6 0 0 1 0 8M20 5a10 10 0 0 1 0 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-q"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 9a3 3 0 1 1 3.6 3c-.6.2-.6.9-.6 1.6M12 17.5h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+    <g id="i-arrow"><path d="M4 12h15m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="i-note"><path d="M9 18V4l11-2v14M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm11-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g>
+  </defs>
+</svg>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+/* =========================================================================
+   ALLT INNEHÅLL LIGGER HÄR NERE. Ändra bara i SHOW-arrayen.
+   kind: 'song' | 'cue' | 'out' | 'omtag' | 'note' | 'sfx' | 'todo' | 'ljus' | 'attacca'
+   ========================================================================= */
+
+const SHOW = [
+ {akt:2, len:"ca 1 tim 40 min"},
+
+ {card:"1", title:"Ouvertyr → Macken piano → Macken gitarr",
+  tags:["Narvik #1 · Input 1","Preset 0963"],
+  items:[
+    {kind:"note", text:"Speakerinspelning från bandet startar föreställningen"},
+    {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel"},
+    {kind:"cue",  who:"Speaker", text:"Då sänder vi in kvällens fantastiska cast"},
+    {kind:"attacca"},
+    {kind:"song", text:"Macken – pianoversion", sub:"Ligger bakom speaker av Claes Eriksson (röst från bandet)"},
+    {kind:"attacca"},
+    {kind:"song", text:"Macken – gitarrvariant"},
+    {kind:"out",  who:"Linnea", text:"Roooger"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"2", title:"Truckdriving Song",
+  tags:["Banjo · Input 4","Janne + Richard lämnar podiet"],
+  items:[
+    {kind:"cue", who:"Olle", text:"Otroligt, det är helt otroligt"},
+    {kind:"note", text:"Inräkning av Malin"},
+    {kind:"omtag", text:"Refräng i F#m – med upptakten, vanliga slutet"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"3", title:"Trofémusik → Vattenpumpen",
+  tags:["Nylon · Input 3 (Vattenpumpen)"],
+  items:[
+    {kind:"cue", who:"Olle", text:"Sicket folk", sub:"→ skylt → applåd → trofémusik"},
+    {kind:"song", text:"Trofémusik"},
+    {kind:"attacca"},
+    {kind:"song", text:"Det är vattenpumpen Gerd"},
+    {kind:"omtag", text:"Från början: Cm – F – Gm – Em7♭5", sub:"Hoppa över de sjuka ackorden"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"4", title:"Egentligen → sändningen går ner",
+  tags:["Narvik #1 · Input 1"],
+  items:[
+    {kind:"omtag", text:"Inget omtag"},
+    {kind:"ljus", text:"On air släcks – annat ljus"},
+    {kind:"note", text:"Malin drar igång en speaker"}
+  ]},
+ {paus:"AKTPAUS"},
+
+ {card:"1", title:"Nisses tuggummi → Mitt liv tills idag → Jag vet inte vad det är",
+  tags:["Jazzgitarr · Input 2 (stereo L/R) från Mitt liv"],
+  items:[
+    {kind:"note", text:"Malin: andra speakern"},
+    {kind:"todo", text:"Cue 1 ej bestämd – in i Nisses tuggummi"},
+    {kind:"song", text:"Nisses tuggummi"},
+    {kind:"attacca"},
+    {kind:"cue", who:"Cue 2", text:"Radioprat Claes"},
+    {kind:"song", text:"Mitt liv tills idag"},
+    {kind:"attacca"},
+    {kind:"song", text:"Jag vet inte vad det är"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"2", title:"Synthen",
+  items:[
+    {kind:"cue", who:"Anders", text:"Önskar du dig inget då eller?"},
+    {kind:"note", text:"Ev. dubblat intro"},
+    {kind:"omtag", text:"Via tracks"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"3", title:"I ditt bagage → radioprat → Macken gitarr",
+  items:[
+    {kind:"cue", who:"Olle", text:"Det är otroligt, helt otroligt"},
+    {kind:"song", text:"I ditt bagage"},
+    {kind:"todo", text:"Bestäm var omtaget ska ligga – ca 8 sek, skriv upp det"},
+    {kind:"attacca"},
+    {kind:"note", text:"Malin drar igång radioprat av Claes direkt efter omtaget"},
+    {kind:"cue", who:"Linnea", text:"Kolla borta på Pressbyrån, där har dem mycket skit"},
+    {kind:"song", text:"Macken – gitarrvariant", sub:"Kort version, utan cueavslut"}
+  ]},
+ {paus:"ca 2 min musikerpaus"},
+
+ {card:"4", title:"Kärlek är större än bilar",
+  tags:["Jazzgitarr · Input 2"],
+  items:[
+    {kind:"cue", who:"Jens", text:"Jag skulle hälsa att hon längtar efter dig", sub:"Olle: ”Aaa!”"},
+    {kind:"todo", text:"Omtag ej bestämt"}
+  ]},
+
+ {card:"5", title:"Sändningspaus → Tornadokam → Lasse Lönndahl → Macken gitarr",
+  items:[
+    {kind:"ljus", text:"On air släcks – annat ljus"},
+    {kind:"note", text:"Malin drar igång radioclaes 1"},
+    {kind:"note", text:"Reklam: Tornadokam – bara Solala, bandet spelar inte"},
+    {kind:"attacca"},
+    {kind:"note", text:"Malin startar radioclaes 2"},
+    {kind:"attacca"},
+    {kind:"song", text:"Lasse Lönndahl"},
+    {kind:"note", text:"Malin speaker: ”Det där var Janne Bjerger osv”"},
+    {kind:"attacca"},
+    {kind:"song", text:"Macken – gitarrvariant"},
+    {kind:"out", who:"Anders", text:"Hallå där borta, kan ni laga den här", sub:"Motorn läggs upp på bordet – avbryter låten"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"6", title:"Trofémusik → Har du gått din sista mil",
+  tags:["Preset 0962"],
+  items:[
+    {kind:"cue", who:"Olle", text:"Det en inte har i huvudet får man ha på banken, eller vad säger du Roger?"},
+    {kind:"song", text:"Trofémusik"},
+    {kind:"attacca"},
+    {kind:"song", text:"Har du gått din sista mil"},
+    {kind:"todo", text:"Omtag: hitta på något snyggt"}
+  ]},
+ {paus:"ca 5 min musikerpaus"},
+
+ {card:"7", title:"Privat → gräsklippare",
+  items:[
+    {kind:"cue", who:"Olle", text:"Ah lycka te!", sub:"Jens: ”Tack”"},
+    {kind:"song", text:"Privat"},
+    {kind:"omtag", text:"Med ljusa uppgången"},
+    {kind:"attacca"},
+    {kind:"sfx", text:"Malin: ljudeffekter gräsklippare"}
+  ]},
+ {paus:"ca 5 min gräsklippesketch"},
+
+ {card:"8", title:"Husvagnsintro → Husvagn → avslut på Macken piano",
+  items:[
+    {kind:"cue", who:"Linnea", text:"Jag vill ha mer glass, öppna, öppna"},
+    {kind:"song", text:"Husvagnsintro"},
+    {kind:"attacca"},
+    {kind:"song", text:"Husvagn"},
+    {kind:"omtag", text:"Breakdelen med virvelsolo"},
+    {kind:"sfx", text:"Malin: den beige kunden", sub:"Cue – Linnea: ”Kom nu lilla rofsingen”"},
+    {kind:"sfx", text:"Malin: polis", sub:"Cue – Jens: ”Gubben i 240, då vet vi ju vem det var”"},
+    {kind:"song", text:"Macken – pianoversion", sub:"I bakgrunden medan Solala pratar · Olle: ”Tuut, tuut, tuut”"},
+    {kind:"out", who:"Anders", text:"Hejdå Macken, vi ses i morrn!", sub:"Kepsen åker på → sluta spela"}
+  ]},
+
+ {card:"9", title:"Final: Gött å leva → Macken → Adjö",
+  tags:["Jazzgitarr på Adjö"],
+  items:[
+    {kind:"ljus", text:"Applådskylten tänds – applåder"},
+    {kind:"song", text:"Gött å leva", sub:"Ge ton. Bandet slutar själva – Solala ger tecken när ombytet är klart"},
+    {kind:"attacca"},
+    {kind:"song", text:"Macken"},
+    {kind:"omtag", text:"Virvel/pukfills startar in i reprisen", sub:"Fullt ös, trumpetmelodi, hel refräng"},
+    {kind:"todo", text:"Längd på slutreprisen ej klar"},
+    {kind:"song", text:"Adjö", sub:"Framme vid scenkanten"},
+    {kind:"song", text:"Macken – omtagsversionen igen", flag:"EV", sub:"Applådtack: samma repris som ovan – virvel/pukfills, fullt ös"}
+  ]}
+];
+
+/* ---------- rendering ---------- */
+const IC = {
+  cue:"i-cue", out:"i-out", omtag:"i-repeat", note:"i-note",
+  sfx:"i-sfx", todo:"i-q", ljus:"i-bulb", song:"i-note"
+};
+const LBL = {
+  cue:"CUE IN", out:"CUE UT", omtag:"OMTAG", note:"NOTERA",
+  sfx:"LJUD", todo:"ATT LÖSA", ljus:"LJUS", song:"LÅT"
+};
+const icon = id => `<span class="ic"><svg viewBox="0 0 24 24"><use href="#${id}"/></svg></span>`;
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function renderItem(it){
+  if(it.kind === "attacca")
+    return `<div class="attacca">${icon("i-arrow")}ATTACCA – ingen paus</div>`;
+
+  const cls = it.kind === "song" ? "row song" : "row";
+  let txt;
+  if(it.kind === "cue" || it.kind === "out"){
+    txt = `<span class="who">${esc(it.who)}:</span> <span class="say">”${esc(it.text)}”</span>`;
+  } else {
+    txt = esc(it.text);
+  }
+  if(it.flag) txt = `<span class="flag">${esc(it.flag)}</span>` + txt;
+  if(it.sub)  txt += `<div class="sub">${esc(it.sub)}</div>`;
+
+  return `<div class="${cls}">${icon(IC[it.kind])}
+    <div class="lbl">${LBL[it.kind]}</div><div class="txt">${txt}</div></div>`;
+}
+
+function renderCard(b, akt){
+  const tags = (b.tags||[]).map(t=>`<span class="rigtag">${esc(t)}</span>`).join("");
+  return `<section class="card">
+    <header>
+      <div class="num">${akt}:${b._n}</div>
+      <div class="head"><h3>${esc(b.title)}</h3>${tags?`<div class="tags">${tags}</div>`:""}</div>
+    </header>
+    <div class="body">${b.items.map(renderItem).join("")}</div>
+  </section>`;
+}
+
+function build(){
+  // numrera korten automatiskt per akt – flytta ett kort, numren följer med
+  let n = 0;
+  SHOW.forEach(b=>{ if(b.akt){ n = 0; } else if(!b.paus){ b._n = ++n; } });
+
+  let html = `<div class="plate">
+      <h1><span>KAJSKJUL 8</span>Macken 40 år</h1>
+      <div class="meta">
+        <div><b>Cuekort</b> – kapellmästare/gitarr</div>
+        <div><b>Attacca</b> = håll ihop, ingen paus</div>
+        <div><b>Akt 2</b> ca 1 tim 40 min</div>
+      </div>
+    </div>`;
+
+  // översikt
+  html += `<h2 class="sec">SNABBÖVERSIKT</h2><table class="over"><thead>
+    <tr><th>Nr</th><th>Innehåll</th><th>Cue in</th></tr></thead><tbody>`;
+  let akt = 1;
+  SHOW.forEach(b=>{
+    if(b.akt){ akt = b.akt;
+      html += `<tr class="brk"><td colspan="3">AKT ${b.akt}</td></tr>`; return; }
+    if(b.paus){ html += `<tr class="brk"><td></td><td colspan="2">${esc(b.paus)}</td></tr>`; return; }
+    const c = b.items.find(i=>i.kind==="cue");
+    const cue = c ? `${c.who}: ”${c.text}”` : (b.items.find(i=>i.kind==="todo") ? "cue ej klar" : "–");
+    html += `<tr><td>${akt}:${b._n}</td><td>${esc(b.title)}</td><td>${esc(cue)}</td></tr>`;
+  });
+  html += `</tbody></table>`;
+
+  // kort
+  akt = 1; let first = true;
+  SHOW.forEach(b=>{
+    if(b.akt){
+      akt = b.akt;
+      html += `<div class="akt${first?" first":""}">AKT ${b.akt}<em>${esc(b.len||"")}</em></div>`;
+      first = false; return;
+    }
+    if(b.paus){
+      const big = /^AKTPAUS/.test(b.paus);
+      html += `<div class="paus${big?" big":""}">${icon(big?"i-bulb":"i-wrench")}<b>${esc(b.paus)}</b></div>`; return;
+    }
+    html += renderCard(b, akt);
+  });
+
+  // att lösa
+  const todos = [];
+  akt = 1;
+  SHOW.forEach(b=>{
+    if(b.akt){ akt = b.akt; return; }
+    if(b.paus) return;
+    b.items.filter(i=>i.kind==="todo").forEach(i=>todos.push(`<li><b>${akt}:${b._n}</b> ${esc(b.title)} – ${esc(i.text)}</li>`));
+  });
+  html += `<div class="todolist"><h2>ATT LÖSA FÖRE PREMIÄR</h2><ul>${todos.join("")}
+    </ul></div>`;
+
+  html += `<footer class="foot"><span>Macken 40 år – cuekort</span><span>Utskrift: <span id="d"></span></span></footer>`;
+
+  document.getElementById("sheet").innerHTML = html;
+  document.getElementById("d").textContent = new Date().toLocaleDateString("sv-SE");
+}
+build();
+
+/* ---------- kontroller ---------- */
+const t = (id, cls, inv) => {
+  const el = document.getElementById(id);
+  el.addEventListener("change", () => document.body.classList.toggle(cls, inv ? !el.checked : el.checked));
+};
+t("tBreaks","breaks");
+t("tCompact","compact");
+t("tRig","hide-rig", true);
+document.getElementById("btnPrint").addEventListener("click", () => window.print());
+</script>
+</body>
+</html>
