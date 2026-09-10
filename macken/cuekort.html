@@ -222,7 +222,7 @@ const SHOW = [
  {card:"1", title:"Ouvertyr → Macken piano → Macken gitarr",
   tags:["Narvik #1 · Input 1","Preset 0963"],
   items:[
-    {kind:"note", text:"Speakerinspelning från bandet startar föreställningen"},
+    {kind:"sfx", text:"FOH: speakerinspelning från bandet startar föreställningen"},
     {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel"},
     {kind:"cue",  who:"Speaker", text:"Då sänder vi in kvällens fantastiska cast"},
     {kind:"attacca"},
@@ -258,14 +258,14 @@ const SHOW = [
   items:[
     {kind:"omtag", text:"Inget omtag"},
     {kind:"ljus", text:"On air släcks – annat ljus"},
-    {kind:"note", text:"Malin drar igång en speaker"}
+    {kind:"sfx", text:"FOH drar igång en speaker"}
   ]},
  {paus:"AKTPAUS"},
 
  {card:"1", title:"Nisses tuggummi → Mitt liv tills idag → Jag vet inte vad det är",
   tags:["Jazzgitarr · Input 2 (stereo L/R) från Mitt liv"],
   items:[
-    {kind:"note", text:"Malin: andra speakern"},
+    {kind:"sfx", text:"FOH: andra speakern"},
     {kind:"todo", text:"Cue 1 ej bestämd – in i Nisses tuggummi"},
     {kind:"song", text:"Nisses tuggummi"},
     {kind:"attacca"},
@@ -276,9 +276,10 @@ const SHOW = [
   ]},
  {paus:"ca 5 min musikerpaus"},
 
- {card:"2", title:"Synthen",
+ {card:"2", title:"Jag vill ha en synth (Konfirmationspresenten)",
   items:[
     {kind:"cue", who:"Anders", text:"Önskar du dig inget då eller?"},
+    {kind:"sfx", text:"Malin startar backtracken från SPD-SX", sub:"Enda ljudet som körs från scenen – allt annat ligger på FOH"},
     {kind:"note", text:"Ev. dubblat intro"},
     {kind:"omtag", text:"Via tracks"}
   ]},
@@ -290,7 +291,7 @@ const SHOW = [
     {kind:"song", text:"I ditt bagage"},
     {kind:"todo", text:"Bestäm var omtaget ska ligga – ca 8 sek, skriv upp det"},
     {kind:"attacca"},
-    {kind:"note", text:"Malin drar igång radioprat av Claes direkt efter omtaget"},
+    {kind:"sfx", text:"FOH drar igång radioprat av Claes direkt efter omtaget"},
     {kind:"cue", who:"Linnea", text:"Kolla borta på Pressbyrån, där har dem mycket skit"},
     {kind:"song", text:"Macken – gitarrvariant", sub:"Kort version, utan cueavslut"}
   ]},
@@ -306,13 +307,13 @@ const SHOW = [
  {card:"5", title:"Sändningspaus → Tornadokam → Lasse Lönndahl → Macken gitarr",
   items:[
     {kind:"ljus", text:"On air släcks – annat ljus"},
-    {kind:"note", text:"Malin drar igång radioclaes 1"},
+    {kind:"sfx", text:"FOH drar igång radioclaes 1"},
     {kind:"note", text:"Reklam: Tornadokam – bara Solala, bandet spelar inte"},
     {kind:"attacca"},
-    {kind:"note", text:"Malin startar radioclaes 2"},
+    {kind:"sfx", text:"FOH startar radioclaes 2"},
     {kind:"attacca"},
     {kind:"song", text:"Lasse Lönndahl"},
-    {kind:"note", text:"Malin speaker: ”Det där var Janne Bjerger osv”"},
+    {kind:"sfx", text:"FOH speaker: ”Det där var Janne Bjerger osv”"},
     {kind:"attacca"},
     {kind:"song", text:"Macken – gitarrvariant"},
     {kind:"out", who:"Anders", text:"Hallå där borta, kan ni laga den här", sub:"Motorn läggs upp på bordet – avbryter låten"}
@@ -336,7 +337,7 @@ const SHOW = [
     {kind:"song", text:"Privat"},
     {kind:"omtag", text:"Med ljusa uppgången"},
     {kind:"attacca"},
-    {kind:"sfx", text:"Malin: ljudeffekter gräsklippare"}
+    {kind:"sfx", text:"FOH: ljudeffekter gräsklippare"}
   ]},
  {paus:"ca 5 min gräsklippesketch"},
 
@@ -347,8 +348,8 @@ const SHOW = [
     {kind:"attacca"},
     {kind:"song", text:"Husvagn"},
     {kind:"omtag", text:"Breakdelen med virvelsolo"},
-    {kind:"sfx", text:"Malin: den beige kunden", sub:"Cue – Linnea: ”Kom nu lilla rofsingen”"},
-    {kind:"sfx", text:"Malin: polis", sub:"Cue – Jens: ”Gubben i 240, då vet vi ju vem det var”"},
+    {kind:"sfx", text:"FOH: den beige kunden", sub:"Cue – Linnea: ”Kom nu lilla rofsingen”"},
+    {kind:"sfx", text:"FOH: polis", sub:"Cue – Jens: ”Gubben i 240, då vet vi ju vem det var”"},
     {kind:"song", text:"Macken – pianoversion", sub:"I bakgrunden medan Solala pratar · Olle: ”Tuut, tuut, tuut”"},
     {kind:"out", who:"Anders", text:"Hejdå Macken, vi ses i morrn!", sub:"Kepsen åker på → sluta spela"}
   ]},
@@ -419,6 +420,7 @@ function build(){
         <div><b>Cuekort</b> – kapellmästare/gitarr</div>
         <div><b>Attacca</b> = håll ihop, ingen paus</div>
         <div><b>Akt 2</b> ca 1 tim 40 min</div>
+        <div><b>Ljud</b> = FOH kör alla ljud-cuer · Malin kör bara backtracken på <i>Jag vill ha en synth</i></div>
         <div><a class="xlink" href="kanallista.html">Kanallista &amp; monitorlista &rarr;</a></div>
       </div>
     </div>`;
