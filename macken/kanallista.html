@@ -76,6 +76,13 @@
     .note h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; margin-bottom: .5rem; }
     .note p { color: var(--muted); font-size: .92rem; line-height: 1.75; }
 
+    /* ── Ändringar sedan förra revisionen ── */
+    .changes { list-style: none; border: 1px solid var(--border); background: var(--surface2); padding: 1.25rem 1.5rem; }
+    .changes li { position: relative; padding-left: 1.4rem; color: var(--muted); font-size: .92rem; line-height: 1.7; margin-bottom: .35rem; }
+    .changes li:last-child { margin-bottom: 0; }
+    .changes li::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+    .changes strong { color: var(--text); font-weight: 500; }
+
     /* ── Contact ── */
     .contact-card { background: var(--surface2); border: 1px solid var(--border); padding: 2.25rem; max-width: 460px; }
     .contact-card-label { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
@@ -117,7 +124,7 @@
 
   <nav>
     <a href="../index.html" class="nav-logo">Richard Hauer</a>
-    <span class="nav-meta">Teknikunderlag</span>
+    <span class="nav-meta">Teknikunderlag · Rev 2</span>
   </nav>
 
   <header class="head">
@@ -139,10 +146,26 @@
       </div>
       <div>
         <div class="fact-label">Kanaler</div>
-        <div class="fact-value">26 in · 13 returer</div>
+        <div class="fact-value">28 in · 11 returer</div>
+      </div>
+      <div>
+        <div class="fact-label">Version</div>
+        <div class="fact-value">Rev 2 · 10 september 2026<br>Ersätter rev 1 från 7 september</div>
       </div>
     </div>
   </header>
+
+  <section class="section">
+    <div class="section-label">Rev 2</div>
+    <h2 class="section-title">Ändrat sedan rev 1</h2>
+    <ul class="changes">
+      <li><strong>Lurar:</strong> gitarr, keys och bas har egna in-ear-lurar och behöver bara mottagare. Trumpositionen behöver <strong>ett par over-ear</strong>.</li>
+      <li><strong>Trumpet kör wedge, inte in-ear.</strong> In-ear-returerna till trumpet är borttagna, och golvmonitorn är nu hela lyssningen.</li>
+      <li><strong>Trådlöst specat per position:</strong> gitarr 4 kanaler, trumpetpositionen 2 (trumpet + gitarr), bas 1.</li>
+      <li><strong>Två nya mickar på bas:</strong> kontrabas och elbasförstärkare, båda utöver DI. Elbasmicken är en option.</li>
+      <li>Kanalerna från 18 och uppåt har därför <strong>nya nummer</strong>, och returerna har gått från 13 till 11.</li>
+    </ul>
+  </section>
 
   <section class="section-alt">
     <div class="inner section">
@@ -167,14 +190,16 @@
             <tr><td class="num">14–15</td><td class="what">Keys B</td><td><span class="type">DI</span></td><td>Andra stereoparet — marginal, se noteringen</td></tr>
             <tr><td class="num">16</td><td class="what">Keys sång</td><td><span class="type">Mick</span></td><td></td></tr>
             <tr><td class="num">17</td><td class="what">Elbas</td><td><span class="type">DI</span></td><td>Line. Trådlöst instrument. Kort tele-kabel</td></tr>
-            <tr><td class="num">18</td><td class="what">Kontrabas</td><td><span class="type">DI</span></td><td>Line, <strong>egen kanal</strong>. Kort tele-kabel</td></tr>
-            <tr><td class="num">19</td><td class="what">Bas sång</td><td><span class="type">Mick</span></td><td></td></tr>
-            <tr><td class="num">20</td><td class="what">Trumpet</td><td><span class="type">Trådlös</span></td><td>Trådlös mikrofon — ska kunna gå fram i numren</td></tr>
-            <tr><td class="num">21</td><td class="what">Akustisk gitarr</td><td><span class="type">DI</span></td><td>DI <strong>inkl. kort tele-kabel</strong> — tar inte med egen</td></tr>
-            <tr><td class="num">22</td><td class="what">Trumpet sång</td><td><span class="type">Mick</span></td><td></td></tr>
-            <tr><td class="num">23–24</td><td class="what">Gitarr</td><td><span class="type">XLR</span></td><td>2× XLR ut, stereo, från eget rack — <strong>även banjon går den vägen</strong>. Trådlöst instrument</td></tr>
-            <tr><td class="num">25</td><td class="what">Gitarr kör</td><td><span class="type">Mick</span></td><td>Samma mikrofon som talkbacken — se noteringen</td></tr>
-            <tr><td class="num">26</td><td class="what">Gitarr talkback</td><td><span class="type">Mick</span></td><td><strong>Samma mikrofon som kören</strong>, delad med Hipshot på golvet</td></tr>
+            <tr><td class="num">18</td><td class="what">Elbas förstärkare</td><td><span class="type">Mick</span></td><td><strong>Option, ny i rev 2.</strong> Utöver DI — behövs bara om elbasen går genom förstärkare i stället för enbart preamp</td></tr>
+            <tr><td class="num">19</td><td class="what">Kontrabas</td><td><span class="type">DI</span></td><td>Line, <strong>egen kanal</strong>. Kort tele-kabel</td></tr>
+            <tr><td class="num">20</td><td class="what">Kontrabas mick</td><td><span class="type">Mick</span></td><td><strong>Ny i rev 2.</strong> Utöver DI</td></tr>
+            <tr><td class="num">21</td><td class="what">Bas sång</td><td><span class="type">Mick</span></td><td></td></tr>
+            <tr><td class="num">22</td><td class="what">Trumpet</td><td><span class="type">Trådlös</span></td><td>Trådlös mikrofon — ska kunna gå fram i numren</td></tr>
+            <tr><td class="num">23</td><td class="what">Akustisk gitarr</td><td><span class="type">DI</span></td><td>Trumpetpositionens gitarr. <strong>Trådlöst instrument.</strong> DI <strong>inkl. kort tele-kabel</strong> — tar inte med egen</td></tr>
+            <tr><td class="num">24</td><td class="what">Trumpet sång</td><td><span class="type">Mick</span></td><td></td></tr>
+            <tr><td class="num">25–26</td><td class="what">Gitarr</td><td><span class="type">XLR</span></td><td>2× XLR ut, stereo, från eget rack — <strong>även banjon går den vägen</strong>. Trådlöst: <strong>4 kanaler</strong>, se noteringen</td></tr>
+            <tr><td class="num">27</td><td class="what">Gitarr kör</td><td><span class="type">Mick</span></td><td>Samma mikrofon som talkbacken — se noteringen</td></tr>
+            <tr><td class="num">28</td><td class="what">Gitarr talkback</td><td><span class="type">Mick</span></td><td><strong>Samma mikrofon som kören</strong>, delad med Hipshot på golvet</td></tr>
           </tbody>
         </table>
       </div>
@@ -190,12 +215,11 @@
         <tbody>
           <tr><td class="num">1–2</td><td class="what">Trummor</td><td><strong>2 golvmonitorer i äkta L/R-stereo.</strong> Inte två lådor på samma monomix</td></tr>
           <tr><td class="num">3</td><td class="what">Trummor — närfält</td><td>Närfältsmonitor <strong>på stativ intill henne</strong>, bär kapellmästarens talkback</td></tr>
-          <tr><td class="num">4</td><td class="what">Trummor — over-ear</td><td>Hörlursväg vid trumpodiet med <strong>egen mix</strong>, för click. <strong>Får vara kablad</strong></td></tr>
-          <tr><td class="num">5–6</td><td class="what">Gitarr / kapellmästare</td><td>In-ear, stereo</td></tr>
+          <tr><td class="num">4</td><td class="what">Trummor — over-ear</td><td>Hörlursväg vid trumpodiet med <strong>egen mix</strong>, för click. <strong>Får vara kablad.</strong> <strong>Ett par over-ear-lurar behövs</strong></td></tr>
+          <tr><td class="num">5–6</td><td class="what">Gitarr / kapellmästare</td><td>In-ear, stereo. Egna lurar — behöver mottagare</td></tr>
           <tr><td class="num">7–8</td><td class="what">Keys</td><td>In-ear, stereo. Egna lurar — behöver mottagare</td></tr>
-          <tr><td class="num">9–10</td><td class="what">Trumpet</td><td>In-ear, stereo</td></tr>
-          <tr><td class="num">11</td><td class="what">Trumpet — golv</td><td>Golvmonitor <em>utöver</em> in-earen</td></tr>
-          <tr><td class="num">12–13</td><td class="what">Bas</td><td>In-ear, stereo</td></tr>
+          <tr><td class="num">9</td><td class="what">Trumpet</td><td><strong>Golvmonitor — wedge-lyssning, ingen in-ear</strong></td></tr>
+          <tr><td class="num">10–11</td><td class="what">Bas</td><td>In-ear, stereo. Egna lurar — behöver mottagare</td></tr>
         </tbody>
       </table>
     </div>
@@ -208,12 +232,16 @@
       <div class="notes">
         <div class="note">
           <h3>Talkback — två vägar, och två kanaler på en mick</h3>
-          <p>Kapellmästarens talkback ska höras <strong>både i samtliga in-ears och i trumpositionens närfältsmonitor</strong>. Trumpositionen kör inte in-ear, så utan den andra vägen är det den enda platsen på scenen som inte hör kapellmästaren.</p>
-          <p style="margin-top:.8rem">⚠️ <strong>Talkbacken delar mikrofon med kören.</strong> En <strong>Hipshot på golvet</strong> vid gitarrpositionen växlar mellan de två, så samma mick ska ha <strong>två kanaler</strong> — 25 kör, 26 talkback. Fotstyrt, eftersom händerna är upptagna.</p>
+          <p>Kapellmästarens talkback ska höras <strong>i samtliga in-ears, i trumpositionens närfältsmonitor och i trumpetens golvmonitor</strong>. Trummor och trumpet kör inte in-ear, så utan de vägarna hör de inte kapellmästaren.</p>
+          <p style="margin-top:.8rem">⚠️ <strong>Talkbacken delar mikrofon med kören.</strong> En <strong>Hipshot på golvet</strong> vid gitarrpositionen växlar mellan de två, så samma mick ska ha <strong>två kanaler</strong> — 27 kör, 28 talkback. Fotstyrt, eftersom händerna är upptagna.</p>
         </div>
         <div class="note">
           <h3>Trummorna kör wedge, inte in-ear</h3>
-          <p>Trumpositionen ska ha wedge-lyssning. Tre separata delar, och de ersätter inte varandra: <strong>två golvmonitorer</strong> i äkta stereo för lyssningen, <strong>en närfältsmonitor på stativ</strong> för talkbacken, och <strong>en kablad hörlursväg med egen mix</strong> för clicken. Övriga fyra positioner kör in-ear — alltså <strong>fyra mottagare</strong>.</p>
+          <p>Trumpositionen ska ha wedge-lyssning. Tre separata delar, och de ersätter inte varandra: <strong>två golvmonitorer</strong> i äkta stereo för lyssningen, <strong>en närfältsmonitor på stativ</strong> för talkbacken, och <strong>en kablad hörlursväg med egen mix</strong> för clicken. Till hörlursvägen behövs <strong>ett par over-ear-lurar</strong>.</p>
+        </div>
+        <div class="note">
+          <h3>In-ear och lurar</h3>
+          <p><strong>Tre positioner kör in-ear: gitarr, keys och bas.</strong> Alla tre har egna lurar och behöver bara mottagare, alltså <strong>tre mottagare</strong>. <strong>Trumpet kör wedge</strong>, med en golvmonitor och ingen in-ear. <strong>Att packa: tre in-ear-mottagare och ett par over-ear-lurar</strong> till trumpositionen. Inga in-ear-lurar behövs.</p>
         </div>
         <div class="note">
           <h3>Keys — två stereopar</h3>
@@ -229,7 +257,8 @@
         </div>
         <div class="note">
           <h3>Trådlöst</h3>
-          <p>Trumpet, bas och gitarr ska vara trådlösa för att kunna röra sig och gå fram i olika musiknummer.</p>
+          <p>Trumpet, bas och gitarr ska vara trådlösa för att kunna röra sig och gå fram i olika musiknummer. Per position:</p>
+          <p style="margin-top:.8rem"><strong>Gitarr: 4 trådlösa kanaler.</strong><br><strong>Trumpetpositionen: 2</strong>, en trådlös mikrofon till trumpeten (kanal 22) och en till gitarren (kanal 23).<br><strong>Bas: 1</strong>, till elbasen (kanal 17).<br>Totalt <strong>7 trådlösa kanaler</strong>, utöver in-ear-mottagarna.</p>
         </div>
         <div class="note">
           <h3>Akt 1 ingår inte här</h3>
@@ -250,7 +279,8 @@
       <table>
         <thead><tr><th>#</th><th>Fråga</th><th>Vem avgör</th></tr></thead>
           <tbody>
-            <tr><td class="num">1</td><td class="what">Tracks: Q-lab, SPD-SX eller båda?</td><td>Produktionen / Sonic Group. Enda kvarvarande frågan — styr även vem som äger clicken</td></tr>
+            <tr><td class="num">1</td><td class="what">Tracks: Q-lab, SPD-SX eller båda?</td><td>Produktionen / Sonic Group. Styr även vem som äger clicken</td></tr>
+            <tr><td class="num">2</td><td class="what">Elbas: förstärkare eller bara preamp?</td><td>Bandet. Avgör om kanal 18 behövs</td></tr>
             </tbody>
       </table>
     </div>
