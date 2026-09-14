@@ -223,8 +223,8 @@ const SHOW = [
   tags:["Narvik #1 · Input 1","Preset 0963"],
   items:[
     {kind:"sfx", text:"FOH: speakerinspelning från bandet startar föreställningen"},
-    {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel"},
     {kind:"cue",  who:"Speaker", text:"Då sänder vi in kvällens fantastiska cast"},
+    {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel"},
     {kind:"attacca"},
     {kind:"song", text:"Macken – pianoversion", sub:"Ligger bakom speaker av Claes Eriksson (röst från bandet)"},
     {kind:"attacca"},
@@ -238,7 +238,8 @@ const SHOW = [
   items:[
     {kind:"cue", who:"Olle", text:"Otroligt, det är helt otroligt"},
     {kind:"note", text:"Inräkning av Malin"},
-    {kind:"omtag", text:"Refräng i F#m – med upptakten, vanliga slutet"}
+    {kind:"song", text:"Truckdriving Song"},
+    {kind:"omtag", text:"Uppgång till refr i F#m, Bm, E, A F#m, Bm E, A-räka."}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -249,37 +250,38 @@ const SHOW = [
     {kind:"song", text:"Trofémusik"},
     {kind:"attacca"},
     {kind:"song", text:"Det är vattenpumpen Gerd"},
-    {kind:"omtag", text:"Från början: Cm – F – Gm – Em7♭5", sub:"Hoppa över de sjuka ackorden"}
+    {kind:"omtag", text:"Sista svängen från Cm F, Gm Em7b5 till slut men landa på tonikan direkt utan den sjuka kadensen."}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
  {card:"4", title:"Egentligen → sändningen går ner",
   tags:["Narvik #1 · Input 1"],
   items:[
+    {kind:"cue", who:"Anders", text:"Ge mig en scen!"},
+    {kind:"song", text:"Egentligen"},
     {kind:"omtag", text:"Inget omtag"},
     {kind:"ljus", text:"On air släcks – annat ljus"},
     {kind:"sfx", text:"FOH drar igång en speaker"}
   ]},
- {paus:"AKTPAUS"},
+ {paus:"AKTPAUS 1 – FOH kör andra speakern + Nisses tuggummi"},
 
- {card:"1", title:"Nisses tuggummi → Mitt liv tills idag → Jag vet inte vad det är",
+ {card:"1", title:"Radioprat Claes → Mitt liv tills idag → Jag vet inte vad det är",
   tags:["Jazzgitarr · Input 2 (stereo L/R) från Mitt liv"],
   items:[
-    {kind:"sfx", text:"FOH: andra speakern"},
-    {kind:"todo", text:"Cue 1 ej bestämd – in i Nisses tuggummi"},
-    {kind:"song", text:"Nisses tuggummi"},
+    {kind:"todo", text:"Cue 1 ej bestämd – in i Nisses tuggummi (i aktpaus 1)"},
+    {kind:"cue", who:"FOH", text:"Radioprat Claes", sub:"Avbryter aktpaus 1 och kickar igång igen"},
+    {kind:"song", text:"Mitt liv tills idag", sub:"När radiopratet är slut"},
     {kind:"attacca"},
-    {kind:"cue", who:"Cue 2", text:"Radioprat Claes"},
-    {kind:"song", text:"Mitt liv tills idag"},
-    {kind:"attacca"},
-    {kind:"song", text:"Jag vet inte vad det är"}
+    {kind:"song", text:"Jag vet inte vad det är", sub:"Direkt efter applåderna"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
  {card:"2", title:"Jag vill ha en synth (Konfirmationspresenten)",
   items:[
     {kind:"cue", who:"Anders", text:"Önskar du dig inget då eller?"},
-    {kind:"sfx", text:"Malin startar backtracken från SPD-SX", sub:"Enda ljudet som körs från scenen – allt annat ligger på FOH"},
+    {kind:"sfx", text:"FOH kör tracks"},
+    {kind:"song", text:"Jag vill ha en synth", sub:"Hela bandet dansar med syntar"},
+    {kind:"note", text:"Koreografi – börjar efter solot"},
     {kind:"note", text:"Ev. dubblat intro"},
     {kind:"omtag", text:"Via tracks"}
   ]},
@@ -304,15 +306,12 @@ const SHOW = [
     {kind:"todo", text:"Omtag ej bestämt"}
   ]},
 
- {card:"5", title:"Sändningspaus → Tornadokam → Lasse Lönndahl → Macken gitarr",
+ {paus:"AKTPAUS 2 – on air släcks · FOH kör radioclaes 1 · reklam Tornadokam (bara Solala)"},
+
+ {card:"5", title:"Radioclaes 2 → Lasse Lönndahl → Macken gitarr",
   items:[
-    {kind:"ljus", text:"On air släcks – annat ljus"},
-    {kind:"sfx", text:"FOH drar igång radioclaes 1"},
-    {kind:"note", text:"Reklam: Tornadokam – bara Solala, bandet spelar inte"},
-    {kind:"attacca"},
-    {kind:"sfx", text:"FOH startar radioclaes 2"},
-    {kind:"attacca"},
-    {kind:"song", text:"Lasse Lönndahl"},
+    {kind:"cue", who:"FOH", text:"Radioclaes 2", sub:"Avbryter aktpaus 2 och kickar igång igen"},
+    {kind:"song", text:"Lasse Lönndahl", sub:"När radioclaes 2 är slut"},
     {kind:"sfx", text:"FOH speaker: ”Det där var Janne Bjerger osv”"},
     {kind:"attacca"},
     {kind:"song", text:"Macken – gitarrvariant"},
@@ -327,7 +326,7 @@ const SHOW = [
     {kind:"song", text:"Trofémusik"},
     {kind:"attacca"},
     {kind:"song", text:"Har du gått din sista mil"},
-    {kind:"todo", text:"Omtag: hitta på något snyggt"}
+    {kind:"omtag", text:"Hela den lugna fina biten med trumpet och gitarrslinga igen"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -387,7 +386,7 @@ function renderItem(it){
   const cls = it.kind === "song" ? "row song" : "row";
   let txt;
   if(it.kind === "cue" || it.kind === "out"){
-    txt = `<span class="who">${esc(it.who)}:</span> <span class="say">”${esc(it.text)}”</span>`;
+    txt = `${it.who?`<span class="who">${esc(it.who)}:</span> `:""}<span class="say">”${esc(it.text)}”</span>`;
   } else {
     txt = esc(it.text);
   }
@@ -420,7 +419,7 @@ function build(){
         <div><b>Cuekort</b> – kapellmästare/gitarr</div>
         <div><b>Attacca</b> = håll ihop, ingen paus</div>
         <div><b>Akt 2</b> ca 1 tim 40 min</div>
-        <div><b>Ljud</b> = FOH kör alla ljud-cuer · Malin kör bara backtracken på <i>Jag vill ha en synth</i></div>
+        <div><b>Ljud</b> = FOH kör alla ljud-cuer och tracks</div>
         <div><a class="xlink" href="kanallista.html">Kanallista &amp; monitorlista &rarr;</a></div>
       </div>
     </div>`;
@@ -434,7 +433,7 @@ function build(){
       html += `<tr class="brk"><td colspan="3">AKT ${b.akt}</td></tr>`; return; }
     if(b.paus){ html += `<tr class="brk"><td></td><td colspan="2">${esc(b.paus)}</td></tr>`; return; }
     const c = b.items.find(i=>i.kind==="cue");
-    const cue = c ? `${c.who}: ”${c.text}”` : (b.items.find(i=>i.kind==="todo") ? "cue ej klar" : "–");
+    const cue = c ? `${c.who?c.who+": ":""}”${c.text}”` : (b.items.find(i=>i.kind==="todo") ? "cue ej klar" : "–");
     html += `<tr><td>${akt}:${b._n}</td><td>${esc(b.title)}</td><td>${esc(cue)}</td></tr>`;
   });
   html += `</tbody></table>`;
