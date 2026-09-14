@@ -1,6 +1,6 @@
 # Richard Hauers hemsida – projektöversikt
 
-Senast uppdaterad: 2026-09-09
+Senast uppdaterad: 2026-09-14
 
 ## Vad detta är
 Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (ren HTML/CSS/JS, inget byggsystem) som ligger på GitHub Pages.
@@ -23,7 +23,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 | `teknik/vikingline-2026.html` | Teknikunderlag (kanallista, stageplot, returer) för Greetings From Sweden, Viking Line 3–4 sep 2026. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Har ljus print-stil. |
 | `macken/index.html` | Macken 40 år – showsida (premiär 26/9 2026, 14 föreställningar, Kajskjul 8). **Står `noindex` tills Richard godkänt texten**; ta bort raden för att publicera. Ännu inte länkad från startsidans Macken-kort, som pekar på Kajskjul 8:s biljettsida. |
 | `macken/kanallista.html` | Teknikunderlag, **rev 2 sedan 10 sep 2026** (28 kanaler in, 11 returer, lurar + trådlöst per position, öppna frågor) för Macken 40 år. Ny revision = uppdatera "Version"-faktan och listan "Ändrat sedan rev N" överst. Olänkad + `noindex` – URL skickas direkt till ljudteknikern. Samma print-stil som vikingline-sidan. **Ligger medvetet under `macken/`** så att en bakåtnavigering från kanallistan landar på showsidan. |
-| `macken/cuekort.html` | Cuekort för kapellmästare/gitarr (Macken 40 år) – kortlista per akt med cue-repliker, attacca, omtag, rigg/preset och "att lösa". Olänkad + `noindex` – URL skickas direkt till bandet och regissören. Egen ljus print-stil (A4), innehållet ligger i `SHOW`-arrayen längst ner i filen – ändra bara där. **Redigeras direkt i `macken/cuekort.html`** – originalet i `INBOX/` är bara leveransen, död efter första publiceringen 9 sep 2026. |
+| `macken/cuekort.html` | Cuekort för kapellmästare/gitarr (Macken 40 år) – kortlista per akt med cue-repliker, attacca, omtag, rigg/preset och "att lösa". Olänkad + `noindex` – URL skickas direkt till bandet och regissören. Egen ljus print-stil (A4), innehållet ligger i `SHOW`-arrayen längst ner i filen – ändra bara där. **Redigeras direkt i `macken/cuekort.html`** – originalet i `INBOX/` är bara leveransen, död efter första publiceringen 9 sep 2026. Konventioner: se "Cuekortet" nedan. |
 
 ## Bilder
 - `img/bildspel/` – ca 65 bilder till galleriet/bildspelet på startsidan
@@ -63,5 +63,17 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
   *(En force-push gör gamla commits onåbara, inte omedelbart raderade — GitHub behåller
   dem tills serverns städning kör.)*
 - Allt är single-file-sidor: CSS/JS ligger inline i respektive HTML-fil
+
+## Cuekortet (`macken/cuekort.html`) — konventioner (stor revision 14 sep 2026)
+- **Arbetssätt som fungerade:** Richard dikterar en ändring per kort ("2:4 lägg till …"), Claude ändrar direkt i filen utan att committa, allt går ut i EN commit när han säger "kör ut". Repot är publikt — varje commit är publicerad, så vänta med den.
+- **Kortnumret är `akt:löpnummer`** och räknas av renderingen, inte av fältet `card:` i arrayen (det står kvar som gamla siffror och betyder ingenting). Pauser räknas inte.
+- **Showen är EN akt (Akt 2) med två aktpauser inuti** — ingen ny `{akt:…}`-markör efter pauserna, numreringen fortsätter 2:5, 2:6 … Richard 14/9: *"det är en akt, behåll upplägget"*.
+- **`paus`-text som börjar med `AKTPAUS` ritas som svart balk** (regex `/^AKTPAUS/`) — behåll prefixet: `AKTPAUS 1 – …`, `AKTPAUS 2 – …`. Det FOH kör under pausen står i pausraden; kortet efter börjar med den cue som bryter pausen (`{kind:"cue", who:"FOH", text:"Radioprat Claes", sub:"Avbryter aktpaus 1 …"}`).
+- **FOH kör alla ljud-cuer OCH tracks** (sedan 14/9). Inget ljud startas från scenen längre — skriv aldrig tillbaka SPD-SX/backtrack på en musiker.
+- **Ordning på ett kort:** CUE IN → LÅT (Richard läser cuen och har låten under) → OMTAG. Efter en inräkning står låttiteln som egen `song`-rad.
+- **`who` är valfritt på en cue** — utan namn ritas bara repliken (förut blev det "undefined:"). Fråga ändå vem som säger den.
+- **Omtag- och ackordtext skrivs ORDAGRANT.** Richards notation: **komma = taktslut, mellanslag = två ackord i samma takt** — `F#m, Bm, E, A F#m, Bm E, A` är sex takter. "Rätta" aldrig ett saknat komma, och behåll `b` eller `♭` som han skrev det.
+- **`todo` blir raden i "Att lösa före premiär".** Byts en `todo` mot ett `omtag` försvinner punkten ur listan — säg det när det händer.
+- **Publicering:** Claude pushar själv över SSH (`git push origin main`), `synka-till-github.command` behövs inte. Sidan ligger på GitHub Pages (inte bakom Cloudflare Access) och **går** att verifiera med curl — ny version live efter ~60 s. URL:en är densamma, men utskrivna kort måste skrivas ut på nytt; säg det till bandet.
 - Notläsningssidan: nya låtar = lägg .musicxml i `notlasning/songs/` + rad i `songs.json`
 - Richard vill ha enkelt och konkret – ändra direkt i filerna, synka med .command-scriptet
