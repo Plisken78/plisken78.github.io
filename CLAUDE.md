@@ -69,7 +69,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 - **Kortnumret är `akt:löpnummer`** och räknas av renderingen, inte av fältet `card:` i arrayen (det står kvar som gamla siffror och betyder ingenting). Pauser räknas inte.
 - **Showen är EN akt (Akt 2) med två aktpauser inuti** — ingen ny `{akt:…}`-markör efter pauserna, numreringen fortsätter 2:5, 2:6 … Richard 14/9: *"det är en akt, behåll upplägget"*.
 - **`paus`-text som börjar med `AKTPAUS` ritas som svart balk** (regex `/^AKTPAUS/`) — behåll prefixet: `AKTPAUS 1 – …`, `AKTPAUS 2 – …`. Det FOH kör under pausen står i pausraden; kortet efter börjar med den cue som bryter pausen (`{kind:"cue", who:"FOH", text:"Radioprat Claes", sub:"Avbryter aktpaus 1 …"}`).
-- **FOH kör alla ljud-cuer OCH tracks** (sedan 14/9). Inget ljud startas från scenen längre — skriv aldrig tillbaka SPD-SX/backtrack på en musiker.
+- **FOH kör alla ljud-cuer OCH tracks** (sedan 14/9). Inget ljud startas från scenen längre — skriv aldrig tillbaka SPD-SX/backtrack på en musiker. **Enda undantaget (Richard 15/9):** ”Satan, Satan, Satan” i Husvagn (2:12) kickar Malin via SPD-SX, exakt där den ligger i lyssningsfilen `HUSVAGN_Rapp`. Fler undantag bara när Richard säger det.
 - **Ordning på ett kort:** CUE IN → LÅT (Richard läser cuen och har låten under) → OMTAG. Efter en inräkning står låttiteln som egen `song`-rad.
 - **`who` är valfritt på en cue** — utan namn ritas bara repliken (förut blev det "undefined:"). Fråga ändå vem som säger den.
 - **Omtag- och ackordtext skrivs ORDAGRANT.** Richards notation: **komma = taktslut, mellanslag = två ackord i samma takt** — `F#m, Bm, E, A F#m, Bm E, A` är sex takter. "Rätta" aldrig ett saknat komma, och behåll `b` eller `♭` som han skrev det.
