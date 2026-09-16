@@ -218,6 +218,7 @@
   <label><input type="checkbox" id="tBreaks" checked> Ny sida vid varje paus</label>
   <label><input type="checkbox" id="tCompact"> Kompakt</label>
   <label><input type="checkbox" id="tRig" checked> Visa gitarr/preset</label>
+  <label><input type="checkbox" id="tClick" checked> Klickljud på BPM</label>
   <button id="btnPrint">Skriv ut</button>
 </div>
 
@@ -533,6 +534,33 @@ t("tCompact","compact");
 t("tRig","hide-rig", true);
 /* ---------- tempoblinkare ---------- */
 let blink = null;   // {el, timer}
+
+/* klickljud – Web Audio, tidsatt mot ljudklockan så att klicket ligger på slaget */
+const tClick = document.getElementById("tClick");
+try { if(localStorage.getItem("cuekort-klick") === "av") tClick.checked = false; } catch(e){}
+tClick.addEventListener("change", () => {
+  try { localStorage.setItem("cuekort-klick", tClick.checked ? "pa" : "av"); } catch(e){}
+});
+let actx = null;
+function audio(){
+  // skapas/väcks i klickhändelsen – annars tystar iOS och Chrome ljudet
+  try {
+    if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if(actx.state === "suspended") actx.resume();
+  } catch(e){ actx = null; }
+  return actx;
+}
+function klick(when){
+  if(!tClick.checked || !actx) return;
+  const at = Math.max(when, actx.currentTime);
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = "square"; o.frequency.value = 1500;
+  g.gain.setValueAtTime(0.0001, at);
+  g.gain.exponentialRampToValueAtTime(0.5, at + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, at + 0.04);
+  o.connect(g).connect(actx.destination);
+  o.start(at); o.stop(at + 0.05);
+}
 function stopBlink(){
   if(!blink) return;
   clearTimeout(blink.timer);
@@ -543,12 +571,15 @@ function stopBlink(){
 function startBlink(el){
   const ms = 60000 / Number(el.dataset.bpm);
   const t0 = performance.now();
+  const a = audio();
+  const a0 = a ? a.currentTime : 0;
   let n = 0;
   el.classList.add("on");
   el.setAttribute("aria-pressed","true");
   blink = {el, timer:0};
   const tick = () => {
     el.classList.add("beat");
+    klick(a0 + n * ms / 1000);
     setTimeout(() => el.classList.remove("beat"), Math.min(120, ms / 3));
     n++;
     // räkna från starttiden så att tempot inte driver
