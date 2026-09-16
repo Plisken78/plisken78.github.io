@@ -168,6 +168,12 @@
     font-family:var(--mono); font-size:13pt; font-weight:700; line-height:1.05;
   }
   .bpm small{display:block; font-size:6.5pt; letter-spacing:.12em}
+  /* klickbar tempoblinkare – tryck = blinka i låtens BPM, tryck igen = stopp */
+  button.bpm{background:var(--paper); color:var(--ink); cursor:pointer; margin:0;
+    -webkit-tap-highlight-color:transparent; touch-action:manipulation}
+  button.bpm:hover{background:var(--fill)}
+  button.bpm.on{outline:2px dashed var(--ink); outline-offset:2px}
+  button.bpm.on.beat{background:var(--ink); color:var(--paper)}
   .pchip{
     display:inline-block; vertical-align:2px; margin-left:2mm; padding:0 4px;
     background:var(--fill); border:1px solid var(--rule);
@@ -190,6 +196,7 @@
 
   @media print{
     body{background:#fff; font-size:11pt}
+    button.bpm, button.bpm.on, button.bpm.on.beat{background:none; color:var(--ink); outline:0}
     .panel{display:none}
     .xlink{border-bottom:0}
     .xlink::after{content:" richardhauer.com/macken/kanallista.html";
@@ -430,7 +437,7 @@ function renderItem(it){
   }
   if(it.sub)  txt += `<div class="sub">${esc(it.sub)}</div>`;
   if(it.scen) txt += `<div class="scen rigtag">Scen: ${esc(it.scen)}</div>`;
-  const bpm = it.bpm ? `<div class="bpm"><small>BPM</small>${it.bpm}</div>` : "";
+  const bpm = it.bpm ? `<button type="button" class="bpm" data-bpm="${it.bpm}" aria-pressed="false" title="Tryck för att blinka i ${it.bpm} BPM"><small>BPM</small>${it.bpm}</button>` : "";
 
   return `<div class="${cls}">${icon(IC[it.kind])}
     <div class="lbl">${LBL[it.kind]}</div><div class="txt">${txt}</div>${bpm}</div>`;
@@ -509,7 +516,7 @@ function build(){
   html += `<div class="todolist"><h2>ATT LÖSA FÖRE PREMIÄR</h2><ul>${todos.join("")}
     </ul></div>`;
 
-  html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo + presets 16 sep 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
+  html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo (klickbart) + presets 16 sep 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
 
   document.getElementById("sheet").innerHTML = html;
   document.getElementById("d").textContent = new Date().toLocaleDateString("sv-SE");
@@ -524,6 +531,40 @@ const t = (id, cls, inv) => {
 t("tBreaks","breaks");
 t("tCompact","compact");
 t("tRig","hide-rig", true);
+/* ---------- tempoblinkare ---------- */
+let blink = null;   // {el, timer}
+function stopBlink(){
+  if(!blink) return;
+  clearTimeout(blink.timer);
+  blink.el.classList.remove("on","beat");
+  blink.el.setAttribute("aria-pressed","false");
+  blink = null;
+}
+function startBlink(el){
+  const ms = 60000 / Number(el.dataset.bpm);
+  const t0 = performance.now();
+  let n = 0;
+  el.classList.add("on");
+  el.setAttribute("aria-pressed","true");
+  blink = {el, timer:0};
+  const tick = () => {
+    el.classList.add("beat");
+    setTimeout(() => el.classList.remove("beat"), Math.min(120, ms / 3));
+    n++;
+    // räkna från starttiden så att tempot inte driver
+    blink.timer = setTimeout(tick, Math.max(0, t0 + n * ms - performance.now()));
+  };
+  tick();
+}
+document.getElementById("sheet").addEventListener("click", e => {
+  const el = e.target.closest("button.bpm");
+  if(!el) return;
+  const same = blink && blink.el === el;
+  stopBlink();
+  if(!same) startBlink(el);
+});
+document.addEventListener("keydown", e => { if(e.key === "Escape") stopBlink(); });
+
 document.getElementById("btnPrint").addEventListener("click", () => window.print());
 </script>
 </body>
