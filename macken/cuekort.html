@@ -47,6 +47,11 @@
     max-width:198mm; margin:0 auto; background:var(--paper);
     padding:14mm 13mm 18mm;
   }
+  /* Läslighet på håll: arket zoomas pa skarm, trycket rör vi inte.
+     --z sätts av JS – fyller skärmens bredd vid start, sedan +/- i panelen. */
+  @media screen{
+    .sheet{ zoom:var(--z, 1); }
+  }
 
   /* ---------- kontrollpanel (bara skärm) ---------- */
   .panel{
@@ -62,6 +67,12 @@
     padding:6px 14px; cursor:pointer;
   }
   .panel button:focus-visible, .panel label:focus-within{outline:2px solid #fff; outline-offset:2px}
+  .zoomctl{display:flex; align-items:center; gap:0}
+  .zoomctl button{min-width:38px; font-size:14pt; line-height:1; padding:5px 10px}
+  .zoomctl output{
+    min-width:58px; text-align:center; font-family:var(--mono);
+    font-size:10pt; font-weight:700; padding:0 6px;
+  }
 
   /* ---------- huvud ---------- */
   .plate{border:2.5px solid var(--ink); padding:7mm 8mm 6mm; margin-bottom:8mm}
@@ -299,6 +310,11 @@
   <label><input type="checkbox" id="tCompact"> Kompakt</label>
   <label><input type="checkbox" id="tRig" checked> Visa gitarr/preset</label>
   <label><input type="checkbox" id="tClick" checked> Klickljud på BPM</label>
+  <span class="zoomctl">
+    <button id="zMinus" type="button" aria-label="Mindre text">&minus;</button>
+    <output id="zVal" aria-live="polite">100 %</output>
+    <button id="zPlus" type="button" aria-label="Större text">+</button>
+  </span>
   <button id="btnMono" aria-pressed="false">Monokrom</button>
   <button id="btnPrint">Skriv ut</button>
 </div>
@@ -711,6 +727,33 @@ document.getElementById("sheet").addEventListener("click", e => {
   if(!same) startBlink(el);
 });
 document.addEventListener("keydown", e => { if(e.key === "Escape") stopBlink(); });
+
+/* ---------- zoom (bara skärm) ---------- */
+const ZKEY = "cuekort-zoom";
+const zVal = document.getElementById("zVal");
+let z = 1, egenZoom = false;
+
+/* utan sparat val: fyll skärmens bredd – 198mm ark ~ 748 CSS-px */
+function passaBredden(){
+  const arkPx = 198 * 96 / 25.4;
+  return Math.max(1, Math.min(1.8, Math.round((window.innerWidth - 14) / arkPx * 20) / 20));
+}
+function setZoom(v, spara){
+  z = Math.max(0.8, Math.min(2.2, Math.round(v * 20) / 20));
+  document.documentElement.style.setProperty("--z", z);
+  zVal.textContent = Math.round(z * 100) + " %";
+  if(spara){ egenZoom = true; try { localStorage.setItem(ZKEY, z); } catch(e){} }
+}
+try {
+  const sparad = parseFloat(localStorage.getItem(ZKEY));
+  if(sparad > 0){ egenZoom = true; setZoom(sparad, false); }
+} catch(e){}
+if(!egenZoom) setZoom(passaBredden(), false);
+
+document.getElementById("zMinus").addEventListener("click", () => setZoom(z - 0.1, true));
+document.getElementById("zPlus").addEventListener("click", () => setZoom(z + 0.1, true));
+/* har han inte valt själv får vändning av plattan räkna om */
+window.addEventListener("resize", () => { if(!egenZoom) setZoom(passaBredden(), false); });
 
 /* ---------- monokromt läge ---------- */
 const btnMono = document.getElementById("btnMono");
