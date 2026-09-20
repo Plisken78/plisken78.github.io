@@ -184,7 +184,11 @@
   .row.byte .txt{font-weight:700}
   .row.byte .sub{font-weight:400}
   /* mickspaken – mickarna upp/ner ur scengolvet */
-  .row.mick{border-left:4px solid var(--ink); margin-left:-4mm; padding-left:calc(4mm - 4px)}
+  /* indrag: spaken hör till raden ovanför, inte en egen post */
+  .row.mick{margin-left:9mm; padding-left:3mm; padding-top:1mm;
+    border-left:2px solid var(--rule)}
+  .row + .row.mick{border-top:0}
+  .row.mick .lbl{flex:0 0 18mm; font-size:7pt}
   .mdir{font-weight:800; letter-spacing:.03em}
   .mnr{margin-left:2mm; font-family:var(--mono); font-size:8pt; color:#555}
   .over td.bpms{font-family:var(--mono); font-weight:700; white-space:nowrap}
@@ -286,7 +290,7 @@ const SHOW = [
     {kind:"note", text:"Inräkning av Malin"},
     {kind:"song", text:"Truckdriving Song", bpm:80, preset:"0980", git:"banjo"},
     {kind:"mick", nr:2, dir:"ner", text:"Vid musikstart"},
-    {kind:"omtag", text:"Uppgång till refr i F#m, Bm, E, A F#m, Bm E, A-räka."},
+    {kind:"omtag", text:"Uppgång till refr i F#m, Bm, E, ||:A F#m, Bm E:|| A6 (rit till sista ackordet)"},
     {kind:"mick", nr:3, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
@@ -493,7 +497,7 @@ function build(){
         <div><b>Akt 2</b> ca 1 tim 40 min</div>
         <div><b>Ljud</b> = FOH kör alla ljud-cuer och tracks</div>
         <div><b>BPM</b> = tempot på låten</div>
-        <div><b>Mickspak</b> = mickarna upp/ner ur scengolvet – Richard sköter spaken (ej bekräftat) · tajmas exakt på rep</div>
+        <div><b>Mickspak</b> = mickarna upp/ner ur scengolvet – Simon sköter spaken från keyboardplats · tajmas exakt på rep</div>
         <div class="rigtag"><b>Axe-FX III</b> MIDI-kanal 14 · grå ruta = preset</div>
         <div><a class="xlink" href="kanallista.html">Kanallista &amp; monitorlista &rarr;</a></div>
       </div>
