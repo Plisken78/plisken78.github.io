@@ -119,8 +119,8 @@
   .row{
     --k:var(--ink);
     display:flex; gap:3mm; align-items:flex-start;
-    padding:1.8mm 0 1.8mm 3mm; margin-left:-3mm;
-    border-left:2.5px solid var(--k);
+    padding:1.6mm 0; margin-left:-3mm;
+    border-left:3.5px solid var(--k);
   }
   .row + .row{border-top:1px dotted #c4c4c4}
   /* en färg per syfte – samma färg överallt på sidan */
@@ -134,12 +134,23 @@
   .row.k-ljus{--k:var(--c-ljus)}
   .row.k-byte{--k:var(--c-byte)}
   .row.k-mick{--k:var(--c-mick)}
-  .ic{flex:0 0 auto; width:15px; height:15px; margin-top:1.5px; color:var(--k)}
-  .ic svg{display:block; width:15px; height:15px}
+  /* etiketten ÄR färgkoden – ett fyllt block med ikonen i */
   .lbl{
-    flex:0 0 21mm; font-family:var(--mono); font-size:7.6pt; font-weight:700;
-    letter-spacing:.06em; padding-top:2px; color:var(--k);
+    flex:0 0 26mm; align-self:flex-start;
+    display:flex; align-items:center; gap:1.6mm; white-space:nowrap;
+    background:var(--k); color:var(--paper);
+    font-family:var(--mono); font-size:7.2pt; font-weight:700;
+    letter-spacing:.07em; line-height:1; padding:1.4mm 2mm;
   }
+  .lbl .ic{flex:0 0 auto; width:12px; height:12px; color:inherit}
+  .lbl .ic svg{display:block; width:12px; height:12px}
+  /* monokromt: samma block, men konturat i stället för fyllt – lätt på trycksvärtan */
+  body.mono .lbl{
+    background:var(--paper); color:var(--ink);
+    box-shadow:inset 0 0 0 1.2px var(--ink);
+  }
+  /* attacca-pilen står utanför blocken */
+  .attacca .ic{width:13px; height:13px}
   .txt{flex:1}
   .txt .sub{font-size:9pt; color:#333}
 
@@ -201,32 +212,35 @@
 
   /* tempo (alla) + preset/gitarr (kapellmästare/gitarr) */
   .bpm{
-    flex:0 0 auto; align-self:center; text-align:center; min-width:15mm;
-    border:1.5px solid var(--c-bpm); color:var(--c-bpm); padding:.5mm 2mm;
+    flex:0 0 auto; align-self:center; text-align:center; min-width:16mm;
+    border:1.5px solid var(--c-bpm); background:var(--c-bpm); color:var(--paper);
+    padding:.8mm 2mm;
     font-family:var(--mono); font-size:13pt; font-weight:700; line-height:1.05;
   }
-  .bpm small{display:block; font-size:6.5pt; letter-spacing:.12em}
+  .bpm small{display:block; font-size:6.5pt; letter-spacing:.12em; opacity:.8}
+  body.mono .bpm{background:var(--paper); color:var(--ink)}
   /* klickbar tempoblinkare – tryck = blinka i låtens BPM, tryck igen = stopp */
-  button.bpm{background:var(--paper); color:var(--c-bpm); cursor:pointer; margin:0;
+  button.bpm{cursor:pointer; margin:0;
     -webkit-tap-highlight-color:transparent; touch-action:manipulation}
-  button.bpm:hover{background:var(--fill)}
+  button.bpm:hover{filter:brightness(1.25)}
   button.bpm.on{outline:2px dashed var(--c-bpm); outline-offset:2px}
-  button.bpm.on.beat{background:var(--c-bpm); color:var(--paper)}
+  /* slaget blinkar genom att vända rutan */
+  button.bpm.on.beat{background:var(--paper); color:var(--c-bpm)}
+  body.mono button.bpm.on.beat{background:var(--ink); color:var(--paper)}
   .pchip{
     display:inline-block; vertical-align:2px; margin-left:2mm; padding:0 4px;
     background:var(--fill); border:1px solid var(--rule);
     font-family:var(--mono); font-size:8pt; font-weight:400; white-space:nowrap;
   }
   .scen{font-family:var(--mono); font-size:8pt; color:#333; margin-top:.5mm}
-  .row.byte{background:var(--fill); margin:0 -4mm 0 -3mm; padding-left:3mm; padding-right:4mm}
+  .row.byte{background:var(--fill); margin:0 -4mm 0 -3mm; padding-right:4mm}
   .row.byte .txt{font-weight:700}
   .row.byte .sub{font-weight:400}
   /* mickspaken – mickarna upp/ner ur scengolvet */
   /* indrag: spaken hör till raden ovanför, inte en egen post */
-  .row.mick{margin-left:9mm; padding-left:3mm; padding-top:1mm;
-    border-left-width:2px}
+  .row.mick{margin-left:9mm; padding-top:1mm; border-left-width:3px}
   .row + .row.mick{border-top:0}
-  .row.mick .lbl{flex:0 0 18mm; font-size:7pt}
+  .row.mick .lbl{flex:0 0 22mm; font-size:6.6pt; padding:1.2mm 1.6mm}
   .mdir{font-weight:800; letter-spacing:.03em}
   .mnr{margin-left:2mm; font-family:var(--mono); font-size:8pt; color:#555}
   .over td.bpms{font-family:var(--mono); font-weight:700; white-space:nowrap; color:var(--c-bpm)}
@@ -244,10 +258,9 @@
     border-right:1px solid #d0d0d0; padding-right:3mm;
   }
   .nyckel i{
-    display:inline-flex; align-items:baseline; gap:1.6mm;
-    font-style:normal; font-weight:700; letter-spacing:.05em; color:var(--k);
+    display:inline-block; font-style:normal; font-weight:700; letter-spacing:.07em;
+    background:var(--k); color:var(--paper); padding:1.1mm 1.8mm; line-height:1;
   }
-  .nyckel i::before{content:""; width:8px; height:8px; background:var(--k); flex:0 0 auto}
   body.mono .nyckel{display:none}
 
   body.hide-rig .rigtag{display:none}
@@ -260,7 +273,10 @@
 
   @media print{
     body{background:#fff; font-size:11pt}
-    button.bpm, button.bpm.on, button.bpm.on.beat{background:none; color:var(--c-bpm); outline:0}
+    button.bpm, button.bpm.on, button.bpm.on.beat{
+      background:var(--c-bpm); color:var(--paper); outline:0}
+    body.mono button.bpm, body.mono button.bpm.on, body.mono button.bpm.on.beat{
+      background:none; color:var(--ink)}
     .panel{display:none}
     .xlink{border-bottom:0}
     .xlink::after{content:" richardhauer.com/macken/kanallista.html";
@@ -532,8 +548,9 @@ function renderItem(it){
   if(it.scen) txt += `<div class="scen rigtag">Scen: ${esc(it.scen)}</div>`;
   const bpm = it.bpm ? `<button type="button" class="bpm" data-bpm="${it.bpm}" aria-pressed="false" title="Tryck för att blinka i ${it.bpm} BPM"><small>BPM</small>${it.bpm}</button>` : "";
 
-  return `<div class="${cls}">${icon(IC[it.kind])}
-    <div class="lbl">${LBL[it.kind]}</div><div class="txt">${txt}</div>${bpm}</div>`;
+  return `<div class="${cls}">
+    <div class="lbl">${icon(IC[it.kind])}${LBL[it.kind]}</div>
+    <div class="txt">${txt}</div>${bpm}</div>`;
 }
 
 function renderCard(b, akt){
