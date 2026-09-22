@@ -353,7 +353,7 @@
 const GIT = {
   narvik:{namn:"Narvik",     in:"In 1"},
   jazz:  {namn:"Jazzgitarr", in:"In 2"},
-  nylon: {namn:"Nylon",      in:"In 3 R"},
+  stal:  {namn:"Stålsträngad", in:"In 3 R"},
   banjo: {namn:"Banjo",      in:"In 3 L"}
 };
 
@@ -377,13 +377,14 @@ const SHOW = [
  {paus:"ca 5 min musikerpaus"},
 
  {card:"2", title:"Truckdriving Song",
-  tags:["Janne + Richard lämnar podiet"],
+  tags:["Janne + Richard lämnar podiet efter låtstart"],
   items:[
     {kind:"byte", text:"Narvik → banjo", sub:"Inget tyst preset – skruva ner Narvik, slå om till 0980 efter bytet"},
     {kind:"cue", who:"Olle", text:"Otroligt, det är helt otroligt"},
     {kind:"note", text:"Janne startar – vi lägger på"},
     {kind:"song", text:"Truckdriving Song", bpm:80, preset:"0980", git:"banjo"},
     {kind:"mick", nr:2, dir:"ner", text:"Vid musikstart"},
+    {kind:"note", text:"Janne + Richard lämnar podiet efter låtstart"},
     {kind:"note", text:"Inget banjofill i A-breaket"},
     {kind:"note", text:"Rit på sluttonen"},
     {kind:"omtag", text:"Uppgång till refr i F#m, Bm, E, ||:A F#m, Bm E:|| A6 (rit till sista ackordet)", sub:"Richard startar omtaget själv"},
@@ -393,21 +394,21 @@ const SHOW = [
 
  {card:"3", title:"Trofémusik → Vattenpumpen",
   items:[
-    {kind:"byte", text:"Banjo → nylon", sub:"Inget tyst preset – skruva ner banjon, slå om till 0983 efter bytet"},
+    {kind:"byte", text:"Banjo → stålsträngad", sub:"Inget tyst preset – skruva ner banjon, slå om till 0983 efter bytet"},
     {kind:"cue", who:"Olle", text:"Sicket folk", sub:"→ skylt → applåd → trofémusik"},
-    {kind:"song", text:"Trofémusik", sub:"Nylonversionen", bpm:80, preset:"0983", git:"nylon"},
+    {kind:"song", text:"Trofémusik", bpm:80, preset:"0983", git:"stal"},
     {kind:"mick", nr:4, dir:"ner", text:"Vid låtstart"},
     {kind:"attacca"},
-    {kind:"song", text:"Det är vattenpumpen Gerd", bpm:80, preset:"0966", git:"nylon"},
-    {kind:"omtag", text:"Sista svängen från Cm F, Gm Em7b5 till slut men landa på tonikan direkt utan den sjuka kadensen."},
+    {kind:"song", text:"Det är vattenpumpen Gerd", bpm:80, preset:"0966", git:"stal"},
     {kind:"note", text:"Anders slår ut slutackorden med klarinetten"},
+    {kind:"omtag", text:"Sista svängen från Cm F, Gm Em7b5 till slut men landa på tonikan direkt utan den sjuka kadensen."},
     {kind:"mick", nr:5, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
  {card:"4", title:"Egentligen → sändningen går ner",
   items:[
-    {kind:"byte", text:"Nylon → Narvik", sub:"Inget tyst preset – skruva ner nylonen, slå om till 0967 efter bytet"},
+    {kind:"byte", text:"Stålsträngad → Narvik", sub:"Inget tyst preset – skruva ner stålsträngade, slå om till 0967 efter bytet"},
     {kind:"mick", nr:6, dir:"ner", text:"När Anders börjar prata inför Egentligen"},
     {kind:"cue", who:"Anders", text:"Ge mig en scen!"},
     {kind:"song", text:"Egentligen", bpm:74, preset:"0967", git:"narvik", scen:"Delay"},
@@ -415,19 +416,18 @@ const SHOW = [
     {kind:"ljus", text:"On air släcks – annat ljus"},
     {kind:"sfx", text:"FOH drar igång en speaker"}
   ]},
- {paus:"AKTPAUS 1 – FOH kör andra speakern + Nisses tuggummi", preset:"0982", byte:"byt till jazzgitarr"},
+ {paus:"AKTPAUS 1 – ca 2 min · FOH kör andra speakern + reklam Tornadokam (bara Solala)", preset:"0982", byte:"byt till jazzgitarr"},
 
  {card:"1", title:"Radioprat Claes → Mitt liv tills idag → Jag vet inte vad det är",
   items:[
-    {kind:"todo", text:"Cue 1 ej bestämd – in i Nisses tuggummi (i aktpaus 1)"},
     {kind:"cue", who:"FOH", text:"Radioprat Claes", sub:"Avbryter aktpaus 1 och kickar igång igen"},
     {kind:"song", text:"Mitt liv tills idag", sub:"När radiopratet är slut", bpm:160, preset:"0968", git:"jazz"},
-    {kind:"note", text:"Julia och Simon nickar in varandra – övriga faller in"},
     {kind:"attacca"},
     {kind:"song", text:"Jag vet inte vad det är", sub:"Direkt efter applåderna", bpm:76, preset:"0969", git:"jazz"},
     {kind:"note", text:"Malin startar"},
-    {kind:"omtag", text:"Kortare omtag: A Bm, E A, A cha cha cha"},
+    {kind:"note", text:"Julia och Simon nickar in varandra – övriga faller in"},
     {kind:"note", text:"Slutet: cha cha spelas av solala – men ett extraslag efter cha cha"},
+    {kind:"omtag", text:"Kortare omtag: A Bm, E A, A cha cha cha"},
     {kind:"mick", nr:7, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
@@ -470,7 +470,7 @@ const SHOW = [
     {kind:"omtag", text:"En enkel refräng i Ebm med trumpettema", sub:"Abm, Abm/Cb, Ebm, Ebm/Db, Bb7, Bb7, Cb7, Cb7, Bb7, Uppgång till, Ebm (fallande)"}
   ]},
 
- {paus:"AKTPAUS 2 – on air släcks · FOH kör radioclaes 1 · reklam Tornadokam (bara Solala)", preset:"0982", byte:"byt till Narvik"},
+ {paus:"AKTPAUS 2 – on air släcks · FOH kör radioclaes 1 · Nisses tuggummi", preset:"0982", byte:"byt till Narvik"},
 
  {card:"5", title:"Radioclaes 2 → Lasse Lönndahl → Macken gitarr",
   items:[
@@ -663,7 +663,7 @@ function build(){
     if(b.paus) return;
     b.items.filter(i=>i.kind==="todo").forEach(i=>todos.push(`<li><b>${akt}:${b._n}</b> ${esc(b.title)} – ${esc(i.text)}</li>`));
   });
-  html += `<div class="todolist"><h2>ATT LÖSA FÖRE PREMIÄR</h2><ul>${todos.join("")}
+  if(todos.length) html += `<div class="todolist"><h2>ATT LÖSA FÖRE PREMIÄR</h2><ul>${todos.join("")}
     </ul></div>`;
 
   html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo (klickbart) + presets + mickspak 16 sep 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
