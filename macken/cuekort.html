@@ -352,7 +352,6 @@
 /* Gitarrer och Axe-FX-ingångar – ur GUITARTECH/macken-axefx-presets.md (16 sep 2026) */
 const GIT = {
   narvik:{namn:"Narvik",     in:"In 1"},
-  jazz:  {namn:"Jazzgitarr", in:"In 2"},
   stal:  {namn:"Stålsträngad", in:"In 3 R"},
   banjo: {namn:"Banjo",      in:"In 3 L"}
 };
@@ -382,7 +381,7 @@ const SHOW = [
     {kind:"byte", text:"Narvik → banjo", sub:"Inget tyst preset – skruva ner Narvik, slå om till 0980 efter bytet"},
     {kind:"cue", who:"Olle", text:"Otroligt, det är helt otroligt"},
     {kind:"note", text:"Janne startar – vi lägger på"},
-    {kind:"song", text:"Truckdriving Song", bpm:80, preset:"0980", git:"banjo"},
+    {kind:"song", text:"Truckdriving Song", bpm:126, preset:"0980", git:"banjo"},
     {kind:"mick", nr:2, dir:"ner", text:"Vid musikstart"},
     {kind:"note", text:"Janne + Richard lämnar podiet efter låtstart"},
     {kind:"note", text:"Inget banjofill i A-breaket"},
@@ -416,14 +415,14 @@ const SHOW = [
     {kind:"ljus", text:"On air släcks – annat ljus"},
     {kind:"sfx", text:"FOH drar igång en speaker"}
   ]},
- {paus:"AKTPAUS 1 – ca 2 min · FOH kör andra speakern + reklam Tornadokam (bara Solala)", preset:"0982", byte:"byt till jazzgitarr"},
+ {paus:"AKTPAUS 1 – ca 2 min · FOH kör andra speakern + reklam Tornadokam (bara Solala)", preset:"0982"},
 
  {card:"1", title:"Radioprat Claes → Mitt liv tills idag → Jag vet inte vad det är",
   items:[
     {kind:"cue", who:"FOH", text:"Radioprat Claes", sub:"Avbryter aktpaus 1 och kickar igång igen"},
-    {kind:"song", text:"Mitt liv tills idag", sub:"När radiopratet är slut", bpm:160, preset:"0968", git:"jazz"},
+    {kind:"song", text:"Mitt liv tills idag", sub:"När radiopratet är slut", bpm:160, preset:"0968", git:"narvik"},
     {kind:"attacca"},
-    {kind:"song", text:"Jag vet inte vad det är", sub:"Direkt efter applåderna", bpm:76, preset:"0969", git:"jazz"},
+    {kind:"song", text:"Jag vet inte vad det är", sub:"Direkt efter applåderna", bpm:76, preset:"0969", git:"narvik"},
     {kind:"note", text:"Malin startar"},
     {kind:"note", text:"Julia och Simon nickar in varandra – övriga faller in"},
     {kind:"note", text:"Slutet: cha cha spelas av solala – men ett extraslag efter cha cha"},
@@ -438,11 +437,9 @@ const SHOW = [
     {kind:"sfx", text:"FOH kör tracks"},
     {kind:"song", text:"Jag vill ha en synth", sub:"Hela bandet dansar med syntar", preset:"0970", tyst:true},
     {kind:"mick", nr:8, dir:"ner", text:"Vid låtstart"},
-    {kind:"note", text:"Koreografi – börjar efter solot"},
-    {kind:"note", text:"Ev. dubblat intro"},
+    {kind:"note", text:"Bandet är entledigat från koreografin – vi får ett par gröna glasögon i stället"},
     {kind:"omtag", text:"Via tracks"},
-    {kind:"mick", nr:9, dir:"upp", text:"Omtaget, mot slutet"},
-    {kind:"byte", text:"Jazzgitarr → Narvik", sub:"Först efter omtaget – står i koreografin under låten · 0970 är tyst"}
+    {kind:"mick", nr:9, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -464,21 +461,18 @@ const SHOW = [
 
  {card:"4", title:"Kärlek är större än bilar",
   items:[
-    {kind:"byte", text:"Narvik → jazzgitarr", sub:"Inget tyst preset – skruva ner Narvik, slå om till 0972 efter bytet"},
     {kind:"cue", who:"Jens", text:"Jag skulle hälsa att hon längtar efter dig", sub:"Olle: ”Aaa!”"},
-    {kind:"song", text:"Kärlek är större än bilar", bpm:169, preset:"0972", git:"jazz"},
-    {kind:"omtag", text:"En enkel refräng i Ebm med trumpettema", sub:"Abm, Abm/Cb, Ebm, Ebm/Db, Bb7, Bb7, Cb7, Cb7, Bb7, Uppgång till, Ebm (fallande)"}
+    {kind:"song", text:"Kärlek är större än bilar", bpm:169, preset:"0972", git:"narvik"},
+    {kind:"omtag", text:"En enkel refräng i Ebm med trumpettema"}
   ]},
 
- {paus:"AKTPAUS 2 – on air släcks · FOH kör radioclaes 1 · Nisses tuggummi", preset:"0982", byte:"byt till Narvik"},
+ {paus:"AKTPAUS 2 – on air släcks · FOH kör radioclaes 1 · Nisses tuggummi", preset:"0982"},
 
- {card:"5", title:"Radioclaes 2 → Lasse Lönndahl → Macken gitarr",
+ {card:"5", title:"Radioclaes 2 → Lasse Lönndahl",
   items:[
     {kind:"cue", who:"FOH", text:"Radioclaes 2", sub:"Avbryter aktpaus 2 och kickar igång igen"},
-    {kind:"song", text:"Lasse Lönndahl", sub:"När radioclaes 2 är slut · Macken tpt", bpm:100, preset:"0973", git:"narvik"},
-    {kind:"sfx", text:"FOH speaker: ”Det där var Janne Bjerger osv”"},
-    {kind:"attacca"},
-    {kind:"song", text:"Macken – gitarrvariant", bpm:100, preset:"0964", git:"narvik"},
+    {kind:"note", text:"Janne startar själv när radioclaes 2 är slut"},
+    {kind:"song", text:"Lasse Lönndahl", sub:"Macken tpt · spelas på tills cue ut", bpm:100, preset:"0973", git:"narvik"},
     {kind:"out", who:"Anders", text:"Hallå där borta, kan ni laga den här", sub:"Motorn läggs upp på bordet – avbryter låten"}
   ]},
  {paus:"ca 5 min musikerpaus"},
@@ -531,9 +525,8 @@ const SHOW = [
     {kind:"song", text:"Macken", bpm:148, preset:"0978", git:"narvik", scen:"1 Dist · 2 Clean · 3 Lead (delay)"},
     {kind:"mick", nr:13, dir:"upp", text:"Näst sista frasen", sub:"”Roy och Roger har en dröm, ett hopp, ett liv, en mack TILLSAMMANS”"},
     {kind:"omtag", text:"Hus 1 2 ggr, sedan in i 2:a huset och slutar med synkop", sub:"Virvel/pukfills startar in i reprisen · fullt ös, trumpetmelodi"},
-    {kind:"byte", text:"Narvik → jazzgitarr", sub:"Inget tyst preset – skruva ner Narvik, slå om till 0979 efter bytet"},
     {kind:"note", text:"Richard startar Adjö så snart som möjligt efter omtaget"},
-    {kind:"song", text:"Adjö", sub:"Framme vid scenkanten", bpm:103, preset:"0979", git:"jazz"},
+    {kind:"song", text:"Adjö", sub:"Framme vid scenkanten", bpm:103, preset:"0979", git:"narvik"},
     {kind:"mick", nr:14, dir:"ner", text:"Adjö – plats tajmas på rep", sub:"Låg på Macken-applådtacket, som är struket"},
     {kind:"note", text:"Det blir inte mer än Adjö – inget applådtack"}
   ]}
@@ -649,7 +642,7 @@ function build(){
     }
     if(b.paus){
       const big = /^AKTPAUS/.test(b.paus);
-      const prig = b.preset ? `<span class="prig rigtag">${esc(b.preset)} tyst · ${esc(b.byte)}</span>` : "";
+      const prig = b.preset ? `<span class="prig rigtag">${esc(b.preset)} tyst${b.byte ? " · " + esc(b.byte) : ""}</span>` : "";
       html += `<div class="paus${big?" big":""}">${icon(big?"i-bulb":"i-wrench")}<b>${esc(b.paus)}</b>${prig}</div>`; return;
     }
     html += renderCard(b, akt);
