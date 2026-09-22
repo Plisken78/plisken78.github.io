@@ -380,9 +380,11 @@ const SHOW = [
   items:[
     {kind:"byte", text:"Narvik → banjo", sub:"Inget tyst preset – skruva ner Narvik, slå om till 0980 efter bytet"},
     {kind:"cue", who:"Olle", text:"Otroligt, det är helt otroligt"},
-    {kind:"note", text:"Richard startar själv på banjon från musikerplats"},
+    {kind:"note", text:"Janne startar – vi lägger på"},
     {kind:"song", text:"Truckdriving Song", bpm:80, preset:"0980", git:"banjo"},
     {kind:"mick", nr:2, dir:"ner", text:"Vid musikstart"},
+    {kind:"note", text:"Inget banjofill i A-breaket"},
+    {kind:"note", text:"Rit på sluttonen"},
     {kind:"omtag", text:"Uppgång till refr i F#m, Bm, E, ||:A F#m, Bm E:|| A6 (rit till sista ackordet)", sub:"Richard startar omtaget själv"},
     {kind:"mick", nr:3, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
@@ -397,6 +399,7 @@ const SHOW = [
     {kind:"attacca"},
     {kind:"song", text:"Det är vattenpumpen Gerd", bpm:80, preset:"0966", git:"nylon"},
     {kind:"omtag", text:"Sista svängen från Cm F, Gm Em7b5 till slut men landa på tonikan direkt utan den sjuka kadensen."},
+    {kind:"note", text:"Anders slår ut slutackorden med klarinetten"},
     {kind:"mick", nr:5, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
@@ -481,12 +484,12 @@ const SHOW = [
 
  {card:"6", title:"Trofémusik → Har du gått din sista mil",
   items:[
-    {kind:"cue", who:"Olle", text:"Det en inte har i huvudet får man ha på banken, eller vad säger du Roger?"},
+    {kind:"cue", who:"Linnea", text:"Det är inte konstigt att vi har hundra miljarder i utlandsskuld när vi har sånt bankfolk."},
     {kind:"song", text:"Trofémusik", sub:"Samma tempo som Har du gått din sista mil – de sitter ihop", bpm:74, preset:"0965", git:"narvik"},
     {kind:"attacca"},
     {kind:"note", text:"Sista mil börjar direkt i trofémusikens slutackord – med pianoräkan (Gabriellas sång)"},
     {kind:"song", text:"Har du gått din sista mil", bpm:74, preset:"0974", git:"narvik", scen:"1 Intro swell · 2 Clean · 3 Power ballad · 4 Lead (delay)"},
-    {kind:"omtag", text:"Hela den lugna fina biten med trumpet och gitarrslinga igen"}
+    {kind:"omtag", text:"Det ösiga slutet av refrängen – i stället för den lugna delen"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -508,12 +511,13 @@ const SHOW = [
     {kind:"song", text:"Husvagn", bpm:105, preset:"0976", git:"narvik"},
     {kind:"sfx", text:"Malin kickar igång ”Satan, Satan, Satan” via SPD-SX", sub:"Viktigt: exakt på det stället den ligger i nya lyssningsfilen HUSVAGN_Rapp"},
     {kind:"note", text:"Direkt efter ”Satan, Satan, Satan” dundrar Malin igång med en takts upptakt"},
-    {kind:"omtag", text:"Breakdelen med virvelsolo, 2 ggr igenom: G, C (räka), A, D, G, C (räka), A, D7 och slut på en 1:a", sub:"Likadana markeringar som den vanliga, fast 4/4 hela · ingen nergång"},
     {kind:"note", text:"Ingen nergång på breakdelen – och ingen synkop i rapdelen"},
+    {kind:"omtag", text:"Inget omtag"},
     {kind:"sfx", text:"FOH: den beige kunden", sub:"Cue – Linnea: ”Kom nu lilla rofsingen”"},
     {kind:"sfx", text:"FOH: polis", sub:"Cue – Jens: ”Gubben i 240, då vet vi ju vem det var”"},
-    {kind:"song", text:"Macken – pianoversion", sub:"I bakgrunden medan Solala pratar · bara Simon · Olle: ”Tuut, tuut, tuut”", preset:"0981", tyst:true},
-    {kind:"out", who:"Anders", text:"Hejdå Macken, vi ses i morrn!", sub:"Kepsen åker på → sluta spela"}
+    {kind:"cue", who:"Olle", text:"Tut i luren fick Sven Åke, och alla andra fick en turbo.", sub:"Två gånger – sedan ”Tuuut!”"},
+    {kind:"song", text:"Macken – pianovariant i A-dur", sub:"I bakgrunden medan Solala pratar · bara Simon", preset:"0981", tyst:true},
+    {kind:"out", text:"Nu går vi hem Roger"}
   ]},
 
  {card:"9", title:"Final: Gött å leva → Macken → Adjö",
@@ -525,13 +529,12 @@ const SHOW = [
     {kind:"attacca"},
     {kind:"song", text:"Macken", bpm:148, preset:"0978", git:"narvik", scen:"1 Dist · 2 Clean · 3 Lead (delay)"},
     {kind:"mick", nr:13, dir:"upp", text:"Näst sista frasen", sub:"”Roy och Roger har en dröm, ett hopp, ett liv, en mack TILLSAMMANS”"},
-    {kind:"omtag", text:"Virvel/pukfills startar in i reprisen", sub:"Fullt ös, trumpetmelodi, hel refräng"},
-    {kind:"todo", text:"Längd på slutreprisen ej klar"},
+    {kind:"omtag", text:"Hus 1 2 ggr, sedan in i 2:a huset och slutar med synkop", sub:"Virvel/pukfills startar in i reprisen · fullt ös, trumpetmelodi"},
     {kind:"byte", text:"Narvik → jazzgitarr", sub:"Inget tyst preset – skruva ner Narvik, slå om till 0979 efter bytet"},
+    {kind:"note", text:"Richard startar Adjö så snart som möjligt efter omtaget"},
     {kind:"song", text:"Adjö", sub:"Framme vid scenkanten", bpm:103, preset:"0979", git:"jazz"},
-    {kind:"byte", text:"Jazzgitarr → Narvik", sub:"Inget tyst preset – skruva ner jazzgitarren, slå om till 0978 efter bytet"},
-    {kind:"song", text:"Macken – omtagsversionen igen", flag:"EV", sub:"Applådtack: samma repris som ovan – virvel/pukfills, fullt ös", bpm:148, preset:"0978", git:"narvik"},
-    {kind:"mick", nr:14, dir:"ner", text:"Omtaget – Macken instrumental applådtack"}
+    {kind:"mick", nr:14, dir:"ner", text:"Adjö – plats tajmas på rep", sub:"Låg på Macken-applådtacket, som är struket"},
+    {kind:"note", text:"Det blir inte mer än Adjö – inget applådtack"}
   ]}
 ];
 
