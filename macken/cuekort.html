@@ -344,6 +344,7 @@
 /* =========================================================================
    ALLT INNEHÅLL LIGGER HÄR NERE. Ändra bara i SHOW-arrayen.
    kind: 'song' | 'cue' | 'out' | 'omtag' | 'note' | 'sfx' | 'todo' | 'ljus' | 'attacca' | 'byte' | 'mick'
+   cue/out: svar:{who,text} = replik direkt efter, i samma storlek som cuen
    mick: mickspaken – nr (Niklas lista 16 sep 2026), dir: 'upp' | 'ner'
    song: bpm (visas för alla) · preset, git (nyckel i GIT), scen, tyst (bara med "Visa gitarr/preset")
    byte: gitarrbyte – hela raden döljs med "Visa gitarr/preset"
@@ -463,7 +464,7 @@ const SHOW = [
 
  {card:"4", title:"Kärlek är större än bilar",
   items:[
-    {kind:"cue", who:"Jens", text:"Jag skulle hälsa att hon längtar efter dig", sub:"Olle: ”Aaa!”"},
+    {kind:"cue", who:"Jens", text:"Jag skulle hälsa att hon längtar efter dig", svar:{who:"Olle", text:"Aaa!"}},
     {kind:"song", text:"Kärlek är större än bilar", bpm:169, preset:"0972", git:"narvik"},
     {kind:"omtag", text:"En enkel refräng i Ebm med trumpettema"}
   ]},
@@ -492,7 +493,7 @@ const SHOW = [
 
  {card:"7", title:"Privat → gräsklippare",
   items:[
-    {kind:"cue", who:"Olle", text:"Ah lycka te!", sub:"Jens: ”Tack”"},
+    {kind:"cue", who:"Olle", text:"Ah lycka te!", svar:{who:"Jens", text:"Tack"}},
     {kind:"song", text:"Privat", bpm:139, preset:"0975", git:"narvik", scen:"1 Intro lead (delay) · 2 Clean · 3 Dist"},
     {kind:"omtag", text:"Ta om 11 takter från slutet dvs det som liknar introt. Det blir 8 takter från det stället men byt 8:e takten mot sista takten (slutrytmen)"},
     {kind:"attacca"},
@@ -563,6 +564,7 @@ function renderItem(it){
   let txt;
   if(it.kind === "cue" || it.kind === "out"){
     txt = `${it.who?`<span class="who">${esc(it.who)}:</span> `:""}<span class="say">”${esc(it.text)}”</span>`;
+    if(it.svar) txt += `<div>${it.svar.who?`<span class="who">${esc(it.svar.who)}:</span> `:""}<span class="say">”${esc(it.svar.text)}”</span></div>`;
   } else if(it.kind === "mick"){
     txt = `<span class="mdir">${it.dir === "upp" ? "▲ Mickar UPP" : "▼ Mickar NER"}</span> · ${esc(it.text)}<span class="mnr">#${it.nr}</span>`;
   } else {
