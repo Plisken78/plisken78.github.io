@@ -240,6 +240,25 @@
   /* slaget blinkar genom att vända rutan */
   button.bpm.on.beat{background:var(--paper); color:var(--c-bpm)}
   body.mono button.bpm.on.beat{background:var(--ink); color:var(--paper)}
+  /* Richards egna inräkningar – förstärkt rad, större tempo. Andras låtrader rörs inte. */
+  .row.inr{
+    background:#e8eef7; border-left-width:8px;
+    margin-right:-4mm; padding:2.4mm 4mm 2.4mm 0;
+    box-shadow:inset 0 0 0 2px var(--c-bpm);
+  }
+  .row + .row.inr, .row.inr + .row{border-top:0}
+  .inrchip{
+    display:inline-block; margin:0 0 1.2mm; padding:.8mm 2.2mm;
+    background:var(--c-bpm); color:var(--paper);
+    font-family:var(--mono); font-size:8.5pt; font-weight:800; letter-spacing:.1em; line-height:1.1;
+  }
+  .row.inr .bpm{font-size:21pt; min-width:25mm; padding:1.4mm 3mm; border-width:2.5px}
+  .row.inr .bpm small{font-size:7pt}
+  body.compact .row.inr .bpm{font-size:17pt}
+  body.mono .row.inr{background:none; box-shadow:inset 0 0 0 2px var(--ink)}
+  body.mono .inrchip{background:var(--ink)}
+  .over td.bpms b{background:var(--c-bpm); color:var(--paper); padding:0 3px}
+  body.mono .over td.bpms b{background:var(--ink)}
   .pchip{
     display:inline-block; vertical-align:2px; margin-left:2mm; padding:0 4px;
     background:var(--fill); border:1px solid var(--rule);
@@ -366,13 +385,13 @@ const SHOW = [
     {kind:"sfx", text:"FOH: speakerinspelning från bandet startar föreställningen"},
     {kind:"note", text:"Timpani på tracks under speakern – Malin spelar inte", sub:"Simon matchar med en pad i rätt tonart"},
     {kind:"cue",  who:"Speaker", text:"Då sänder vi in kvällens fantastiska cast", sub:"Richard räknar in 1 takt från ”kvällens”"},
-    {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel", bpm:128, preset:"0963", git:"narvik", scen:"1 Dist · 2 Funky · 3 Lead"},
+    {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel", inr:"1 takt från ”kvällens”", bpm:128, preset:"0963", git:"narvik", scen:"1 Dist · 2 Funky · 3 Lead"},
     {kind:"mick", nr:1, dir:"upp", text:"00:40 in i ouvertyren"},
     {kind:"attacca"},
     {kind:"song", text:"Macken – pianoversion", sub:"Ligger bakom speaker av Claes Eriksson (röst från FOH) · bara Simon", preset:"0981", tyst:true},
     {kind:"out",  who:"Speaker", text:"…förblir likadana som de alltid varit", sub:"Pianoversionen slutar på ”varit”"},
     {kind:"cue",  who:"Speaker", text:"Precis som alla andra bilreparatörer", sub:"→ gitarrvarianten"},
-    {kind:"song", text:"Macken – gitarrvariant", bpm:105, preset:"0964", git:"narvik"},
+    {kind:"song", text:"Macken – gitarrvariant", inr:true, bpm:105, preset:"0964", git:"narvik"},
     {kind:"out",  who:"Linnea", text:"Roooger"}
   ]},
  {paus:"ca 5 min musikerpaus"},
@@ -397,7 +416,7 @@ const SHOW = [
   items:[
     {kind:"byte", text:"Banjo → stålsträngad", sub:"Inget tyst preset – skruva ner banjon, slå om till 0983 efter bytet"},
     {kind:"cue", who:"Olle", text:"Sicket folk", sub:"→ skylt → applåd → trofémusik"},
-    {kind:"song", text:"Trofémusik", bpm:80, preset:"0983", git:"stal"},
+    {kind:"song", text:"Trofémusik", inr:true, bpm:80, preset:"0983", git:"stal"},
     {kind:"mick", nr:4, dir:"ner", text:"Vid låtstart"},
     {kind:"attacca"},
     {kind:"song", text:"Det är vattenpumpen Gerd", bpm:80, preset:"0966", git:"stal"},
@@ -422,7 +441,7 @@ const SHOW = [
  {card:"1", title:"Radioprat Claes → Mitt liv tills idag → Jag vet inte vad det är",
   items:[
     {kind:"cue", who:"FOH", text:"Radioprat Claes", sub:"Avbryter aktpaus 1 och kickar igång igen"},
-    {kind:"song", text:"Mitt liv tills idag", sub:"När radiopratet är slut – försök starta kortare inpå Claes prat", bpm:160, preset:"0968", git:"narvik"},
+    {kind:"song", text:"Mitt liv tills idag", sub:"När radiopratet är slut – försök starta kortare inpå Claes prat", inr:"helst bara 2 takter · i god tid", bpm:160, preset:"0968", git:"narvik"},
     {kind:"attacca"},
     {kind:"song", text:"Jag vet inte vad det är", sub:"Direkt efter applåderna", bpm:76, preset:"0969", git:"narvik"},
     {kind:"note", text:"Malin startar"},
@@ -457,7 +476,7 @@ const SHOW = [
     {kind:"attacca"},
     {kind:"sfx", text:"FOH drar igång radioprat av Claes direkt efter omtaget"},
     {kind:"cue", who:"Linnea", text:"Kolla borta på Pressbyrån, där har dem mycket skit"},
-    {kind:"song", text:"Macken – gitarrvariant", sub:"Kort – bara introt den här gången", bpm:105, preset:"0964", git:"narvik"},
+    {kind:"song", text:"Macken – gitarrvariant", sub:"Kort – bara introt den här gången", inr:true, bpm:105, preset:"0964", git:"narvik"},
     {kind:"mick", nr:12, dir:"ner", text:"Vid låtstart", sub:"Mickarna ligger nere resten av akten – nästa spak är i finalen"}
   ]},
  {paus:"ca 2 min musikerpaus"},
@@ -483,7 +502,7 @@ const SHOW = [
  {card:"6", title:"Trofémusik → Har du gått din sista mil",
   items:[
     {kind:"cue", who:"Linnea", text:"Det är inte konstigt att vi har hundra miljarder i utlandsskuld när vi har sånt bankfolk."},
-    {kind:"song", text:"Trofémusik", sub:"Samma tempo som Har du gått din sista mil – de sitter ihop", bpm:75, preset:"0965", git:"narvik"},
+    {kind:"song", text:"Trofémusik", sub:"Samma tempo som Har du gått din sista mil – de sitter ihop", inr:true, bpm:75, preset:"0965", git:"narvik"},
     {kind:"attacca"},
     {kind:"note", text:"Sista mil börjar direkt i trofémusikens slutackord – med pianoräkan (Gabriellas sång)"},
     {kind:"song", text:"Har du gått din sista mil", bpm:75, preset:"0974", git:"narvik", scen:"1 Intro swell · 2 Clean · 3 Power ballad · 4 Lead (delay)"},
@@ -494,7 +513,7 @@ const SHOW = [
  {card:"7", title:"Privat → gräsklippare",
   items:[
     {kind:"cue", who:"Olle", text:"Ah lycka te!", svar:{who:"Jens", text:"Tack"}},
-    {kind:"song", text:"Privat", bpm:139, preset:"0975", git:"narvik", scen:"1 Intro lead (delay) · 2 Clean · 3 Dist"},
+    {kind:"song", text:"Privat", inr:true, bpm:139, preset:"0975", git:"narvik", scen:"1 Intro lead (delay) · 2 Clean · 3 Dist"},
     {kind:"omtag", text:"Ta om 11 takter från slutet dvs det som liknar introt. Det blir 8 takter från det stället men byt 8:e takten mot sista takten (slutrytmen)"},
     {kind:"attacca"},
     {kind:"sfx", text:"FOH: ljudeffekter gräsklippare"}
@@ -504,7 +523,7 @@ const SHOW = [
  {card:"8", title:"Husvagnsintro → Husvagn → avslut på Macken piano",
   items:[
     {kind:"cue", who:"Linnea", text:"Jag vill ha mer glass, öppna, öppna"},
-    {kind:"song", text:"Husvagnsintro", bpm:90, preset:"0984", git:"narvik"},
+    {kind:"song", text:"Husvagnsintro", inr:true, bpm:90, preset:"0984", git:"narvik"},
     {kind:"attacca"},
     {kind:"song", text:"Husvagn", bpm:105, preset:"0976", git:"narvik"},
     {kind:"sfx", text:"Malin kickar igång ”Satan, Satan, Satan” via SPD-SX", sub:"Viktigt: exakt på det stället den ligger i nya lyssningsfilen HUSVAGN_Rapp"},
@@ -559,7 +578,7 @@ function renderItem(it){
   if(it.kind === "attacca")
     return `<div class="attacca">${icon("i-arrow")}ATTACCA – ingen paus</div>`;
 
-  const bas = it.kind === "song" ? "row song" : it.kind === "byte" ? "row byte rigtag" : it.kind === "mick" ? "row mick" : "row";
+  const bas = it.kind === "song" ? (it.inr ? "row song inr" : "row song") : it.kind === "byte" ? "row byte rigtag" : it.kind === "mick" ? "row mick" : "row";
   const cls = `${bas} k-${it.kind}`;
   let txt;
   if(it.kind === "cue" || it.kind === "out"){
@@ -571,6 +590,7 @@ function renderItem(it){
     txt = esc(it.text);
   }
   if(it.flag) txt = `<span class="flag">${esc(it.flag)}</span>` + txt;
+  if(it.inr) txt = `<div><span class="inrchip">▶ RICHARD RÄKNAR IN${it.inr === true ? "" : " · " + esc(it.inr)}</span></div>` + txt;
   if(it.preset){
     const g = GIT[it.git];
     txt += `<span class="pchip rigtag">${esc(it.preset)} · ${it.tyst ? "tyst" : esc(g.namn)}</span>`;
@@ -610,6 +630,7 @@ function build(){
         <div><b>Akt 2</b> ca 1 tim 40 min</div>
         <div><b>Ljud</b> = FOH kör alla ljud-cuer och tracks</div>
         <div><b>BPM</b> = tempot på låten</div>
+        <div><b>▶ Blå ram</b> = Richard räknar in (▶ i översikten)</div>
         <div><b>Mickspak</b> = mickarna upp/ner ur scengolvet – Simon sköter spaken från keyboardplats · tajmas exakt på rep</div>
         <div class="rigtag"><b>Axe-FX III</b> MIDI-kanal 14 · grå ruta = preset</div>
         <div><a class="xlink" href="kanallista.html">Kanallista &amp; monitorlista &rarr;</a></div>
@@ -632,7 +653,7 @@ function build(){
     if(b.paus){ html += `<tr class="brk"><td></td><td colspan="3">${esc(b.paus)}</td></tr>`; return; }
     const c = b.items.find(i=>i.kind==="cue");
     const cue = c ? `${c.who?c.who+": ":""}”${c.text}”` : (b.items.find(i=>i.kind==="todo") ? "cue ej klar" : "–");
-    const bpms = b.items.filter(i=>i.kind==="song").map(i=>i.bpm||"–").join(" · ");
+    const bpms = b.items.filter(i=>i.kind==="song").map(i=>i.inr && i.bpm ? `<b>▶${i.bpm}</b>` : (i.bpm||"–")).join(" · ");
     html += `<tr><td>${akt}:${b._n}</td><td>${esc(b.title)}</td><td class="bpms">${bpms}</td><td>${esc(cue)}</td></tr>`;
   });
   html += `</tbody></table>`;
@@ -664,7 +685,7 @@ function build(){
   if(todos.length) html += `<div class="todolist"><h2>ATT LÖSA FÖRE PREMIÄR</h2><ul>${todos.join("")}
     </ul></div>`;
 
-  html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo (klickbart) + presets + mickspak 16 sep 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
+  html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo (klickbart) + presets + mickspak 16 sep · inräkningar 24 sep 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
 
   document.getElementById("sheet").innerHTML = html;
   document.getElementById("d").textContent = new Date().toLocaleDateString("sv-SE");
