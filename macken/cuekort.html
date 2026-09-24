@@ -506,8 +506,8 @@ const SHOW = [
 
  {card:"6", title:"Trofémusik → Har du gått din sista mil",
   items:[
-    {kind:"cue", who:"Linnea", text:"Det är inte konstigt att vi har hundra miljarder i utlandsskuld när vi har sånt bankfolk."},
-    {kind:"song", text:"Trofémusik", sub:"Samma tempo som Har du gått din sista mil – de sitter ihop", inr:true, bpm:76, preset:"0965", git:"narvik"},
+    {kind:"cue", who:"Linnea", text:"Det är inte konstigt att vi har hundra miljarder i utlandsskuld när vi har sånt bankfolk.", sub:"Richard räknar in från ”när”: 3 å 4 å"},
+    {kind:"song", text:"Trofémusik", sub:"Samma tempo som Har du gått din sista mil – de sitter ihop", inr:"från ”när” · 3 å 4 å", bpm:76, preset:"0965", git:"narvik"},
     {kind:"attacca"},
     {kind:"note", text:"Sista mil börjar direkt i trofémusikens slutackord – med pianoräkan (Gabriellas sång)"},
     {kind:"song", text:"Har du gått din sista mil", bpm:76, preset:"0974", git:"narvik", scen:"1 Intro swell · 2 Clean · 3 Power ballad · 4 Lead (delay)"},
@@ -518,8 +518,8 @@ const SHOW = [
 
  {card:"7", title:"Privat → gräsklippare",
   items:[
-    {kind:"cue", who:"Olle", text:"Ah lycka te!", svar:{who:"Jens", text:"Tack"}},
-    {kind:"song", text:"Privat", inr:true, bpm:139, preset:"0975", git:"narvik", scen:"1 Intro lead (delay) · 2 Clean · 3 Dist"},
+    {kind:"cue", who:"Olle", text:"Ah lycka te!", svar:{who:"Jens", text:"Tack"}, sub:"Richard räknar in 1 takt när Olle sagt klart sin fras"},
+    {kind:"song", text:"Privat", inr:"1 takt när Olle sagt klart", bpm:139, preset:"0975", git:"narvik", scen:"1 Intro lead (delay) · 2 Clean · 3 Dist"},
     {kind:"omtag", text:"Ta om 11 takter från slutet dvs det som liknar introt. Det blir 8 takter från det stället men byt 8:e takten mot sista takten (slutrytmen)"},
     {kind:"attacca"},
     {kind:"sfx", text:"FOH: ljudeffekter gräsklippare"}
@@ -528,8 +528,8 @@ const SHOW = [
 
  {card:"8", title:"Husvagnsintro → Husvagn → avslut på Macken piano",
   items:[
-    {kind:"cue", who:"Linnea", text:"Jag vill ha mer glass, öppna, öppna"},
-    {kind:"song", text:"Husvagnsintro", inr:true, bpm:90, preset:"0984", git:"narvik"},
+    {kind:"cue", who:"Linnea", text:"Jag vill ha mer glass, öppna, öppna", sub:"Richard börjar räkna 3 å 4 å på ”glass”"},
+    {kind:"song", text:"Husvagnsintro", inr:"3 å 4 å på ”glass”", bpm:90, preset:"0984", git:"narvik"},
     {kind:"attacca"},
     {kind:"song", text:"Husvagn", bpm:105, preset:"0976", git:"narvik"},
     {kind:"sfx", text:"Malin kickar igång ”Satan, Satan, Satan” via SPD-SX", sub:"Viktigt: exakt på det stället den ligger i nya lyssningsfilen HUSVAGN_Rapp"},
