@@ -196,6 +196,7 @@
     break-inside:avoid;
   }
   .paus svg{width:16px; height:16px}
+  .paus.inkort{margin:2mm 0}
   .paus b{font-weight:700}
   .paus.big{
     background:var(--ink); color:var(--paper); border:0;
@@ -362,7 +363,8 @@
 <script>
 /* =========================================================================
    ALLT INNEHÅLL LIGGER HÄR NERE. Ändra bara i SHOW-arrayen.
-   kind: 'song' | 'cue' | 'out' | 'omtag' | 'note' | 'sfx' | 'todo' | 'ljus' | 'attacca' | 'byte' | 'mick'
+   kind: 'song' | 'cue' | 'out' | 'omtag' | 'note' | 'sfx' | 'todo' | 'ljus' | 'attacca' | 'byte' | 'mick' | 'paus'
+   paus (inne i ett kort): paus mitt i kortet utan att korten numreras om
    cue/out: svar:{who,text} = replik direkt efter, i samma storlek som cuen
    mick: mickspaken – nr (Niklas lista 16 sep 2026), dir: 'upp' | 'ner'
    song: bpm (visas för alla) · preset, git (nyckel i GIT), scen, tyst (bara med "Visa gitarr/preset")
@@ -465,7 +467,7 @@ const SHOW = [
   ]},
  {paus:"ca 5 min musikerpaus"},
 
- {card:"3", title:"I ditt bagage → radioprat → Macken gitarr",
+ {card:"3", title:"I ditt bagage → radioprat → videofilmssketch → Macken gitarr",
   items:[
     {kind:"cue", who:"Olle", text:"Det är otroligt, helt otroligt"},
     {kind:"song", text:"I ditt bagage", bpm:175, preset:"0971", git:"narvik", scen:"Delay"},
@@ -475,6 +477,7 @@ const SHOW = [
     {kind:"mick", nr:11, dir:"upp", text:"Omtaget, mot slutet"},
     {kind:"attacca"},
     {kind:"sfx", text:"FOH drar igång radioprat av Claes direkt efter omtaget"},
+    {kind:"paus", text:"ca 5 min videofilmssketch"},
     {kind:"cue", who:"Linnea", text:"Kolla borta på Pressbyrån, där har dem mycket skit"},
     {kind:"song", text:"Macken – gitarrvariant", sub:"Kort – bara introt den här gången", inr:true, bpm:105, preset:"0964", git:"narvik"},
     {kind:"mick", nr:12, dir:"ner", text:"Vid låtstart", sub:"Mickarna ligger nere resten av akten – nästa spak är i finalen"}
@@ -577,6 +580,8 @@ const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 function renderItem(it){
   if(it.kind === "attacca")
     return `<div class="attacca">${icon("i-arrow")}ATTACCA – ingen paus</div>`;
+  if(it.kind === "paus")
+    return `<div class="paus inkort">${icon("i-wrench")}<b>${esc(it.text)}</b></div>`;
 
   const bas = it.kind === "song" ? (it.inr ? "row song inr" : "row song") : it.kind === "byte" ? "row byte rigtag" : it.kind === "mick" ? "row mick" : "row";
   const cls = `${bas} k-${it.kind}`;
