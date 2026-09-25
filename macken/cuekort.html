@@ -366,6 +366,7 @@
    kind: 'song' | 'cue' | 'out' | 'omtag' | 'note' | 'sfx' | 'todo' | 'ljus' | 'attacca' | 'byte' | 'mick' | 'paus'
    paus (inne i ett kort): paus mitt i kortet utan att korten numreras om
    cue/out: svar:{who,text} = replik direkt efter, i samma storlek som cuen
+   cue/out: fri:true = texten är en handling, inte en replik (inga citattecken)
    mick: mickspaken – nr (Niklas lista 16 sep 2026), dir: 'upp' | 'ner'
    song: bpm (visas för alla) · preset, git (nyckel i GIT), scen, tyst (bara med "Visa gitarr/preset")
    byte: gitarrbyte – hela raden döljs med "Visa gitarr/preset"
@@ -395,7 +396,7 @@ const SHOW = [
     {kind:"out",  who:"Speaker", text:"…förblir likadana som de alltid varit", sub:"Pianoversionen slutar på ”varit”"},
     {kind:"cue",  who:"Speaker", text:"Precis som alla andra bilreparatörer", sub:"→ gitarrvarianten"},
     {kind:"song", text:"Macken – gitarrvariant", inr:true, bpm:105, preset:"0964", git:"narvik"},
-    {kind:"note", text:"Gitarrversionen slutar på en synkop innan Linneas ”Roooger”", sub:"Vi slutar före repliken – inte på den"}
+    {kind:"out",  who:"Jens", text:"slår av oss", fri:true, sub:"Gitarrvarianten slutar när Jens slår av – inte på kepsen. Kepsen kommer efter att Jens slagit av oss"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -591,7 +592,7 @@ function renderItem(it){
   const cls = `${bas} k-${it.kind}`;
   let txt;
   if(it.kind === "cue" || it.kind === "out"){
-    txt = `${it.who?`<span class="who">${esc(it.who)}:</span> `:""}<span class="say">”${esc(it.text)}”</span>`;
+    txt = `${it.who?`<span class="who">${esc(it.who)}:</span> `:""}<span class="say">${it.fri ? esc(it.text) : `”${esc(it.text)}”`}</span>`;
     if(it.svar) txt += `<div>${it.svar.who?`<span class="who">${esc(it.svar.who)}:</span> `:""}<span class="say">”${esc(it.svar.text)}”</span></div>`;
   } else if(it.kind === "mick"){
     txt = `<span class="mdir">${it.dir === "upp" ? "▲ Mickar UPP" : "▼ Mickar NER"}</span> · ${esc(it.text)}<span class="mnr">#${it.nr}</span>`;
