@@ -63,6 +63,17 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
   *(En force-push gör gamla commits onåbara, inte omedelbart raderade — GitHub behåller
   dem tills serverns städning kör.)*
 - Allt är single-file-sidor: CSS/JS ligger inline i respektive HTML-fil
+- ⚠️ **Om `.git` börjar växa — kolla `git count-objects -vH` (raden `size-garbage`).**
+  20 sep 2026 09:24 försvann repots packfiler och en blob (`2472dc7`) mitt under en
+  commit+push; orsaken hittades inte (troligast ett avbrutet automatiskt underhåll i
+  iCloud). Därefter försökte git 2.54:s automatiska underhåll (`git maintenance run
+  --auto` → geometrisk repack, körs efter commit/fetch) packa om HELA repot vid varje
+  push, dog på den saknade bloben och lämnade en ~255 MB `tmp_pack_*` efter sig — tyst,
+  pushen gick ju igenom. **67 st = 17 GB i iCloud på sex dagar.** Lagat 26 sep 2026:
+  färsk klon från GitHub (HEAD `0398b86`, fsck ren) ersatte `.git`, skräpet raderat.
+  Tecken att leta efter: `git fsck --connectivity-only` säger `missing blob`, eller
+  `objects/pack/` innehåller bara `tmp_pack_*`. Botemedlet är samma igen — GitHub har
+  hela historiken; klona, jämför HEAD, byt `.git` (arbetsträdet rörs inte).
 
 ## Cuekortet (`macken/cuekort.html`) — konventioner (stor revision 14 sep 2026)
 - **Arbetssätt som fungerade:** Richard dikterar en ändring per kort ("2:4 lägg till …"), Claude ändrar direkt i filen utan att committa, allt går ut i EN commit när han säger "kör ut". Repot är publikt — varje commit är publicerad, så vänta med den.
