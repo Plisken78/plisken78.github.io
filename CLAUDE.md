@@ -76,6 +76,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
   hela historiken; klona, jämför HEAD, byt `.git` (arbetsträdet rörs inte).
 
 ## Cuekortet (`macken/cuekort.html`) — konventioner (stor revision 14 sep 2026)
+- **Nästa show:** utgå från skillen `cuekort` (`CLAUDE/COWORK-FILES/skills/cuekort/` — `mall.html` + `SKILL.md`), sparad 27 sep 2026 efter premiären. Konventionerna nedan finns med där i show-neutral form.
 - **Arbetssätt som fungerade:** Richard dikterar en ändring per kort ("2:4 lägg till …"), Claude ändrar direkt i filen utan att committa, allt går ut i EN commit när han säger "kör ut". Repot är publikt — varje commit är publicerad, så vänta med den.
 - **Kortnumret är `akt:löpnummer`** och räknas av renderingen, inte av fältet `card:` i arrayen (det står kvar som gamla siffror och betyder ingenting). Pauser räknas inte.
 - **Showen är EN akt (Akt 2) med två aktpauser inuti** — ingen ny `{akt:…}`-markör efter pauserna, numreringen fortsätter 2:5, 2:6 … Richard 14/9: *"det är en akt, behåll upplägget"*.
