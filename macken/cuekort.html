@@ -368,6 +368,7 @@
    cue/out: svar:{who,text} = replik direkt efter, i samma storlek som cuen
    cue/out: fri:true = texten är en handling, inte en replik (inga citattecken)
    mick: mickspaken – nr (Niklas lista 16 sep 2026), dir: 'upp' | 'ner'
+         (används inte längre – alla 14 rader strukna 2 okt 2026; radtypen finns kvar i renderingen)
    song: bpm (visas för alla) · preset, git (nyckel i GIT), scen, tyst (bara med "Visa gitarr/preset")
    byte: gitarrbyte – hela raden döljs med "Visa gitarr/preset"
    ========================================================================= */
@@ -391,7 +392,6 @@ const SHOW = [
     {kind:"note", text:"Timpani på tracks under speakern – Malin spelar inte", sub:"Simon matchar med en pad i rätt tonart"},
     {kind:"cue",  who:"Speaker", text:"Då sänder vi in kvällens fantastiska cast", sub:"Richard räknar in 1 takt från ”kvällens”"},
     {kind:"song", text:"Ouvertyr", sub:"Dramatiska trummor – alla pukor + virvel", inr:"1 takt från ”kvällens”", bpm:128, preset:"0963", git:"narvik", scen:"1 Dist · 2 Funky · 3 Lead"},
-    {kind:"mick", nr:1, dir:"upp", text:"00:40 in i ouvertyren"},
     {kind:"attacca"},
     {kind:"song", text:"Macken – pianoversion", sub:"Ligger bakom speaker av Claes Eriksson (röst från FOH) · bara Simon", preset:"0981", tyst:true},
     {kind:"out",  who:"Speaker", text:"…förblir likadana som de alltid varit", sub:"Pianoversionen slutar på ”varit”"},
@@ -408,13 +408,11 @@ const SHOW = [
     {kind:"cue", who:"Olle", text:"Otroligt, det är helt otroligt"},
     {kind:"note", text:"Janne startar – vi lägger på"},
     {kind:"song", text:"Truckdriving Song", bpm:126, preset:"0980", git:"banjo"},
-    {kind:"mick", nr:2, dir:"ner", text:"Vid musikstart"},
     {kind:"note", text:"Janne + Richard lämnar podiet efter låtstart"},
     {kind:"note", text:"Inget banjofill i A-breaket"},
     {kind:"note", text:"Vers 3: rytmen SKA in!", sub:"Sista versen – missas fortfarande"},
     {kind:"note", text:"Rit på sluttonen"},
     {kind:"omtag", text:"Uppgång till refr i F#m, Bm, E, ||:A F#m, Bm E:|| A6 (rit till sista ackordet)", sub:"Richard startar omtaget själv"},
-    {kind:"mick", nr:3, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -424,19 +422,16 @@ const SHOW = [
     {kind:"cue", who:"Olle", text:"Sicket folk", sub:"Vänta – räkna inte in här"},
     {kind:"ljus", text:"Skylten tänds", sub:"Cue in för trofémusiken"},
     {kind:"song", text:"Trofémusik", inr:"när skylten tänds", bpm:80, preset:"0983", git:"stal"},
-    {kind:"mick", nr:4, dir:"ner", text:"Vid låtstart"},
     {kind:"attacca"},
     {kind:"song", text:"Det är vattenpumpen Gerd", bpm:80, preset:"0966", git:"stal"},
     {kind:"note", text:"Anders slår ut slutackorden med klarinetten"},
     {kind:"omtag", text:"Sista svängen från Cm F, Gm Em7b5 till slut men landa på tonikan direkt utan den sjuka kadensen."},
-    {kind:"mick", nr:5, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
  {card:"4", title:"Egentligen → sändningen går ner",
   items:[
     {kind:"byte", text:"Stålsträngad → Narvik", sub:"Inget tyst preset – skruva ner stålsträngade, slå om till 0967 efter bytet"},
-    {kind:"mick", nr:6, dir:"ner", text:"När Anders börjar prata inför Egentligen"},
     {kind:"cue", who:"Anders", text:"Ge mig en scen!"},
     {kind:"song", text:"Egentligen", bpm:74, preset:"0967", git:"narvik", scen:"Delay"},
     {kind:"omtag", text:"Inget omtag"},
@@ -455,7 +450,6 @@ const SHOW = [
     {kind:"note", text:"Julia och Simon nickar in varandra – övriga faller in"},
     {kind:"note", text:"Slutet: cha cha spelas av solala – men ett extraslag efter cha cha"},
     {kind:"omtag", text:"Kortare omtag: A Bm, E A, A cha cha cha"},
-    {kind:"mick", nr:7, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -464,11 +458,9 @@ const SHOW = [
     {kind:"cue", who:"Anders", text:"Önskar du dig inget då eller?"},
     {kind:"sfx", text:"FOH kör tracks"},
     {kind:"song", text:"Jag vill ha en synth", preset:"0970", tyst:true},
-    {kind:"mick", nr:8, dir:"ner", text:"Vid låtstart"},
     {kind:"note", text:"Bandet är entledigat från koreografin – vi får ett par gröna glasögon i stället"},
     {kind:"note", text:"På med glasögonen när trummorna börjar"},
     {kind:"omtag", text:"Via tracks"},
-    {kind:"mick", nr:9, dir:"upp", text:"Omtaget, mot slutet"}
   ]},
  {paus:"ca 5 min musikerpaus"},
 
@@ -477,15 +469,12 @@ const SHOW = [
     {kind:"cue", who:"Olle", text:"Det är otroligt, helt otroligt"},
     {kind:"song", text:"I ditt bagage", bpm:175, preset:"0971", git:"narvik", scen:"Delay"},
     {kind:"note", text:"Malin startar själv"},
-    {kind:"mick", nr:10, dir:"ner", text:"Vid låtstart"},
     {kind:"omtag", text:"Takt 3–8 vocal score-noten, omtag 3 ggr på takt 8 innan vi landar på ett A6", sub:"Kort punkterad fjärdedel och lång synkop efter det – alla tystnar gemensamt där nästa 1:a skulle kommit"},
-    {kind:"mick", nr:11, dir:"upp", text:"Omtaget, mot slutet"},
     {kind:"attacca"},
     {kind:"sfx", text:"FOH drar igång radioprat av Claes direkt efter omtaget"},
     {kind:"paus", text:"ca 5 min videofilmssketch"},
     {kind:"cue", who:"Linnea", text:"Kolla borta på Pressbyrån, där har dem mycket skit"},
     {kind:"song", text:"Macken – gitarrvariant", sub:"Kort – bara introt den här gången", inr:true, bpm:105, preset:"0964", git:"narvik"},
-    {kind:"mick", nr:12, dir:"ner", text:"Vid låtstart", sub:"Mickarna ligger nere resten av akten – nästa spak är i finalen"}
   ]},
  {paus:"ca 2 min musikerpaus"},
 
@@ -557,11 +546,9 @@ const SHOW = [
     {kind:"attacca"},
     {kind:"sfx", text:"FOH kör tracks – inräkning från FOH"},
     {kind:"song", text:"Macken", sub:"På tracks", bpm:148, preset:"0978", git:"narvik", scen:"1 Dist · 2 Clean · 3 Lead (delay)"},
-    {kind:"mick", nr:13, dir:"upp", text:"Näst sista frasen", sub:"”Roy och Roger har en dröm, ett hopp, ett liv, en mack TILLSAMMANS”"},
     {kind:"omtag", text:"Hus 1 2 ggr, sedan in i 2:a huset och slutar med synkop", sub:"Virvel/pukfills startar in i reprisen · fullt ös, trumpetmelodi"},
     {kind:"note", text:"Synkop på 2å"},
     {kind:"note", text:"Solala räknar in Adjö"},
-    {kind:"mick", nr:14, dir:"ner", text:"Före Adjö"},
     {kind:"song", text:"Adjö", sub:"Framme vid scenkanten", bpm:103, preset:"0979", git:"narvik"},
     {kind:"note", text:"Det blir inte mer än Adjö – inget applådtack"}
   ]}
@@ -580,7 +567,7 @@ const LBL = {
 const FARG = [
   ["SCENEN", [["song","LÅT"],["bpm","TEMPO"],["omtag","OMTAG"],["byte","GITARRBYTE"]]],
   ["CUE",    [["cue","CUE IN"],["out","CUE UT"]]],
-  ["TEKNIK", [["sfx","LJUD"],["ljus","LJUS"],["mick","MICKSPAK"]]],
+  ["TEKNIK", [["sfx","LJUD"],["ljus","LJUS"]]],
   ["EGET",   [["note","NOTERA"],["todo","ATT LÖSA"]]]
 ];
 const icon = id => `<span class="ic"><svg viewBox="0 0 24 24"><use href="#${id}"/></svg></span>`;
@@ -645,7 +632,6 @@ function build(){
         <div><b>Ljud</b> = FOH kör alla ljud-cuer och tracks</div>
         <div><b>BPM</b> = tempot på låten</div>
         <div><b>▶ Blå ram</b> = Richard räknar in (▶ i översikten)</div>
-        <div><b>Mickspak</b> = mickarna upp/ner ur scengolvet – Simon sköter spaken från keyboardplats · tajmas exakt på rep</div>
         <div class="rigtag"><b>Axe-FX III</b> MIDI-kanal 14 · grå ruta = preset</div>
         <div><a class="xlink" href="kanallista.html">Kanallista &amp; monitorlista &rarr;</a></div>
       </div>
@@ -699,7 +685,7 @@ function build(){
   if(todos.length) html += `<div class="todolist"><h2>ATT LÖSA FÖRE PREMIÄR</h2><ul>${todos.join("")}
     </ul></div>`;
 
-  html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo (klickbart) + presets + mickspak 16 sep · inräkningar 24 sep 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
+  html += `<footer class="foot"><span>Macken 40 år – cuekort · tempo (klickbart) + presets 16 sep · inräkningar 24 sep · mickspaken struken 2 okt 2026</span><span>Utskrift: <span id="d"></span></span></footer>`;
 
   document.getElementById("sheet").innerHTML = html;
   document.getElementById("d").textContent = new Date().toLocaleDateString("sv-SE");
