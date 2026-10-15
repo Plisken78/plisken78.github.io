@@ -13,10 +13,11 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 ## Sidor
 | Fil | Innehåll |
 |---|---|
-| `index.html` | Startsida: hero, om mig, musiker/lärare, grupper, bildgalleri, musik, kontakt |
+| `index.html` | Startsida: hero, om mig, **"Här spelar jag härnäst" (`#spelningar`, sedan 15 okt 2026 – bara offentliga spelningar; raderna har `data-slut` och döljs själva dagen efter; Timeless-datumen står också på `timeless-tunes.html`, Waltz-datumen på `waltz-for-debbie.html` – uppdatera båda)**, musiker/lärare, grupper, bildgalleri, musik, kontakt |
 | `ballader.html` | Ballader i Bohuslän |
 | `duo2much.html` | Duo 2Much |
 | `jardvall.html` | Alexandra Jardvall & The SWE Street Band |
+| `timeless-tunes.html` | Timeless Tunes (duo med Theresa Skjolden) – spelningar, om duon, bokning. Ny 15 okt 2026; startsidans Timeless-kort länkar hit. |
 | `waltz-for-debbie.html` | Waltz for Debbie – A tribute to Monica Z |
 | `forelasning/musikeryrket.html` | Föreläsning "Att jobba som musiker" (slides-liknande) |
 | `notlasning/notlasning.html` | Notläsningsövning – spelar upp MusicXML-låtar listade i `notlasning/songs.json` |
