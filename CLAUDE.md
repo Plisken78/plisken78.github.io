@@ -13,7 +13,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 ## Sidor
 | Fil | Innehåll |
 |---|---|
-| `index.html` | Startsida: hero, om mig, **"Offentliga spelningar härnäst" (`#spelningar`, sedan 15 okt 2026 – bara offentliga spelningar; raderna har `data-slut` och döljs själva dagen efter; Timeless-datumen står också på `timeless-tunes.html`, Waltz-datumen på `waltz-for-debbie.html` – uppdatera båda. Allt med Anna Pauline är inte Waltz for Debbie: Sofiero 28/11 2026 är troligen jullåtar och står bara på startsidan, utan länk)**, musiker/lärare, grupper, bildgalleri, musik, kontakt |
+| `index.html` | Startsida: hero, om mig, **"Offentliga spelningar härnäst" (`#spelningar`, sedan 15 okt 2026 – bara offentliga spelningar; raderna har `data-slut` och döljs själva dagen efter; Timeless-datumen står också på `timeless-tunes.html`, Waltz-datumen på `waltz-for-debbie.html` – uppdatera båda. Allt med Anna Pauline är inte Waltz for Debbie: Sofiero 28/11 2026 är troligen jullåtar och står bara på startsidan, med biljettlänk till biljett.sofiero.se)**, musiker/lärare, grupper, bildgalleri, musik, kontakt |
 | `ballader.html` | Ballader i Bohuslän |
 | `duo2much.html` | Duo 2Much |
 | `jardvall.html` | Alexandra Jardvall & The SWE Street Band |
