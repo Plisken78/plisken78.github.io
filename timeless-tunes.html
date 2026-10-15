@@ -64,12 +64,14 @@
     .meta-value a { color: var(--gold); text-decoration: none; }
     .dates-section { background: var(--surface); }
     .dates-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 3rem; }
-    .show-row { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+    .show-row { display: grid; grid-template-columns: 110px 1fr auto; align-items: center; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
     .show-row:first-of-type { border-top: 1px solid var(--border); }
     .show-date-day { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; line-height: 1; color: var(--gold); white-space: nowrap; }
     .show-date-month { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: .2rem; }
     .show-venue { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin-bottom: .25rem; }
     .show-details { font-size: .85rem; color: var(--muted); }
+    .ticket-link { display: inline-block; color: var(--gold); border: 1px solid var(--gold-dim); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; padding: .65rem 1.5rem; text-decoration: none; transition: background .2s, color .2s; white-space: nowrap; }
+    .ticket-link:hover { background: var(--gold); color: var(--bg); }
     .dates-empty { color: var(--muted); display: none; }
     .booking-section { background: var(--surface); }
     .booking-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
@@ -98,6 +100,7 @@
       .dates-inner { padding: 3.5rem 1.5rem; }
       .show-row { grid-template-columns: 90px 1fr; gap: 1.25rem; }
       .show-date-day { font-size: 1.8rem; }
+      .ticket-link { grid-column: 1 / -1; text-align: center; }
       .booking-inner { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
     }
   </style>
@@ -142,6 +145,7 @@
           <div class="show-venue">Nyårsafton på Thorskogs Slott</div>
           <div class="show-details">Västerlanda</div>
         </div>
+        <a href="https://www.thorskogsslott.se/paket/nyar/" target="_blank" rel="noopener" class="ticket-link">Boka nyårspaket</a>
       </div>
 
       <div class="show-row" data-slut="2027-05-15">
@@ -153,6 +157,7 @@
           <div class="show-venue">Laholmen</div>
           <div class="show-details">Strömstad · fredag och lördag</div>
         </div>
+        <a href="https://www.laholmen.se/noeje-event/" target="_blank" rel="noopener" class="ticket-link">Info</a>
       </div>
 
       <div class="show-row" data-slut="2027-07-10">
@@ -164,6 +169,7 @@
           <div class="show-venue">Laholmen</div>
           <div class="show-details">Strömstad · fredag och lördag</div>
         </div>
+        <a href="https://www.laholmen.se/noeje-event/" target="_blank" rel="noopener" class="ticket-link">Info</a>
       </div>
 
       <div class="show-row" data-slut="2027-08-07">
@@ -175,6 +181,7 @@
           <div class="show-venue">Laholmen</div>
           <div class="show-details">Strömstad · fredag och lördag</div>
         </div>
+        <a href="https://www.laholmen.se/noeje-event/" target="_blank" rel="noopener" class="ticket-link">Info</a>
       </div>
 
       <p class="dates-empty">Inga inbokade spelningar just nu – följ oss på <a href="https://www.instagram.com/tidlosatoner/" target="_blank" rel="noopener" style="color:var(--gold)">Instagram</a>.</p>
