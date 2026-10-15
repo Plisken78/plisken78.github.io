@@ -426,6 +426,32 @@
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--gold); }
 
+    /* ── SPELNINGAR ─────────────────────────────────── */
+    #spelningar { padding-top: 5rem; padding-bottom: 5rem; }
+    .gig-list { margin-top: 1rem; }
+    .gig-row {
+      display: grid; grid-template-columns: 150px 1fr auto;
+      align-items: center; gap: 2rem;
+      padding: 1.25rem 0; border-bottom: 1px solid var(--border);
+    }
+    .gig-row:first-child { border-top: 1px solid var(--border); }
+    .gig-date { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gold); line-height: 1.1; }
+    .gig-date small { display: block; font-family: var(--font-body); font-size: .66rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: .2rem; }
+    .gig-what { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; line-height: 1.2; }
+    .gig-where { font-size: .85rem; color: var(--muted); margin-top: .15rem; }
+    .gig-link {
+      color: var(--gold); border: 1px solid var(--gold-dim);
+      font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600;
+      padding: .55rem 1.2rem; text-decoration: none; white-space: nowrap;
+      transition: background .2s, color .2s;
+    }
+    .gig-link:hover { background: var(--gold); color: var(--bg); }
+    .gig-empty { color: var(--muted); display: none; }
+    @media (max-width: 600px) {
+      .gig-row { grid-template-columns: 1fr; gap: .5rem; }
+      .gig-link { justify-self: start; margin-top: .4rem; }
+    }
+
     /* ── DIVIDER ────────────────────────────────────── */
     .divider {
       max-width: 1100px; margin: 0 auto;
@@ -462,6 +488,7 @@
     <a href="#" class="nav-logo">Richard Hauer</a>
     <ul class="nav-links">
       <li><a href="#om-mig">Om mig</a></li>
+      <li><a href="#spelningar">Spelningar</a></li>
       <li><a href="#musiker">Musiker</a></li>
       <li><a href="#bildgalleri">Bilder</a></li>
       <li><a href="#grupper">Projekt</a></li>
@@ -519,6 +546,58 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SPELNINGAR ───────────────────────────────── -->
+  <!-- Offentliga spelningar. data-slut = sista dagen (ÅÅÅÅ-MM-DD); raden döljs
+       automatiskt dagen efter. Timeless-datumen står också på timeless-tunes.html. -->
+  <section id="spelningar">
+    <div class="section-label">Live</div>
+    <h2 class="section-title">Här spelar jag härnäst</h2>
+    <div class="gig-list">
+      <div class="gig-row" data-slut="2026-11-21">
+        <div class="gig-date">t.o.m. 21 nov<small>Hösten 2026</small></div>
+        <div><div class="gig-what">Macken 40 år</div><div class="gig-where">Kajskjul 8, Göteborg · kapellmästare</div></div>
+        <a href="macken/" class="gig-link">Speldagar</a>
+      </div>
+      <div class="gig-row" data-slut="2026-11-28">
+        <div class="gig-date">28 nov<small>2026</small></div>
+        <div><div class="gig-what">Waltz for Debbie · Anna Pauline</div><div class="gig-where">Sofiero, Helsingborg</div></div>
+        <a href="waltz-for-debbie.html" class="gig-link">Läs mer</a>
+      </div>
+      <div class="gig-row" data-slut="2026-12-31">
+        <div class="gig-date">31 dec<small>Nyårsafton 2026</small></div>
+        <div><div class="gig-what">Timeless Tunes</div><div class="gig-where">Thorskogs Slott, Västerlanda</div></div>
+        <a href="timeless-tunes.html" class="gig-link">Läs mer</a>
+      </div>
+      <div class="gig-row" data-slut="2027-05-15">
+        <div class="gig-date">14–15 maj<small>2027</small></div>
+        <div><div class="gig-what">Timeless Tunes</div><div class="gig-where">Laholmen, Strömstad</div></div>
+        <a href="timeless-tunes.html" class="gig-link">Läs mer</a>
+      </div>
+      <div class="gig-row" data-slut="2027-07-10">
+        <div class="gig-date">9–10 juli<small>2027</small></div>
+        <div><div class="gig-what">Timeless Tunes</div><div class="gig-where">Laholmen, Strömstad</div></div>
+        <a href="timeless-tunes.html" class="gig-link">Läs mer</a>
+      </div>
+      <div class="gig-row" data-slut="2027-08-07">
+        <div class="gig-date">6–7 aug<small>2027</small></div>
+        <div><div class="gig-what">Timeless Tunes</div><div class="gig-where">Laholmen, Strömstad</div></div>
+        <a href="timeless-tunes.html" class="gig-link">Läs mer</a>
+      </div>
+    </div>
+    <p class="gig-empty">Inga offentliga spelningar inbokade just nu.</p>
+    <script>
+      (function () {
+        var idag = new Date().toLocaleDateString('sv-SE'), kvar = 0;
+        document.querySelectorAll('#spelningar .gig-row').forEach(function (r) {
+          if (r.dataset.slut < idag) r.remove(); else kvar++;
+        });
+        if (!kvar) document.querySelector('#spelningar .gig-empty').style.display = 'block';
+      })();
+    </script>
   </section>
 
   <div class="divider"></div>
@@ -591,7 +670,7 @@
         <div class="card-title">Timeless Tunes</div>
         <div class="card-role">Gitarrist &amp; Arrangör · Duo</div>
         <p class="card-desc">Intimt duoprojekt med sångerskan Theresa Skjolden. Tidlösa melodier i ett nyskapande format som passar alla sorters scener.</p>
-        <a href="https://www.instagram.com/tidlosatoner/" target="_blank" rel="noopener" class="card-link">Instagram</a>
+        <a href="timeless-tunes.html" class="card-link">Läs mer</a>
       </div>
 
       <div class="card">
