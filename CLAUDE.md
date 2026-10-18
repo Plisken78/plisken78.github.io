@@ -37,6 +37,8 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 - Kontakt: richardhauer@me.com, 070-878 11 16
 
 ## Att tänka på
+- **Siffrorna på startsidan ska stämma med det konstnärliga CV:t** (projektet `CLAUDE/SPRÅNGET-2027`, som bifogas stipendieansökningar). "Aktiv på ca 75 konserter per år" sedan 18 okt 2026 (var 30–50, CV:t sa 50–80) är räknat ur Gig-kalendern: 72 gig 2025, 76 gig 2026. Ändra inte siffran på känn — räkna om ur kalendern och ändra CV:t samtidigt.
+- `jardvall.html` "10.4 April 2026 Kooperativet Göteborg" är bekräftat av Richard 18 okt 2026 (Gig-kalendern sa Örebro och är rättad).
 - `INBOX/` är Richards arbetsmapp för underlag – **git-ignorerad**, publiceras aldrig
 - `teknik/`-sidor är olänkade från menyn med `<meta name="robots" content="noindex">`; dela URL:en manuellt
 - **Teknikunderlag som hör till en show läggs under showens egen mapp** (`macken/kanallista.html`), inte i `teknik/` — då landar man på showsidan när man backar i URL:en. `teknik/` är kvar för underlag utan egen showsida, som vikingline-2026.
