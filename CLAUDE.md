@@ -38,6 +38,7 @@ Personlig hemsida för Richard Hauer, gitarrist & gitarrlärare. Statisk sajt (r
 
 ## Att tänka på
 - **Siffrorna på startsidan ska stämma med det konstnärliga CV:t** (projektet `CLAUDE/SPRÅNGET-2027`, som bifogas stipendieansökningar). "Aktiv på ca 75 konserter per år" sedan 18 okt 2026 (var 30–50, CV:t sa 50–80) är räknat ur Gig-kalendern: 72 gig 2025, 76 gig 2026. Ändra inte siffran på känn — räkna om ur kalendern och ändra CV:t samtidigt.
+- **`#musik` har en lista "Utgivningar"** (sedan 18 okt 2026, återanvänder `.gig-row`-klasserna utan `data-slut`, så den döljs aldrig). År ur Apple Music, roller från Richard; samma uppgifter som i det konstnärliga CV:t. Ny utgivning = ny rad överst + rad i CV:t. Skolfilmerna (HamarkFilm, Filmnavet) står under Lärare; Sundsgården är "ca 2004 – nu, undervisning & antagningsjury" (stod felaktigt 1998 – nu, det var studieåret).
 - `jardvall.html` "10.4 April 2026 Kooperativet Göteborg" är bekräftat av Richard 18 okt 2026 (Gig-kalendern sa Örebro och är rättad).
 - `INBOX/` är Richards arbetsmapp för underlag – **git-ignorerad**, publiceras aldrig
 - `teknik/`-sidor är olänkade från menyn med `<meta name="robots" content="noindex">`; dela URL:en manuellt
